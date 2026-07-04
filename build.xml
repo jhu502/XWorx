@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="XServer" default="3-deploy" basedir="." xmlns:artifact="urn:maven-artifact-ant">
+	<property name="version" value="0.5.1"/>
+	<property name="src.dir" value="src/main/java" />
+	<property name="resources.dir" value="src/main/resources" />
+	<property name="classes.dir" value="target/classes" />
+	<property name="webapp.dir" value="src/main/webapp" />
+	<property name="output.dir" value="codebase" />
+	<property name="logs.dir" value="logs" />
+	<property name="lib.dir" value="lib" />
+	<property name="loadFiles.dir" value="." />
+	<property name="thingworx.dir" value="thingworx/WEB-INF/lib" />
+	<property name="tomcat.dir" value="storage/tomcat" />
+	<property name="flame-js.dir" value="src/main/resources/javascript/flame" />
+	<property name="jdk.version" value="21" />
+	<!-- Maven 配置：指定 Maven 安装路径 -->
+	<property name="maven.home" value="D:/SourceSpace/Maven-3.9.6" />
+	<property name="maven.exec" value="${maven.home}/bin/mvn.cmd" />
+	
+	
+</project>
