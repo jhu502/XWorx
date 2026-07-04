@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Folder">
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">workHomeTab</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Work Home</attr>
+        <attr name="icon">images/body/bersirc.png</attr>
+        <attr name="url">thymeleaf/home/homeTab.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Home Page</attr>
+        <attr name="zh_CN">工作主页</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">favorites</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Favorites</attr>
+        <attr name="icon">images/body/favorites.png</attr>
+        <attr name="processor">xw.action.processor.XWXFavoritesProcessor</attr>
+        <attr name="en_US">Favorites</attr>
+        <attr name="zh_CN">收藏栏</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">workHomeTab</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <!--Factory-->
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">thingView</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">ThingView</attr>
+        <attr name="icon">images/swagger.png</attr>
+        <attr name="url">thymeleaf/thingview/thingview.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">ThingView</attr>
+        <attr name="zh_CN">ThingView</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">assemblyLine</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Assembly Line</attr>
+        <attr name="icon">images/pline.png</attr>
+        <attr name="url">thymeleaf/mes/apl/productLineMgmt.html?oid=xw.context.entity.XSite:10</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Assembly Line</attr>
+        <attr name="zh_CN">装配线</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">thingWorx</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">ThingWorx</attr>
+        <attr name="icon">images/swagger.png</attr>
+        <attr name="url">netmarkets/thingworx/main.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">ThingWorx</attr>
+        <attr name="zh_CN">ThingWorx</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">factory</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Factory</attr>
+        <attr name="icon">images/home/factory.png</attr>
+        <attr name="processor">xw.action.processor.XWXComposerProcessor</attr>
+        <attr name="en_US">Factory</attr>
+        <attr name="zh_CN">工厂</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">thingView</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">assemblyLine</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">thingWorx</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <!--Setting-->
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">workflow</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Workflow</attr>
+        <attr name="icon">images/flow/definition.gif</attr>
+        <attr name="url">thymeleaf/xflow/definition/listFlowDefinitions.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Workflow Template</attr>
+        <attr name="zh_CN">工作流模板</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">userGroup</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">User Group</attr>
+        <attr name="icon">images/group.png</attr>
+        <attr name="url">thymeleaf/auths/principalMgmt.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">User Group</attr>
+        <attr name="zh_CN">用户组</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">thingModel</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Thing Model</attr>
+        <attr name="icon">images/body/tmodel.png</attr>
+        <attr name="url">thymeleaf/thing/thingModelMain.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Thing Model</attr>
+        <attr name="zh_CN">Thing模型</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">XSite-Definitions</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Definitions</attr>
+        <attr name="icon">images/site/definition.png</attr>
+        <attr name="en_US">Definitions</attr>
+        <attr name="zh_CN">定义</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">workflow</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">userGroup</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">thingModel</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">actionMgmt</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Action Management</attr>
+        <attr name="icon">images/menu.png</attr>
+        <attr name="url">thymeleaf/action/actionModel.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Action Management</attr>
+        <attr name="zh_CN">菜单管理</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">siteMgmt</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Site Management</attr>
+        <attr name="icon">images/sitemgmt.png</attr>
+        <attr name="url">thymeleaf/context/site/siteTeam.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Site Management</attr>
+        <attr name="zh_CN">站点管理</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">libraryContexts</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Library Context</attr>
+        <attr name="icon">images/body/library.png</attr>
+        <attr name="url">thymeleaf/context/library/libraryContexts.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Libraries</attr>
+        <attr name="zh_CN">库上下文</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">contextMgmt</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Contexts</attr>
+        <attr name="icon">images/body/context.png</attr>
+        <attr name="url">thymeleaf/context/contextMgmt.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Contexts</attr>
+        <attr name="zh_CN">上下文管理</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">domainPolicy</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Domain Policy</attr>
+        <attr name="icon">images/body/policy.png</attr>
+        <attr name="url">thymeleaf/domain/domainPolicy.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Domain Policy</attr>
+        <attr name="zh_CN">域策略</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">swagger</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Swagger</attr>
+        <attr name="icon">images/swagger.png</attr>
+        <attr name="url">netmarkets/swagger/swagger.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Swagger</attr>
+        <attr name="zh_CN">Swagger</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">zookeeper</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Zookeeper</attr>
+        <attr name="icon">images/zkeeper.png</attr>
+        <attr name="url">thymeleaf/zkeeper/zookeeperView.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Zookeeper</attr>
+        <attr name="zh_CN">Zookeeper</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">XSite-Management</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Management</attr>
+        <attr name="icon">images/site/administer.png</attr>
+        <attr name="en_US">Management</attr>
+        <attr name="zh_CN">管理</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">actionMgmt</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">15</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">libraryContexts</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">contextMgmt</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">23</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">domainPolicy</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">siteMgmt</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">40</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">swagger</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">50</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">zookeeper</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">arthasConsole</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Arthas Console</attr>
+        <attr name="icon">images/body/arthas.png</attr>
+        <attr name="url">netmarkets/arthas/arthas-console.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Arthas Console</attr>
+        <attr name="zh_CN">Arthas控制台</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">helpCenter</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Help Center</attr>
+        <attr name="icon">images/body/help.gif</attr>
+        <attr name="url">helps/index.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Help Center</attr>
+        <attr name="zh_CN">帮助中心</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">XSite-Supports</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Supports</attr>
+        <attr name="icon">images/site/support.png</attr>
+        <attr name="en_US">Supports</attr>
+        <attr name="zh_CN">支持</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">arthasConsole</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">helpCenter</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">setting</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Setting</attr>
+        <attr name="icon">images/home/settings.png</attr>
+        <attr name="processor">xw.action.processor.XWXComposerProcessor</attr>
+        <attr name="en_US">Setting</attr>
+        <attr name="zh_CN">设置</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">XSite-Definitions</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">XSite-Management</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">XSite-AI</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">40</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">XSite-Supports</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <!-- Navigator Menu -->
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">XWX-Navigator</attr>
+        <attr name="type">XWX-Navigator</attr>
+        <attr name="display">Navigator</attr>
+        <attr name="processor">xw.action.processor.XWXNavigatorProcessor</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">favorites</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">40</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">factory</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">50</attr>
+            <where type="xw.action.entity.XActionModel" refer="right">
+                <attr name="name">setting</attr>
+                <attr name="type">XWX-Navigator</attr>
+            </where>
+        </link>
+    </LoadObject>
+</FlameDataLoad>

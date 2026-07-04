@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshTeamTree', before='validateRoleSelection')}">
+<section style="padding: 20px;">
+    <input type="hidden" name="parentOid" th:value="${param.parentOid}"/>
+    <table cellpadding="5">
+        <tr>
+            <td align="right" style="vertical-align:top;">角色:</td>
+            <td>
+                <select id="roleName" name="roleName" multiple="multiple" style="width:250px;height:200px;">
+                </select>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<script type="text/javascript">
+    axios.get('XUI$/get/xw.team.processor.QueryRoleProcessor').then(function (response) {
+        const result = response.data;
+        if (result.status == 'SUCCESS' && result.data) {
+            const select = document.getElementById('roleName');
+            for (var i = 0; i < result.data.length; i++) {
+                const option = document.createElement('option');
+                option.value = result.data[i].name;
+                option.text = result.data[i].display;
+                select.appendChild(option);
+            }
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+
+    function validateRoleSelection(el) {
+        const select = document.getElementById('roleName');
+        let hasSelection = false;
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].selected) {
+                hasSelection = true;
+                break;
+            }
+        }
+        if (!hasSelection) {
+            $.messager.alert('warning', '请选择角色');
+            return false;
+        }
+        return true;
+    }
+
+    function refreshTeamTree(result) {
+        if (result && result.status == 'SUCCESS') {
+            flame.reloadGrid('contextTeamTree');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

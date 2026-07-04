@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table id="part_occurrence"></table>
+<script type="text/javascript" th:inline="text">
+    flame.loadGrid("part_occurrence", "plm.part.builder.UsesOccurrenceTableBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        },
+        onClickRow: function (index) {
+            if (editIndex != index) {
+                if (endEditing()) {
+                    occurGrid.datagrid('selectRow', index).datagrid('beginEdit', index);
+                    editIndex = index;
+                } else {
+                    occurGrid.datagrid('selectRow', editIndex);
+                }
+            }
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    var editIndex = undefined;
+    var occurGrid = $('#part_occurrence');
+
+    function endEditing() {
+        if (editIndex == undefined) {
+            return true
+        }
+        if (occurGrid.datagrid('validateRow', editIndex)) {
+            occurGrid.datagrid('getEditor', {
+                index: editIndex,
+                field: 'value'
+            });
+            occurGrid.datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function addTR() {
+        if (endEditing()) {
+            occurGrid.datagrid('appendRow', {});
+            editIndex = occurGrid.datagrid('getRows').length - 1;
+            occurGrid.datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
+        }
+    }
+
+    function delTR() {
+        if (editIndex == undefined)
+            return
+        occurGrid.datagrid('cancelEdit', editIndex).datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+</script>
+</body>
+</html>

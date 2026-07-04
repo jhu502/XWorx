@@ -1,0 +1,10 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Home Tab')}"></head>
+<body>
+<x-tab-panel id="homeTab" x-options="park:'fit'">
+	<x-panel name="privateTab" title="个人" x-options="header:false,park:'fit',url:'thymeleaf/home/privateTab.html'"></x-panel>
+	<x-panel name="publicTab" title="公共" x-options="header:false,park:'fit',url:'thymeleaf/home/publicTab.html'"></x-panel>
+</x-tab-panel>
+</body>
+</html>

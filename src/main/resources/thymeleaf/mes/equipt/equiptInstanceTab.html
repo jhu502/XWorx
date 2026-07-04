@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Equipt Instance')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="height:300px">
+        <input id="equipmentOid" type="hidden" th:value="${commandBean.primaryOid}"/>
+        <div id="equiptInstanceList"></div>
+    </div>
+    <div th:data-options="|region:'center',title:'#{parameters}',border:false|">
+        <div id="equiptParameterList"></div>
+    </div>
+
+    <script type="text/javascript" th:inline="text">
+        flame.loadGrid("equiptInstanceList", "mes.equipt.builder.XEquiptInstanceTableBuilder", {
+            queryParams: {
+                oid: '[[${commandBean.primaryOid}]]'
+            },
+            onClickRow: function (index, row) {
+                flame.reloadGrid('equiptParameterList', {
+                    oid: row.oid
+                });
+            }
+        });
+        flame.loadGrid("equiptParameterList", "mes.equipt.builder.XEquiptParameterTableBuilder", {
+            queryParams: {
+                oid: '[[${commandBean.primaryOid}]]'
+            },
+            onClickRow: function (node) {
+
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

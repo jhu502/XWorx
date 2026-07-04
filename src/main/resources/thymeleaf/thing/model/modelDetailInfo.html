@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table>
+    <tr>
+        <th style="width:100px"></th>
+        <th style="width:300px"></th>
+        <th style="width:100px"></th>
+        <th style="width:300px"></th>
+    </tr>
+    <tr>
+        <td><label style="font-size: 12px; font-weight: bold">Name: </label></td>
+        <td id="name"><span th:text="${commandBean.primaryObj.name}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">Display: </label></td>
+        <td id="display"><span th:text="${commandBean.primaryObj.localDisplay}"></span></td>
+    </tr>
+    <tr>
+        <td><label style="font-size: 12px; font-weight: bold">Type: </label></td>
+        <td id="type"><span th:text="${commandBean.primaryObj.type}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">Supported Type: </label></td>
+        <td id="supportedType"><span th:text="${commandBean.primaryObj.supportedType}"></span></td>
+    </tr>
+    <tr>
+        <td><label style="font-size: 12px; font-weight: bold">Packet: </label></td>
+        <td id="packet"><span th:text="${commandBean.primaryObj.packet}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">Icon: </label></td>
+        <td id="icon"><span th:text="${commandBean.primaryObj.icon}"></span></td>
+    </tr>
+    <tr>
+        <td><label style="font-size: 12px; font-weight: bold">Style: </label></td>
+        <td id="style" colspan="3"><span th:text="${commandBean.primaryObj.style}"></span></td>
+    </tr>
+    <tr>
+        <td><label style="font-size: 12px; font-weight: bold">Created On: </label></td>
+        <td id="createdStamp"><span th:text="${commandBean.primaryObj.createdStamp}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">Last Modified: </label></td>
+        <td id="modifiedStamp"><span th:text="${commandBean.primaryObj.modifiedStamp}"></span></td>
+    </tr>
+</table>
+</body>
+</html>

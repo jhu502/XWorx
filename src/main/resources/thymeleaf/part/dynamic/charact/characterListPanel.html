@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div class="easyui-panel" data-options="fit:true,border:false">
+	<div id="choiceGrid-data" style="display: none;"></div>
+	<div id="choiceList-tb" style="display: none">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" id="linkbutton-AddRow" onclick="addRow()" th:text="#{add}"></a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-delete',plain:true" id="linkbutton-DelRow" onclick="delRow()" th:text="#{remove}"></a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-moveup',plain:true" id="linkbutton-MoveTrue" onclick="move(true)" th:text="#{moveUp}"></a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-movedown',plain:true" id="linkbutton-MoveFalse" onclick="move(false)" th:text="#{moveDown}"></a>
+	</div>
+</div>
+<script type="text/javascript" th:inline="text">
+	var editIndex = undefined;
+	var choiceGrid = $('#choiceGrid-data');
+
+	(($) => {
+		flame.loadGrid('choiceGrid-data', 'plm.dynamic.builder.ChoiceListTableBuilder', {
+			queryParams: {
+				oid: "[[${commandBean.primaryOid}]]"
+			},
+			onClickRow: function (index) {
+				if (editIndex != index) {
+					if (endEditing()) {
+						choiceGrid.datagrid('selectRow', index).datagrid('beginEdit', index);
+						editIndex = index;
+					} else {
+						choiceGrid.datagrid('selectRow', editIndex);
+					}
+				}
+			},
+			onLoadSuccess: function (data) {
+				addRow(); //默认添加一个空行
+			}
+		});
+	})(jQuery);
+
+	$.extend($.fn.datagrid.methods, {
+		addEditor: function (jq, param) {
+			if (param instanceof Array) {
+				$.each(param, function (index, item) {
+					$(jq).datagrid('getColumnOption', item.field).editor = item.editor;
+				});
+			} else {
+				$(jq).datagrid('getColumnOption', param.field).editor = param.editor;
+			}
+		},
+		removeEditor: function (jq, param) {
+			if (param instanceof Array) {
+				$.each(param, function (index, item) {
+					$(jq).datagrid('getColumnOption', item).editor = {};
+				});
+			} else {
+				$(jq).datagrid('getColumnOption', param).editor = {};
+			}
+		}
+	});
+
+	function endEditing() {
+		if (editIndex == undefined) {
+			return true
+		}
+		if (choiceGrid.datagrid('validateRow', editIndex)) {
+			choiceGrid.datagrid('getEditor', {
+				index: editIndex,
+				field: 'value'
+			});
+			choiceGrid.datagrid('endEdit', editIndex);
+			editIndex = undefined;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function move(isUp) {
+		const selections = choiceGrid.datagrid("getSelections");
+		if (selections.length == 0)
+			return;
+
+		var length = choiceGrid.datagrid("getRows").length;
+		for (var i = 0; i < selections.length; i++) {
+			var index, $i, newIndex;
+			if (isUp) {
+				$i = i;
+				index = choiceGrid.datagrid('getRowIndex', selections[$i]);
+				if (index <= 0)
+					return;
+				newIndex = index - 1;
+				choiceGrid.datagrid('acceptChanges');
+			} else {
+				var $i = selections.length - 1 - i;
+				index = choiceGrid.datagrid('getRowIndex', selections[$i]);
+				if (index >= length - 1)
+					return;
+				newIndex = index + 1;
+				choiceGrid.datagrid('acceptChanges');
+			}
+			const array = choiceGrid.datagrid('getData').rows;
+			choiceGrid.datagrid("deleteRow", index);
+			choiceGrid.datagrid("insertRow", {
+				index: newIndex,
+				row: selections[$i]
+			});
+			choiceGrid.datagrid("selectRow", newIndex);
+		}
+	}
+
+	function addRow() {
+		if (endEditing()) {
+			choiceGrid.datagrid('appendRow', {});
+			editIndex = choiceGrid.datagrid('getRows').length - 1;
+			choiceGrid.datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
+		}
+	}
+
+	function delRow() {
+		if (editIndex == undefined)
+			return
+		choiceGrid.datagrid('cancelEdit', editIndex).datagrid('deleteRow', editIndex);
+		editIndex = undefined;
+	}
+</script>
+</body>
+</html>

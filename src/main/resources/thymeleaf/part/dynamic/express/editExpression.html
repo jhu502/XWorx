@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::div}, script=~{::script}, before='completeValidation', callback='refreshExpressionGrid')}">
+	<div class="easyui-tabs" data-options="fit:true">
+		<div id="expressPropertyPanel" th:title="#{attributes}"></div>
+	</div>
+	<script type="text/javascript" th:inline="text">
+		(($)=>{
+			flame.loadGrid('expressPropertyPanel', 'plm.dynamic.form.ExpressionPropertyForm', {
+				queryParams : {
+					oid : "[[${commandBean.rowId}]]"
+				},
+				onXComplete: function(config) {
+				}
+			});
+		})(jQuery);
+		
+		function completeValidation() {
+			return true;
+		}
+	</script>
+</body>
+</html>

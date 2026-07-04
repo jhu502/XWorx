@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Folder">
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">process</attr>
+        <attr name="type">XFlow</attr>
+        <attr name="display">Processes</attr>
+        <attr name="icon">images/flow/instxflow.gif</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/instance/relatedXWorkInstance.html</attr>
+        <attr name="processor"></attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Processes</attr>
+        <attr name="zh_CN">进程</attr>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">detail</attr>
+        <attr name="type">XWorkInstance</attr>
+        <attr name="display">Details</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/instance/instanceDetailsTab.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Details</attr>
+        <attr name="zh_CN">详细信息</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">diagram</attr>
+        <attr name="type">XWorkInstance</attr>
+        <attr name="display">Diagram</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/instance/instanceDiagramTab.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Diagram</attr>
+        <attr name="zh_CN">流程图</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+        <attr name="name">XWX-InfoTabs</attr>
+        <attr name="type">XWorkInstance</attr>
+        <attr name="display">XWorkInstance Tabs</attr>
+        <attr name="icon">images/flow/flowinst.gif</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">detail</attr>
+                <attr name="type">XWorkInstance</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">diagram</attr>
+                <attr name="type">XWorkInstance</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">detail</attr>
+        <attr name="type">XFlowDefinition</attr>
+        <attr name="display">Detail</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/definition/definitionDetailsTab.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Details</attr>
+        <attr name="zh_CN">详细信息</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">diagram</attr>
+        <attr name="type">XFlowDefinition</attr>
+        <attr name="display">Diagram</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/definition/definitionDiagramTab.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Diagram</attr>
+        <attr name="zh_CN">流程图</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+        <attr name="name">XWX-InfoTabs</attr>
+        <attr name="type">XFlowDefinition</attr>
+        <attr name="display">XFlowDefinition Tabs</attr>
+        <attr name="icon">images/flow/flowdef.gif</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">detail</attr>
+                <attr name="type">XFlowDefinition</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">diagram</attr>
+                <attr name="type">XFlowDefinition</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">detail</attr>
+        <attr name="type">XWorkItem</attr>
+        <attr name="display">Details</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/taskform/workitemTaskForm.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Details</attr>
+        <attr name="zh_CN">详细信息</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">history</attr>
+        <attr name="type">XWorkItem</attr>
+        <attr name="display">History</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/flowReviewHistory.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">History</attr>
+        <attr name="zh_CN">历史</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+        <attr name="name">XWX-InfoTabs</attr>
+        <attr name="type">XWorkItem</attr>
+        <attr name="display">XWorkItem Tabs</attr>
+        <attr name="icon">images/flow/usertask.png</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">detail</attr>
+                <attr name="type">XWorkItem</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">history</attr>
+                <attr name="type">XWorkItem</attr>
+            </where>
+        </link>
+    </LoadObject>
+</FlameDataLoad>

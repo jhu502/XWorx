@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='completeInvoke', callback='refreshCharactGrid')}">
+<section class="easyui-tabs" data-options="fit:true">
+	<div th:title="#{attributes}">
+		<div class="easyui-layout" data-options="fit:true">
+			<input id="charactChoiceJSON" name="charactChoiceJSON" type="hidden">
+			<div data-options="region:'north',border:false" id="charactPropertyPanel" style="padding:8px;height:250px"></div>
+			<div data-options="region:'center',border:false" id="charactChoiceDefPanel"></div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" th:inline="text">
+	//$("[name='optionMode'][value='LIST']").attr('checked', true);
+	//valueGrid.datagrid("getPanel").hide();
+	//valueGrid.datagrid("getPanel").show();
+
+	(($) => {
+		flame.loadGrid('charactPropertyPanel', 'plm.dynamic.form.CharactPropertyForm', {
+			queryParams: {
+				oid: "[[${commandBean.rowId}]]"
+			},
+			onXComplete: function (config) {
+				if (config) {
+					showChoiceDefPanel();
+				}
+			}
+		});
+	})(jQuery);
+
+	function completeInvoke() {
+		if (endEditing) {
+			endEditing();
+		}
+
+		if (flame.hasValue('number') || flame.hasValue('name') || flame.hasValue('baseType') || flame.hasChecked('inputType') || flame.hasChecked('optionMode')) {
+				alert('有必选属性未设置!');
+				return false;
+			}
+			const mode = $("[name='optionMode']:checked").val();
+			if (mode === 'LIST' || mode === 'DLIST') {
+				var rows = choiceGrid.datagrid("getRows");
+				if (rows.length == 0) {
+					alert('请添加可选值.');
+					return false;
+				}
+				$("#charactChoiceJSON").val(JSON.stringify(rows));
+			}
+			return true;
+		}
+		function refreshCharactGrid(result) {
+			if (result.status === 'SUCCESS') {
+				flame.reloadGrid('dynamic_characts');
+			}
+			return true;
+		}
+		function showChoiceDefPanel() {
+			const baseType = $('#charactBaseType').val();
+			const optionMode = $("input[name='optionMode']:checked").val();
+			console.log(optionMode);
+			switch(optionMode) {
+			case 'DLIST':
+				if ('INFOTABLE' == baseType) {
+					$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterDListTablePanel.html?oid='+'[[${commandBean.rowId}]]');
+				} else if (!isBlank(baseType)) {
+					$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterDListPanel.html?oid='+'[[${commandBean.rowId}]]');
+				} else {
+					$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterNonePanel.html?oid='+'[[${commandBean.rowId}]]');
+				}
+				break;
+			case 'LIST':
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterListPanel.html?oid='+'[[${commandBean.rowId}]]');
+				break;
+			case 'RANGE':
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterRangePanel.html?oid='+'[[${commandBean.rowId}]]');
+				break;
+			case 'NONE':
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterNonePanel.html?oid='+'[[${commandBean.rowId}]]');
+				break;
+			}
+		}
+	</script>
+</body>
+</html>

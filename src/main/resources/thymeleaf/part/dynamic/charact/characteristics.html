@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<table id="dynamic_characts"></table>
+<div id="showCharactWin"></div>
+<script type="text/javascript" th:inline="text">
+	flame.loadGrid("dynamic_characts", "plm.dynamic.builder.CharacteristicsTableBuilder", {
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		}
+	});
+
+	function selectOptionMode(el) {
+		console.log(el.value);
+	}
+
+	function showCharactDetail(oid) {
+		$('#showCharactWin').window({
+			title: "Charact Info",
+			href: flame.getHREF('jsp/plm/charact/displayCharact.jsp'),
+			width: 600,
+			height: 400,
+			collapsible: false,
+			minimizable: false,
+			maximizable: false,
+			modal: true,
+			queryParams: {
+				oid: oid
+			}
+		});
+	}
+
+	function refreshCharactGrid(result) {
+		if (result.status === 'SUCCESS') {
+			flame.reloadGrid('dynamic_characts');
+		}
+		return true;
+	}
+</script>
+</body>
+</html>

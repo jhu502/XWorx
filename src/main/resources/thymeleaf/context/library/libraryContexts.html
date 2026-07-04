@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Product Library')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="height:30px">
+        <div style="padding: 0 0">
+            <div class="easyui-menubutton" data-options="plain:false" onclick="javascript:alert('easyui')">操作</div>
+            <img style="vertical-align:middle;padding-left:10px;"/>
+            <span style="font-size:14px;vertical-align:middle;">Product Library - /</span>
+        </div>
+    </div>
+    <div data-options="region:'center',border:false" style="padding:1px">
+        <table id="libraryListView"></table>
+    </div>
+    <div data-options="region:'east',border:false,split:true" style="width:450px;">
+        <table id="libraryHierarchy"></table>
+    </div>
+    <script type="text/javascript">
+        flame.loadGrid("libraryListView", "xw.context.builder.LibraryListViewTableBuilder", {
+            queryParams: {
+                oid: '[[${commandBean.primaryOid}]]'
+            }
+        });
+        flame.loadGrid("libraryHierarchy", "xw.context.builder.LibraryHierarchyTreeBuilder", {
+            queryParams: {
+                oid: '[[${commandBean.primaryOid}]]'
+            },
+            onClickRow: function (node) {
+            }
+        });
+        function onSelectDetailTabs(o, p) {
+            if (p == 0) {
+
+            } else if (p == 1) {
+
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

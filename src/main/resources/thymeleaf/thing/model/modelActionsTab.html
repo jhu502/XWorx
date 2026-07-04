@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<table id="actionModelBuilder"></table>
+	<script type="text/javascript">
+		flame.loadGrid("actionModelBuilder", "xw.action.builder.TypeActionModelTreeBuilder", {
+			queryParams: {
+				oid: '[[${commandBean.primaryOid}]]'
+			},
+			onClickRow: function (node) {
+				if (node.oid.indexOf('xw.action.entity.XActionModel') > 0) {
+					$('#actionDetailInfo').panel('refresh', 'thymeleaf/thing/model/modelDetailInfo.html?oid=' + node.oid);
+				} else if (node.oid.indexOf('xw.action.entity.XActionItem') > 0) {
+					$('#actionDetailInfo').panel('refresh', 'thymeleaf/thing/model/actionDetailInfo.html?oid=' + node.oid);
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>

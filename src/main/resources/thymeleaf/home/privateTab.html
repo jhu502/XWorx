@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='个人')}">
+</head>
+<body style="padding:3px;">
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',collapsible:false,border:false" style="height:300px;">
+        <div id="userTaskList"></div>
+        <script type="text/javascript">
+            flame.loadGrid("userTaskList", "xw.flow.builder.XFlowTaskEntityTableBuilder", {
+                onClickRow: function (node) {
+                }
+            });
+
+            function refreshProcessDefintionList() {
+                alert('xxx');
+            }
+        </script>
+    </div>
+    <div class="easyui-panel" data-options="region:'center',title:'项目任务',border:false" style="border: 0px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center'" style="border:0px;"></div>
+            <div data-options="region:'east',title:'团队',collapsible:true,collapsed:true" style="width:300px;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

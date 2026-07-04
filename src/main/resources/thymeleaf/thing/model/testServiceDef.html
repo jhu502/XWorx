@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Service Test')}"></head>
+<body th:insert="~{thymeleaf/util/popup::default(header=~{::header},section=~{::section},script=~{::script})}">
+<header style="margin: 2px;">
+	<input class="easyui-textbox" id="thingIdent" name="thingIdent" value="FTUser:Administrator" data-options="required:true" style="width: 200px; height: 22px;"/>
+</header>
+<section class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'west',collapsible:false,split:true" style="width:250px;">
+		<div class="easyui-panel" title="Input" data-options="fit:true,border:false" style="width: 100%; padding: 10px 15px 10px 10px">
+			<span th:each="argument:${commandBean.primaryObj.arguments}" style="margin:2px;">
+				<label th:text="${argument.name}"></label><br/>
+				<input class="easyui-textbox" th:name="|param_${argument.name}|" style="width:200px;height:25px;"/><br>
+			</span>
+			<div style="text-align:left;padding:5px 0">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:testServiceForm(this)" style="width:60px;">Execute</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false">
+		<div class="easyui-panel" title="Output" data-options="fit:true" style="width:100%;padding:5px 20px 5px 5px">
+			<div id="resultDiv"></div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	function testServiceForm(el) {
+		//flame.getHREF
+		const params = $("input[name^='param_']"); //查询以“param_”开头的input
+		const pmap = {};
+		for (let i = 0; i < params.length; i++) {
+			const n = params[i].name;
+			const p = n.substr(6);
+			pmap[p] = params[i].value;
+		}
+		const value = JSON.stringify(pmap);
+
+		$('#params').val(value);
+
+		const actionForm = $(el).parents('form').eq(0);
+		if (actionForm && actionForm.length > 0 && actionForm[0].action) {
+			$.post(actionForm[0].action, {
+				'oid': '${commandBean.primaryOid}',
+				'thingIdent': $('#thingIdent').val(),
+				'serviceName': '${commandBean.primaryObj.name}',
+				'params': value
+			}, function (data, status) {
+				if (!isBlank(data)) {
+					$('#resultDiv').html(JSON.stringify(data));
+				} else {
+					$('#resultDiv')[0].innerHTML = 'No Return Value';
+				}
+			});
+		}
+	}
+</script>
+</body>
+</html>

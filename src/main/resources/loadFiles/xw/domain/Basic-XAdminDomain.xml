@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.domain.DomainDataLoader">
+	<LoadObject type="xw.domain.entity.XAdminDomain" where="number">
+		<attr name="number">/</attr>
+		<attr name="name">/</attr>
+		<attr name="description">Site Domain</attr>
+		<attr name="upperDomain"></attr>
+		<attr name="contextRef">XTYPE|xw.context.entity.XSite~MBA|number|SITE</attr>
+	</LoadObject>
+	<LoadObject type="xw.domain.entity.XAdminDomain" where="number">
+		<attr name="number">FLAME</attr>
+		<attr name="name">Flame</attr>
+		<attr name="description">Organization Domain</attr>
+		<attr name="upperDomain">/</attr>
+		<attr name="contextRef">XTYPE|xw.context.entity.XOrganization~MBA|number|FLAME</attr>
+	</LoadObject>
+	<LoadObject type="xw.domain.entity.XAdminDomain" where="number">
+		<attr name="number">PDM</attr>
+		<attr name="name">PDM</attr>
+		<attr name="description">Product Domain</attr>
+		<attr name="upperDomain">FLAME</attr>
+		<attr name="contextRef">XTYPE|xw.context.entity.XOrganization~MBA|number|FLAME</attr>
+	</LoadObject>
+	<LoadObject type="xw.domain.entity.XAdminDomain" where="number">
+		<attr name="number">MES</attr>
+		<attr name="name">MES</attr>
+		<attr name="description">Manufacturing Execution Domain</attr>
+		<attr name="upperDomain">FLAME</attr>
+		<attr name="contextRef">XTYPE|xw.context.entity.XOrganization~MBA|number|FLAME</attr>
+	</LoadObject>
+	<LoadObject type="xw.domain.entity.XAdminDomain" where="number">
+		<attr name="number">PJT</attr>
+		<attr name="name">PJT</attr>
+		<attr name="description">Project Domain</attr>
+		<attr name="upperDomain">FLAME</attr>
+		<attr name="contextRef">XTYPE|xw.context.entity.XOrganization~MBA|number|FLAME</attr>
+	</LoadObject>
+	<LoadObject type="xw.domain.entity.XAdminDomain" where="number">
+		<attr name="number">LIB</attr>
+		<attr name="name">LIB</attr>
+		<attr name="description">General Domain</attr>
+		<attr name="upperDomain">FLAME</attr>
+		<attr name="contextRef">XTYPE|xw.context.entity.XOrganization~MBA|number|FLAME</attr>
+	</LoadObject>
+</FlameDataLoad>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Folder Browser')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'west',border:false,split:true" style="width: 250px;">
+		<table id="folderTree"></table>
+	</div>
+	<div data-options="region:'center',border:false">
+		<table id="browserTable"></table>
+	</div>
+</div>
+<script type="text/javascript">
+	flame.loadGrid("folderTree", "xw.context.builder.FolderListTreeBuilder", {
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		},
+		onClickRow: function (node) {
+			flame.reloadGrid('browserTable', {
+				oid: node.oid
+			});
+		}
+	});
+	flame.loadGrid("browserTable", "xw.context.builder.FolderBrowserTableBuilder", {
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		}
+	});
+
+	function enterFolder(folder) {
+		flame.reloadGrid('browserTable', {
+			queryParams: {
+				oid: folder
+			}
+		});
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.auths.loader.RoleRBLoader" description="RoleRB">
+    <LoadObject type="xw.auths.entity.RoleRB" where="name">
+        <attr name="name">ENGINEER</attr>
+        <attr name="display">Engineer</attr>
+        <attr name="en_US">Engineer</attr>
+        <attr name="zh_CN">工程师</attr>
+        <attr name="description">工程技术专业人员，负责基础设施运维和技术支持</attr>
+        <attr name="roleType">ROLE</attr>
+        <attr name="responsibility"><![CDATA[1. 维护系统基础设施与运行环境; 2. 提供工程技术支持与故障排查; 3. 保障系统稳定性与性能优化; 4. 管理技术工具链与自动化流程; 5. 协助技术方案落地实施;]]></attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.RoleRB" where="name">
+        <attr name="name">LEADER</attr>
+        <attr name="display">Leader</attr>
+        <attr name="en_US">Leader</attr>
+        <attr name="zh_CN">领导</attr>
+        <attr name="description">团队管理者，负责团队管理和项目推进</attr>
+        <attr name="roleType">ROLE</attr>
+        <attr name="responsibility"><![CDATA[1. 制定团队目标与战略; 2. 分配任务和协调资源; 3. 监控项目进度; 4. 管理团队成员; 5. 做出关键决策;]]></attr>
+    </LoadObject>
+</FlameDataLoad>

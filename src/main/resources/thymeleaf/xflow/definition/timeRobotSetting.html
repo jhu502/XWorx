@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='saveXFlowNodeData')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <input id="nodeId" type="hidden" th:value="${commandBean.getTextParameter('nodeId')}">
+    <div th:title="#{attributes}" style="padding:10px">
+        <table>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong>*[[#{label_name}]]</strong></td>
+                <td style="padding-top:3px;"><input id="nodeLabel" name="nodeLabel" style="width:250px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;vertical-align:top;padding-right:5px;"><strong>[[#{label_instructions}]]</strong></td>
+                <td style="padding-top:3px;"><textarea id="instructions" name="instructions" rows="4" cols="90"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div th:title="#{setting}" style="padding:10px">
+        <table>
+            <tr>
+                <td style="font-weight: bold">[[#{label_time_setting}]]</td>
+                <td>
+                    <input id="years" name="years" style="width:30px;height:25px"></input>[[#{year}]]-
+                    <input id="months" name="months" style="width:30px;height:25px"></input>[[#{month}]]-
+                    <input id="days" name="days" style="width:30px;height:25px"></input>[[#{day}]]：
+                    <input id="hours" name="hours" style="width:30px;height:25px"></input>[[#{hour}]]/
+                    <input id="minutes" name="minutes" style="width:30px;height:25px"></input>[[#{minute}]]/
+                    <input id="seconds" name="seconds" style="width:30px;height:25px"></input>[[#{second}]]
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </table>
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    (($) => {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        $('#nodeLabel').val(flowData.label);
+        $('#instructions').val(flowData.instructions);
+        $('#years').val(flowData.years);
+        $('#months').val(flowData.months);
+        $('#days').val(flowData.days);
+        $('#hours').val(flowData.hours);
+        $('#minutes').val(flowData.minutes);
+        $('#seconds').val(flowData.seconds);
+    })(jQuery);
+
+    function saveXFlowNodeData(o) {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        if (node) {
+            const nodeLabel = $('#nodeLabel').val();
+            const instructions = $('#instructions').val();
+            const years = $('#years').val();
+            const months = $('#months').val();
+            const days = $('#days').val();
+            const hours = $('#hours').val();
+            const minutes = $('#minutes').val();
+            const seconds = $('#seconds').val();
+            flowData.label = nodeLabel;
+            flowData.instructions = instructions;
+            flowData.years = years;
+            flowData.months = months;
+            flowData.days = days;
+            flowData.hours = hours;
+            flowData.minutes = minutes;
+            flowData.seconds = seconds;
+            flowEditor.modifyNodeLabel(nodeId, nodeLabel);
+        }
+        flame.closeWindow(o);
+    }
+</script>
+</body>
+</html>

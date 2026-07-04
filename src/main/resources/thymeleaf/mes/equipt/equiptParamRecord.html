@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Equipment Parameter')}">
+</head>
+<body style="padding:3px;">
+<div id="equipParamRecord"></div>
+<script type="text/javascript">
+    flame.loadGrid("equipParamRecord", "mes.equipt.builder.XEquiptParameterTableBuilder", {
+        onClickRow: function (node) {
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='updateDefinition')}">
+<section class="easyui-tabs" data-options="fit:true,onSelect:onSelectActivityTab">
+    <input id="nodeId" type="hidden" th:value="${commandBean.getTextParameter('nodeId')}">
+    <div th:title="#{attributes}" style="padding:10px">
+        <table>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong>[[#{label_name}]]</strong></td>
+                <td style="padding-top:3px;"><input id="definitionName" name="definitionName" style="width:250px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;vertical-align:top;padding-right:5px;"><strong>[[#{label_instructions}]]</strong></td>
+                <td style="padding-top:3px;"><textarea id="instructions" name="instructions" rows="4" cols="100"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div th:title="#{variables}" style="padding:2px">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:false">
+                <table class="easyui-datagrid" data-options="fit:true,singleSelect:true" id="variableGrid" th:title="#{variableList}">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'blank',width:10"></th>
+                        <th data-options="field:'name',width:120">[[#{name}]]</th>
+                        <th data-options="field:'display',width:150">[[#{displayName}]]</th>
+                        <th data-options="field:'type',width:200,align:'left'">[[#{type}]]</th>
+                        <th data-options="field:'value',width:230">[[#{defaultValue}]]</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="easyui-window" id="winVariable" style="width:320px;height:250px;padding:10px 20px;"
+                     data-options="modal:true,closed:true,collapsible:false,minimizable:false,maximizable:false,closable:false,inline:true">
+                    <table>
+                        <tr style="height:30px">
+                            <td style="width:60px;padding-right:5px;">[[#{label_name}]]</td>
+                            <td><input class="easyui-textbox" id="varName" data-options="required:true" style="height:25px"></input></td>
+                        </tr>
+                        <tr style="height:30px">
+                            <td style="width:60px;padding-right:5px;">[[#{label_display}]]</td>
+                            <td><input class="easyui-textbox" id="varDisplay" data-options="required:true" style="width:200px;height:25px"></input></td>
+                        </tr>
+                        <tr style="height:30px">
+                            <td style="width:60px;padding-right:5px;">[[#{label_type}]]</td>
+                            <td>
+                                <select class="easyui-combobox" id="varType" data-options="required:true,panelHeight:'auto'" style="width:200px;height:25px">
+                                    <option th:each="varType:${T(xw.flow.constants.FlowConstant).varTypes()}" th:value="${varType.key}" th:text="${varType.value}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="height:30px">
+                            <td style="width:60px;">Default:</td>
+                            <td><input class="easyui-textbox" id="varValue" data-options="required:false" style="width:200px;height:25px"></input></td>
+                        </tr>
+                        <tr style="height:50px">
+                            <td colspan="2" style="text-align:right">
+                                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#winVariable').window({title:'New'}).window('close')">Close</a>
+                                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveVariable();">Save</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div data-options="region:'east',border:true" style="width:56px;padding-top:10px;padding-left:2px;">
+                <div style="display:table-cell;vertical-align: middle">
+                    <button type="button" style="width:50px" onclick="$('#winVariable').window('open');" th:text="#{create}"></button>
+                    <br/><br/>
+                    <button type="button" style="width:50px" onclick="editVariable();" th:text="#{edit}"></button>
+                    <br/><br/>
+                    <button type="button" style="width:50px" onclick="delVariable();" th:text="#{delete}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    var gridVariables = [];
+    (($) => {
+        $('#definitionName').val(flowEditor.xflow.name);
+        $('#instructions').val(flowEditor.xflow.instructions);
+        /** 复制XFlowDefinition定义的变量到：gridVariables中, 取消时不会误保存;*/
+        if (flowEditor.xflow.variables) {
+            for (let i = 0; i < flowEditor.xflow.variables.length; i++) {
+                const variable = flowEditor.xflow.variables[i];
+                if (variable) {
+                    gridVariables.push({
+                        name: variable.name,
+                        display: variable.display,
+                        type: variable.type,
+                        value: variable.value
+                    })
+                }
+            }
+        }
+    })(jQuery);
+
+    function onSelectActivityTab(o, p) {
+        if (p == 1) {
+            $('#variableGrid').datagrid('loadData', gridVariables);
+        }
+    }
+
+    function saveVariable() {
+        const varName = $('#varName').val();
+        const varDisplay = $('#varDisplay').val();
+        const varType = $('#varType').val();
+        const varValue = $('#varValue').val();
+        if (isBlank(varName)) {
+            alert('Name is blank.');
+            return;
+        }
+        if (isBlank(varType)) {
+            alert('Type is blank.');
+            return;
+        }
+        let variable;
+        for (let i = 0; i < gridVariables.length; i++) {
+            const target = gridVariables[i];
+            if (varName == target.name) {
+                variable = target;
+                break;
+            }
+        }
+        //如果变量不存在, 则往gridVariables中push新变量
+        if (variable == undefined) {
+            variable = {
+                name: varName,
+                display: varDisplay,
+                type: varType,
+                value: varValue
+            };
+            gridVariables.push(variable);
+        } else {// 如果变量存在, 则更新存在的变量
+            variable.display = varDisplay;
+            variable.type = varType;
+            variable.value = varValue;
+        }
+        $('#variableGrid').datagrid('loadData', gridVariables);
+        setVariableWindow({});
+        $('#winVariable').window('close');
+    }
+
+    function editVariable() {
+        const row = $('#variableGrid').datagrid('getSelected');
+        if (row == undefined) {
+            alert("Please select variable rows.");
+            return;
+        }
+        $('#winVariable').window('open');
+        setVariableWindow(row);
+    }
+
+    function delVariable() {
+        const row = $('#variableGrid').datagrid('getSelected');
+        if (row == undefined) {
+            alert("Please select variable rows.");
+            return;
+        }
+        const index = $('#variableGrid').datagrid('getRowIndex', row);
+        if (index > -1) {
+            $('#variableGrid').datagrid('deleteRow', index);
+        }
+    }
+
+    function setVariableWindow(o) {
+        $('#varName').textbox('setValue', o.name);
+        $('#varDisplay').textbox('setValue', o.display);
+        $('#varType').combobox('setValue', o.type);
+        $('#varValue').textbox('setValue', o.value);
+    }
+
+    function updateDefinition(o) {
+        flowEditor.xflow.name = $('#definitionName').val();
+        flowEditor.xflow.instructions = $('#instructions').val();
+        flowEditor.xflow.variables = gridVariables;
+        flame.closeWindow(o);
+    }
+
+    function modifyNodeLabel(nodeId, nodeLabel) {
+        $("g[data-cell-id='" + nodeId + "']").children('text').children('tspan').html(nodeLabel);
+    }
+</script>
+</body>
+</html>

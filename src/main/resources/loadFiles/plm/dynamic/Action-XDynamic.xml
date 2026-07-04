@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Root Model">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">simulator</attr>
+		<attr name="type">XDynamic</attr>
+		<attr name="display">Simulator</attr>
+		<attr name="icon">images/e3.png</attr>
+		<attr name="style">width:92%;height:90%;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/simulator.html</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Simulator</attr>
+		<attr name="zh_CN">模拟配置</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">import</attr>
+		<attr name="type">XDynamic</attr>
+		<attr name="display">Import</attr>
+		<attr name="icon">images/e4.png</attr>
+		<attr name="style">width:480px;height:380px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/import.html</attr>
+		<attr name="processor"></attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Import</attr>
+		<attr name="zh_CN">导入</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">export</attr>
+		<attr name="type">XDynamic</attr>
+		<attr name="display">Export</attr>
+		<attr name="icon">images/e5.png</attr>
+		<attr name="style">width:480px;height:380px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/export.html</attr>
+		<attr name="processor"></attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Export</attr>
+		<attr name="zh_CN">导出</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">refresh</attr>
+		<attr name="type">XDynamic</attr>
+		<attr name="display">Refresh</attr>
+		<attr name="icon">images/e6.png</attr>
+		<attr name="onclick">flame.xui.reloadDataGrid('dynamic_characts');</attr>
+		<attr name="winType">script</attr>
+		<attr name="en_US">Refresh</attr>
+		<attr name="zh_CN">刷新</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">CSB-ToolBar</attr>
+		<attr name="type">XDynamic</attr>
+		<attr name="display">Dynamic Struct Browser Toolbar</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">simulator</attr>
+				<attr name="type">XDynamic</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">import</attr>
+				<attr name="type">XDynamic</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">export</attr>
+				<attr name="type">XDynamic</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">refresh</attr>
+				<attr name="type">XDynamic</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newCharacter</attr>
+		<attr name="type">XCharacter</attr>
+		<attr name="display">New</attr>
+		<attr name="icon">images/add16x16.gif</attr>
+		<attr name="style">width:680px;height:600px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/charact/newCharacter.html</attr>
+		<attr name="processor">plm.dynamic.processor.CreateXCharacterProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New</attr>
+		<attr name="zh_CN">新建</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">editCharacter</attr>
+		<attr name="type">XCharacter</attr>
+		<attr name="display">Edit</attr>
+		<attr name="icon">images/edit.gif</attr>
+		<attr name="style">width:680px;height:600px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/charact/editCharacter.html</attr>
+		<attr name="processor">plm.dynamic.processor.EditXCharacterProcessor</attr>
+		<attr name="beforeJS">return xworx.validateSelect(p, true);</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Edit</attr>
+		<attr name="zh_CN">编辑</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">removeCharacter</attr>
+		<attr name="type">XCharacter</attr>
+		<attr name="display">Remove</attr>
+		<attr name="icon">images/remove16x16.gif</attr>
+		<attr name="processor">plm.dynamic.processor.RemoveXCharacterProcessor</attr>
+		<attr name="beforeJS">return confirm("Are you sure?");</attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Remove</attr>
+		<attr name="zh_CN">删除</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">sortCharacter</attr>
+		<attr name="type">XCharacter</attr>
+		<attr name="display">Sort</attr>
+		<attr name="icon">images/sort.png</attr>
+		<attr name="style">width:680px;height:450px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/charact/sortCharacter.html</attr>
+		<attr name="processor">plm.dynamic.processor.SortXCharacterProcessor</attr>
+		<attr name="beforeJS"></attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Sort</attr>
+		<attr name="zh_CN">排序</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">CharactToolbar</attr>
+		<attr name="type">XCharacter</attr>
+		<attr name="display">Characteristic Toolbar</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newCharacter</attr>
+				<attr name="type">XCharacter</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">editCharacter</attr>
+				<attr name="type">XCharacter</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">removeCharacter</attr>
+				<attr name="type">XCharacter</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">sortCharacter</attr>
+				<attr name="type">XCharacter</attr>
+			</where>
+		</link>
+	</LoadObject>
+	
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">importCaseTable</attr>
+		<attr name="type">XCaseTable</attr>
+		<attr name="display">Import</attr>
+		<attr name="icon">images/import.gif</attr>
+		<attr name="style">width:600px;height:500px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/casetable/importCaseTable.html</attr>
+		<attr name="processor">plm.dynamic.processor.ImportXCaseTableProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Import</attr>
+		<attr name="zh_CN">导入</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">exportCaseTable</attr>
+		<attr name="type">XCaseTable</attr>
+		<attr name="display">Export</attr>
+		<attr name="icon">images/export.png</attr>
+		<attr name="processor">plm.dynamic.processor.ExportXCaseTableProcessor</attr>
+		<attr name="winType">download</attr>
+		<attr name="en_US">Export</attr>
+		<attr name="zh_CN">导出</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newCaseTable</attr>
+		<attr name="type">XCaseTable</attr>
+		<attr name="display">New</attr>
+		<attr name="icon">images/add16x16.gif</attr>
+		<attr name="style">width:680px;height:600px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/casetable/newCaseTable.html</attr>
+		<attr name="processor">plm.dynamic.processor.CreateXCaseTableProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New</attr>
+		<attr name="zh_CN">新建</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">editCaseTable</attr>
+		<attr name="type">XCaseTable</attr>
+		<attr name="display">Edit</attr>
+		<attr name="icon">images/edit.gif</attr>
+		<attr name="style">width:680px;height:600px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/casetable/editCaseTable.html</attr>
+		<attr name="processor">plm.dynamic.processor.EditXCaseTableProcessor</attr>
+		<attr name="beforeJS">return xworx.validateSelect(p, true);</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Edit</attr>
+		<attr name="zh_CN">编辑</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">removeCaseTable</attr>
+		<attr name="type">XCaseTable</attr>
+		<attr name="display">Remove</attr>
+		<attr name="icon">images/remove16x16.gif</attr>
+		<attr name="processor">plm.dynamic.processor.RemoveXCaseTableProcessor</attr>
+		<attr name="beforeJS">return confirm("Are you sure?");</attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Remove</attr>
+		<attr name="zh_CN">删除</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">CaseTableToolbar</attr>
+		<attr name="type">XCaseTable</attr>
+		<attr name="display">Characteristic Toolbar</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">importCaseTable</attr>
+				<attr name="type">XCaseTable</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">exportCaseTable</attr>
+				<attr name="type">XCaseTable</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newCaseTable</attr>
+				<attr name="type">XCaseTable</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">editCaseTable</attr>
+				<attr name="type">XCaseTable</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">50</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">removeCaseTable</attr>
+				<attr name="type">XCaseTable</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newExpression</attr>
+		<attr name="type">XExpression</attr>
+		<attr name="display">New</attr>
+		<attr name="icon">images/add16x16.gif</attr>
+		<attr name="style">width:680px;height:500px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/express/newExpression.html</attr>
+		<attr name="processor">plm.dynamic.processor.CreateXExpressionProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New</attr>
+		<attr name="zh_CN">新建</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">editExpression</attr>
+		<attr name="type">XExpression</attr>
+		<attr name="display">Edit</attr>
+		<attr name="icon">images/edit.gif</attr>
+		<attr name="style">width:680px;height:500px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/dynamic/express/editExpression.html</attr>
+		<attr name="processor">plm.dynamic.processor.EditXExpressionProcessor</attr>
+		<attr name="beforeJS">return xworx.validateSelect(p, true);</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Edit</attr>
+		<attr name="zh_CN">编辑</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">removeExpression</attr>
+		<attr name="type">XExpression</attr>
+		<attr name="display">Remove</attr>
+		<attr name="icon">images/remove16x16.gif</attr>
+		<attr name="processor">plm.dynamic.processor.RemoveXExpressionProcessor</attr>
+		<attr name="beforeJS">return confirm("Are you sure?");</attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Remove</attr>
+		<attr name="zh_CN">删除</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">ExpressToolbar</attr>
+		<attr name="type">XExpression</attr>
+		<attr name="display">Expression Toolbar</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newExpression</attr>
+				<attr name="type">XExpression</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">editExpression</attr>
+				<attr name="type">XExpression</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">removeExpression</attr>
+				<attr name="type">XExpression</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>

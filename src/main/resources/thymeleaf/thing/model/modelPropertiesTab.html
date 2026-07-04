@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<x-layout id="property_def_layout" x-options="border:false">
+		<div slot="center" style="padding: 2px;">
+			<table id="propertyList"></table>
+			<script type="text/javascript" th:inline="text">
+				flame.loadGrid("propertyList", "com.thing.builder.ThingModelPropertyBuilder", {
+					queryParams: {
+						oid: '[[${commandBean.primaryOid}]]'
+					},
+					onClickRow: function (index, row) {
+						xui.util.openWindow('#property_def_panel', {
+							url: 'XUI$/info/propertyPage?oid=' + row.oid
+						});
+					}
+				});
+			</script>
+		</div>
+	</x-layout>
+	<x-window id="property_def_panel" x-options="park:'right',closable:false,resize:false,visible:false" style="width:800px;height:100%;display:none"></x-window>
+
+	<script type="text/javascript" th:inline="text">
+		function openPropertyDefLayout(event, oid) {
+			if (event.preventDefault) {
+				event.preventDefault(); //非IE浏览器
+			}
+
+			if (event.stopPropagation) {
+				event.stopPropagation();
+			} else {
+				event.cancelBubble = true; //阻止事件冒泡
+			}
+			return false
+		}
+
+		function removePropertyProcessor(params) {
+			const selections = $('#propertyList').datagrid('getSelections');
+			const oids = [];
+			for (var i = 0; i < selections.length; i++) {
+				if (selections[i].oid) {
+					oids.push(selections[i].oid);
+				}
+			}
+
+			params['oids'] = oids;
+			return true;
+		}
+
+		function refreshPropertyGrid() {
+			flame.reloadGrid('propertyList');
+		}
+
+		function cancelForm(index) {
+			$('#propertyList').datagrid('getExpander', index).trigger('click');
+		};
+
+		// 点击空白区域隐藏窗口
+		$(document).on('click', function (e) {
+			const defWin = document.getElementById('property_def_panel');
+			if (!defWin || defWin.style.display === 'none')
+				return;
+			if (defWin.contains(e.target) || $(e.target).closest('#propertyList,.datagrid-btable').length)
+				return;
+			defWin.hide();
+		});
+	</script>
+</body>
+
+</html>

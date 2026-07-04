@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='onNewLayoutCreated')}">
+<section class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'north',border:false" style="padding:2px 0px 0px 10px; height:36px;background-color:#f5f5f5">
+		<label style="padding-right:10px;font-size:18px;font-weight:bold;" th:text="#{newLayout}"></label>
+	</div>
+	<div data-options="region:'center',border:false" style="padding:10px 20px 20px 20px">
+		<div class="easyui-panel" th:title="#{layoutInfo}" data-options="fit:true" style="width:100%;padding:20px">
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" id="layoutType" name="layoutType" th:data-options="|label:'#{label_layoutType}',editable:false,panelHeight:'auto',onChange:onLayoutTypeChange|" style="width:300px;height:27px">
+					<option value=""></option>
+					<option th:each="layoutType:${T(com.flame.thing.LayoutType).values()}" th:value="${layoutType.name()}" th:text="#{__${layoutType.name()}__}"></option>
+				</select>
+			</div>
+			<div style="margin-bottom:10px">
+				<input class="easyui-textbox" id="layoutName" name="name" th:data-options="|label:'#{label_name}',required:true|" style="width:300px;height:27px;"/>
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	function onLayoutTypeChange(newValue, oldValue) {
+		if (newValue) {
+			$('#layoutName').textbox('setValue', newValue + '_Layout');
+		}
+	}
+
+	function onNewLayoutCreated(result) {
+		refreshLayoutMenu();
+
+		if (result.data && result.data.xid) {
+			const oid = 'OR:com.thing.entity.XPropertyLayout:' + result.data.xid;
+			openModelLayout(oid, result.data.name);
+		}
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<script src="javascript/flame/flame.view.js"></script>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="height:240px">
+        <fieldset class="xui-fieldset">
+            <legend>可视化 & 属性</legend>
+            <div id="Thumbnail3DDiv" class="thumbnail">
+                <img src="images/product_288.png">
+            </div>
+            <table style="table-layout:fixed;">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th style="width:20px;"></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><label>编号: </label></td>
+                    <td id="number"><span th:text="${commandBean.primaryObj.number}"></span></td>
+                    <td></td>
+                    <td><label>名称: </label></td>
+                    <td id="name"><span th:text="${commandBean.primaryObj.name}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>创建时间: </label></td>
+                    <td id="createdStamp"><span th:text="${commandBean.primaryObj.createdStamp}"></span></td>
+                    <td></td>
+                    <td><label>最后修改时间: </label></td>
+                    <td id="modifiedStamp"><span th:text="${commandBean.primaryObj.modifiedStamp}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>状态: </label></td>
+                    <td id="status"><span th:text="${commandBean.primaryObj.status}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>模板名称: </label></td>
+                    <td id="definitionName"><span th:text="${commandBean.primaryObj.definition.name}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>描述: </label></td>
+                    <td id="description" colspan="3"><span th:text="${commandBean.primaryObj.description}"></span></td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <div data-options="region:'center',border:false" style="padding: 2px"></div>
+</div>
+</body>
+</html>

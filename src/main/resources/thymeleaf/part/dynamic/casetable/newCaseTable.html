@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='completeValidation', callback='refreshCaseTableGrid')}">
+<section class="easyui-tabs" data-options="fit:true">
+	<div th:title="#{attributes}">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'north'" style="padding: 10px; height: 210px"></div>
+			<div data-options="region:'center',border:true">
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	function completeValidation() {
+
+	}
+</script>
+</body>
+</html>

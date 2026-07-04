@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='相关流程列表')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'center',border:false" style="padding:1px;">
+        <div id="actionModelBuilder"/>
+    </div>
+    <div data-options="region:'south',title:'Detail Info'" id="actionDetailInfo" style="padding:10px;height:250px;">
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("actionModelBuilder", "xw.action.builder.TypeActionModelTreeBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        },
+        onClickRow: function (node) {
+            if (node.oid.indexOf('xw.action.entity.XActionModel') > 0) {
+                $('#actionDetailInfo').panel('refresh', 'thymeleaf/thing/model/modelDetailInfo.html?oid=' + node.oid);
+            } else if (node.oid.indexOf('xw.action.entity.XActionItem') > 0) {
+                $('#actionDetailInfo').panel('refresh', 'thymeleaf/thing/model/actionDetailInfo.html?oid=' + node.oid);
+            }
+        }
+    });
+</script>
+</body>
+
+</html>

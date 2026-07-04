@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table id="part_usagelink"></table>
+<div id="thumbWin" class="easyui-window" title="Thumbnail 3D" data-options="closed:true" style="width: 500px; height: 400px; padding: 10px;"></div>
+<script type="text/javascript" th:inline="text">
+    flame.loadGrid("part_usagelink", "plm.part.builder.PartUsageLinkTableBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        }
+    });
+
+    function showThumbnail(url) {
+        const e = window.event; //获取当前的事件对象
+        if (e.preventDefault) {
+            e.preventDefault(); //非IE浏览器
+        }
+        $('#thumbWin').window({
+            href: url,
+            model: true,
+            inline: false,
+            minimizable: false,
+            collapsible: false,
+            minimizable: false,
+            maximizable: false
+        }).window('open');
+        e.stopPropagation ? e.stopPropagation() : (e.cancelBubble = true); //阻止事件冒泡
+    }
+</script>
+</body>
+</html>

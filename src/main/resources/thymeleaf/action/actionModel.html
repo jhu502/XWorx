@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Action Management', style=~{::style})}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:true" style="height:90px;padding:5px 5px 5px 5px;">
+        <div id="actionSearchForm"></div>
+    </div>
+    <div data-options="region:'center',border:false">
+        <div id="actionManagement"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("actionSearchForm", "xw.action.form.ActionSearchForm", {
+
+    });
+    flame.loadGrid("actionManagement", "xw.action.builder.ActionManagementTreeBuilder", {
+        onClickRow: function (node) {
+        }
+    });
+
+    function submitForm() {
+        const actionName = $('#actionName').val();
+        const actionDisplay = $('#actionDisplay').val();
+        if (isBlank(actionName) && isBlank(actionDisplay)) {
+            alert("请输入查询条件.");
+            return;
+        }
+        flame.reloadGrid('actionManagement', {
+            name: actionName,
+            display: actionDisplay
+        });
+    }
+
+    function clearForm() {
+        $('#actionForm').form('clear');
+    }
+</script>
+</body>
+
+</html>

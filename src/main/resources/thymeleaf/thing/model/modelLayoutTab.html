@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<x-layout x-options="border:true">
+    <div slot="north" style="height:30px;display:flex;align-items:center;">
+        <x-button-menu id="btnLayoutMenu" th:x-options="|border:'none',url:'XUI$/get/com.thing.processor.GetLayoutMenuProcessor?oid=${commandBean.primaryOid}',parked:'right'|" style="margin-left:5px;height:23px;z-index:99;">布局</x-button-menu>
+        <button id="createLayout" class="img-button" th:onclick="flame.popupWindow('[(#{newLayout})]', 'thymeleaf/thing/model/newLayout.html', {oid:'[(${commandBean.primaryOid})]', processor:'com.thing.processor.CreatePropertyLayoutProcessor'}, 'width:500px; height:420px; padding:5px;');">
+            <img src="images/create_tbar.gif">
+        </button>
+    </div>
+    <div slot="center" style="padding:2px">
+        <x-panel id="modelLayoutPanel" x-options="park:'fit',url:'thymeleaf/thing/model/modelLayoutPng.html'"></x-panel>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+        function refreshLayoutMenu() {
+            const btn = document.getElementById('btnLayoutMenu');
+            if (btn) {
+                btn._menuLoaded = false;
+            }
+        }
+
+        function openModelLayout(oid, name) {
+            // setTimeout(fn, 0) 将 panel.load() 推迟到当前事件循环的 macrotask 队列末尾执行，
+            // 确保 click 事件已完整结束（包括向父级冒泡完毕），再替换 panel 内部 DOM 内容。
+            //
+            // 事件触发链路：
+            //   x-button-menu（菜单点击）→ click 事件冒泡 → <div slot="north">
+            //   → x-layout 的 Shadow DOM → 外层 x-tab-panel
+            //
+            // 如果在 openModelLayout 中同步执行 panel.load()：
+            //   1. slot="center" 下的 DOM 被替换 → slotchange 事件触发
+            //   2. click 事件冒泡链上的元素可能被移除或替换，事件目标失效
+            //   3. Web Component 生命周期（connectedCallback / disconnectedCallback）
+            //      可能在事件处理器运行期间被触发，造成时序混乱
+            //
+            // setTimeout(fn, 0) 将回调推迟到所有事件、微任务、渲染更新完成之后执行：
+            //   当前 click 事件完成 ✓ → slotchange（如有）处理完毕 ✓
+            //   ═══ macrotask 边界 ═══ → panel.load() 安全执行 ✓
+            setTimeout(() => {
+                const panel = document.getElementById('modelLayoutPanel');
+                panel.setAttribute('title', '[(#{label_layoutName})]: ' + name);
+                panel.load('thymeleaf/thing/model/modelLayoutPage.html?oid=' + oid, null, true);
+            }, 0);
+        }
+    </script>
+</x-layout>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!ELEMENT FlameDataLoad (LoadObject|LoadFile|LoadClass)*>
+<!ATTLIST FlameDataLoad loader CDATA #REQUIRED>
+<!ATTLIST FlameDataLoad description CDATA "">
+<!ELEMENT LoadObject (attr+, link*)>
+<!ATTLIST LoadObject type CDATA #REQUIRED>
+<!ATTLIST LoadObject where CDATA "">
+<!ELEMENT LoadFile ANY>
+<!ATTLIST LoadFile filename CDATA #REQUIRED>
+<!ELEMENT LoadClass ANY>
+<!ATTLIST LoadClass classname CDATA #REQUIRED>
+<!ELEMENT attr ANY>
+<!ATTLIST attr name CDATA #REQUIRED>
+<!ELEMENT link ANY>
+<!ATTLIST link type CDATA "">
+<!ATTLIST link refer CDATA "">
+<!ELEMENT where (attr+)>
+<!ATTLIST where type CDATA #REQUIRED>
+<!ATTLIST where refer CDATA "">

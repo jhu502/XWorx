@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Action Management', style=~{::style})}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',border:false" style="width:300px;">
+        <div id="contextTreeBuilder"></div>
+    </div>
+    <div data-options="region:'center',border:false">
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("contextTreeBuilder", "xw.context.builder.ContextHierarchyTreeBuilder", {
+        onClickRow: function (node) {
+        }
+    });
+
+    function submitQuery() {
+        const name = $('#name').val();
+        const display = $('#display').val();
+        if (isBlank(name) && isBlank(display)) {
+            alert("请输入查询条件.");
+            return;
+        }
+        flame.reloadGrid('contextTreeBuilder', {
+            name: name,
+            display: display
+        });
+    }
+
+    function clearForm() {
+        $('#actionForm').form('clear');
+    }
+</script>
+</body>
+
+</html>

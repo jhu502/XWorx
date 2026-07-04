@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<table id="dynamic_casetables"></table>
+<div id="showCaseTableWin"></div>
+<script type="text/javascript" th:inline="text">
+	flame.loadGrid("dynamic_casetables", "plm.dynamic.builder.CaseTableListTableBuilder", {
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		}
+	});
+
+	function showCaseTableDetail(oid) {
+		$('#showCaseTableWin').window({
+				title : "Charact Info",
+				href: flame.getHREF('jsp/plm/casetable/displayCaseTable.jsp'),
+				width : 800,
+				height : 600,
+				collapsible : false,
+				minimizable : false,
+				maximizable : false,
+				modal : true,
+				queryParams: {
+					oid : oid
+				}
+			});
+		}
+		
+		function refreshCaseTableGrid(result) {
+			if (result.status === 'SUCCESS') {
+				flame.reloadGrid('dynamic_casetables');
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>

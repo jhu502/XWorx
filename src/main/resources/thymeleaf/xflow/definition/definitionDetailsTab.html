@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<script src="javascript/flame/flame.view.js"></script>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="height:240px">
+        <fieldset class="xui-fieldset">
+            <legend>[[#{visualization_attributes}]]</legend>
+            <div id="Thumbnail3DDiv" class="thumbnail">
+                <img src="images/product_288.png">
+            </div>
+            <table style="table-layout:fixed;">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th style="width:20px;"></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><label>[[#{label_number}]]</label></td>
+                    <td id="number"><span th:text="${commandBean.primaryObj.number}"></span></td>
+                    <td></td>
+                    <td><label>[[#{label_name}]]</label></td>
+                    <td id="name"><span th:text="${commandBean.primaryObj.name}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>[[#{label_createdStamp}]]</label></td>
+                    <td id="createdStamp"><span th:text="${commandBean.primaryObj.createdStamp}"></span></td>
+                    <td></td>
+                    <td><label>[[#{label_modifiedStamp}]]</label></td>
+                    <td id="modifiedStamp"><span th:text="${commandBean.primaryObj.modifiedStamp}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>[[#{label_enabled}]]</label></td>
+                    <td id="enabled"><span th:text="${commandBean.primaryObj.enabled?'是':'否'}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>[[#{label_deployed}]]</label></td>
+                    <td id="deployed"><span th:text="${commandBean.primaryObj.deployed?'是':'否'}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>[[#{label_description}]]</label></td>
+                    <td id="description" colspan="3"><span th:text="${commandBean.primaryObj.description}"></span></td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <div data-options="region:'center',border:false" style="padding: 2px"></div>
+</div>
+</body>
+</html>

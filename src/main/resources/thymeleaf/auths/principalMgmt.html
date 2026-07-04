@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Principal Management')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" style="font-family:Arial,Segoe UI,Tahoma;">
+    <div data-options="region:'west',split:true,border:false" style="width:550px;padding:1px;">
+        <table id="GroupHierarchy" style="height:400px"></table>
+        <script type="text/javascript">
+            flame.loadGrid("GroupHierarchy", "xw.auths.builder.PrincipalHierarchyTreeBuilder", {
+                onClickRow: function (node) {
+                    $('#selectedOid').val(node.oid);
+                    $('#principalInfo').panel({
+                        href: "XUI$/info/InfoPage?oid=" + node.oid
+                    });
+                    $("#grouplist").datagrid('reload', {
+                        oid: node.oid
+                    });
+                    $("#userlist").datagrid('reload', {
+                        oid: node.oid
+                    });
+                }
+            });
+        </script>
+        <div id="GroupHierarchy_menu" class="easyui-menu" data-options="onClick:structHandler">
+            <div id='menu_editStructItem'>Edit</div>
+        </div>
+    </div>
+    <div data-options="region:'center',border:false">
+        <input id="selectedOid" type="hidden" th:value="${T(xw.auths.XGroupHelper).repository().getRootGroup()[0].getOid()}"/>
+        <div id="principalInfo" class="easyui-panel" data-options="fit:true,border:false"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var rowOid;
+    (($) => {
+        const target = $('#selectedOid').val();
+        $('#principalInfo').panel({
+            href: 'XUI$/info/InfoPage?oid=' + target
+        });
+    })(jQuery);
+
+    function structHandler(item) {
+        var row = $('#orgStructTree').treegrid('getSelected');
+        if (!isBlank(rowOid)) {
+            if (rowOid.indexOf('XGroup') > 0) {
+                popupWindow('Edit Group', 'thymeleaf/auths/editGroup.html?oid=' + rowOid, {}, 'width: 670px; height: 500px; padding: 5px;');
+            } else if (rowOid.indexOf('XUser') > 0) {
+                popupWindow('Edit User', 'thymeleaf/auths/editUser.html?oid=' + rowOid, {}, 'width: 670px; height: 500px; padding: 5px;');
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<x-tab-panel th:id="|infoTabs_${randomUUID}|" x-options="park:'fit'">
+		<x-toolbar th:if="${commandBean.primaryObj}" slot="infos" title="tab-info" x-options="park:'left', direction:'row'" style="height:100%;">
+			<img style="vertical-align:middle;margin-right:2px;" th:src="${commandBean.primaryObj?.icon}" th:if="${thingModel}!=null" />
+			<span style="font-size:14px;vertical-align:middle;" th:text="${thingModel?.localDisplay}"></span>
+			<span style="margin:2px;">-</span>
+			<span style="font-size:14px;vertical-align:middle;font-weight:bold;" th:text="${commandBean.primaryObj?.name}"></span>
+		</x-toolbar>
+		<x-panel th:each="tabItem:${infoTabs}" th:name="${tabItem.name}" th:title="${tabItem.localDisplay}" th:x-options="|header:false,park:'fit',url:'${tabItem.url}?oid=${commandBean.primaryOid}'|"></x-panel>
+		<x-toolbar th:if="${commandBean.primaryObj}" slot="tools" title="tab-info" x-options="park:'right', direction:'row'" style="height:100%;width:150px;z-index:999;">
+			<x-button-menu id="btnOperations" th:x-options="|border:'fillet',url:'XUI$/menu/actionMenu?oid=${commandBean.primaryOid}',parked:'right'|" style="font-size:12px;height:20px;order:1;"><span style="font-size:12px;">操作</span></x-button-menu>
+			<i class="fa fa-star-o" style="color:dodgerblue;order:2;margin-left:2px;" title="收藏(Favourites)" th:onclick="add2Favorites('[(${commandBean.primaryOid})]')"/>
+		</x-toolbar>
+		<div th:unless="${commandBean.primaryObj}" style="width:400px;color:red;"><strong>警告：主对象（[[${commandBean.primaryOid}]]）不存在</strong></div>
+	</x-tab-panel>
+	<script type="text/javascript" th:inline="text">
+		(($) => {
+			/** 用户点击某个Tab后，再次点击其他ThingModel，自动进入对应的Tab；*/
+		})(jQuery);
+
+		function add2Favorites(oid) {
+			axios.post('XUI$/post/xw.action.processor.AddFavoritesProcessor', {
+				oid: oid
+			}).then(function (response) {
+				console.error(response);
+			}).catch(function (error) { // 请求失败处理
+				console.error(error);
+			});
+		}
+	</script>
+</body>
+</html>

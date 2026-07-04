@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Folder">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newDocument</attr>
+		<attr name="type">XDocument</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">New Docuemnt</attr>
+		<attr name="icon">images/newdoc.gif</attr>
+		<attr name="style">width:680px;height:380px;padding:5px;</attr>
+		<attr name="url">thymeleaf/doc/newDocument</attr>
+		<attr name="processor">plm.doc.CreateXDocumentProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New Document</attr>
+		<attr name="zh_CN">新建文档</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newPart</attr>
+		<attr name="type">XPart</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">New Part</attr>
+		<attr name="icon">images/newpart.gif</attr>
+		<attr name="style">width:680px;height:580px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/newPart</attr>
+		<attr name="processor">plm.part.processor.CreateXPartProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New Part</attr>
+		<attr name="zh_CN">新建部件</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newFolder</attr>
+		<attr name="type">XFolder</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">New Folder</attr>
+		<attr name="icon">images/newfolder.gif</attr>
+		<attr name="style">width:680px;height:380px;padding:5px;</attr>
+		<attr name="url">thymeleaf/context/folder/newFolder</attr>
+		<attr name="processor">xw.context.processor.CreateFolderProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New Folder</attr>
+		<attr name="zh_CN">新建文件夹</attr>
+	</LoadObject>
+
+	<!-- Navigator Menu -->
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">folderToolbar</attr>
+		<attr name="type">XFolder</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">FolderToolbar</attr>
+		<attr name="icon"></attr>
+		<attr name="style"></attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newDocument</attr>
+				<attr name="type">XDocument</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newPart</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newFolder</attr>
+				<attr name="type">XFolder</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">delete</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>

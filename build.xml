@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="XServer" default="3-deploy" basedir="." xmlns:artifact="urn:maven-artifact-ant">
+<project name="XWorx" default="merge-sources" basedir="." xmlns:artifact="urn:maven-artifact-ant">
 	<property name="version" value="0.5.1"/>
 	<property name="src.dir" value="src/main/java" />
 	<property name="resources.dir" value="src/main/resources" />
@@ -16,6 +16,68 @@
 	<!-- Maven 配置：指定 Maven 安装路径 -->
 	<property name="maven.home" value="D:/SourceSpace/Maven-3.9.6" />
 	<property name="maven.exec" value="${maven.home}/bin/mvn.cmd" />
-	
-	
+
+	<!-- 合并各模块 src 目录代码到 XWorx -->
+	<target name="merge-sources" description="将 XVersion/XUtil/XModel/XBasic/XFlow/XMES/XPLM 模块的 src 代码合并复制到 XWorx">
+		<echo message="开始合并各模块源码到 XWorx..."/>
+
+		<!-- XVersion - 版本管理模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XVersion/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XVersion 源码合并完成"/>
+
+		<!-- XUtil - 工具模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XUtil/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XUtil 源码合并完成"/>
+
+		<!-- XModel - 模型模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XModel/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XModel 源码合并完成"/>
+
+		<!-- XBasic - 基础模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XBasic/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XBasic 源码合并完成"/>
+
+		<!-- XFlow - 流程模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XFlow/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XFlow 源码合并完成"/>
+
+		<!-- XMES - MES 模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XMES/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XMES 源码合并完成"/>
+
+		<!-- XPLM - PLM 模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XPLM/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XPLM 源码合并完成"/>
+
+		<echo message="所有模块源码合并完成！"/>
+	</target>
+
 </project>

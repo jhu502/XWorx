@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Team Members')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'center',border:false">
+        <table id="contextTeamTree"></table>
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("contextTeamTree", "xw.team.builder.ContainerTeamTreeBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        },
+        onXComplete: function (config) {
+        }
+    });
+</script>
+</body>
+</html>

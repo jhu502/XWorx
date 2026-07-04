@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta content="text/html;charset=UTF-8" />
+</head>
+<body>
+	<form id="thingModelForm" method="post" action="/ThingModels/editThingModel">
+		<input type="hidden" id="baseModel" name="baseModel" th:value="${commandBean.primaryOid}">
+		<br>
+		<table style="align:center; font-size:12px; font-family:1.2rem/1.618 Arial, Helvetica Neue, Helvetica, sans-serif;">
+			<tr style="height:30px">
+				<td style="width:10px"></td>
+				<td><input class="easyui-textbox" id="number" name="number" th:value="${commandBean.primaryObj.number}" style="width:300px;height:25px" data-options="label:'编号：',readonly:true"></td>
+				<td style="width:10px"></td>
+				<td><input class="easyui-textbox" id="name" name="name" th:value="${commandBean.primaryObj.name}" style="width:300px;height:25px" data-options="label:'名称：',required:true"></td>
+			</tr>
+			<tr style="height:30px">
+				<td style="width:10px"></td>
+				<td colspan="3"><input class="easyui-textbox" id="icon" name="icon" th:value="${commandBean.primaryObj.icon}" style="width:100%;height:25px" data-options="label:'图标：',required:true"></td>
+			</tr>
+			<tr style="height:30px">
+				<td style="width:10px"></td>
+				<td colspan="3">
+					<input class="easyui-textbox" id="thingEntity" name="thingEntity" th:value="${commandBean.primaryObj.thingEntity}" style="width:100%;height:25px" data-options="label:'包装类：',required:false">
+				</td>
+			</tr>
+			<tr style="height:30px">
+				<td style="width:10px"></td>
+				<td colspan="3">
+					<input class="easyui-textbox" id="pageUri" name="pageUri" th:value="${commandBean.primaryObj.pageUri}" style="width:100%;height:25px" data-options="label:'Page Uri：',required:false">
+				</td>
+			</tr>
+			<tr style="height:30px">
+				<td style="width:10px"></td>
+				<td colspan="3"><input class="easyui-textbox" id="description" name="description" th:value="${commandBean.primaryObj.description}" style="width:100%;height:100px" data-options="label:'描述：',multiline:true"></td>
+			</tr>
+			<tr style="height:30px">
+				<td style="width:10px"></td>
+				<td colspan="3">
+					<label for="parentModel" class="textbox-label textbox-label-before">当前模型：</label>
+					<span th:text="${commandBean.primaryObj.name}"></span>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<br>
+	<div style="text-align:right;padding:5px 0">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.closeWindow(this)" style="width:80px">Cancel</a>
+	</div>
+	<script type="text/javascript">
+		function submitForm() {
+			$('#thingModelForm').form('submit', {
+				onSubmit : function() {
+					return $(this).form('validate');
+				},
+				success : function(result) {
+					if (result != '') {
+						var json = jQuery.parseJSON(result);
+						if (isBlank(json.code) || json.code == 0) {
+							//刷新grouplist DataGrid列表
+							$("#tmodelTree").treegrid('reload', {
+								id : $('#baseModel')[0].value
+							});
+							$('#thingModelForm').form('clear');
+							$('#editThingModel').window('close');
+							$.messager.alert('Success', 'Update Successfully.', 'info');
+						} else {
+							$.messager.alert('Error', json.msg, 'error');
+						}
+					} else {
+						$.messager.alert('Error', 'Update Failed!', 'error');
+					}
+				}, error : function() {
+			        alert('smx失败 ');
+			    }
+			});
+		}
+		function clearForm() {
+			$('#thingModelForm').form('clear');
+		}
+		function cancelForm() {
+			$('#editThingModel').window('close');
+		}
+	</script>
+</body>
+</html>

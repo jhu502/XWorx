@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshGroupTree')}">
+<section class="easyui-tabs" data-options="border:false,fit:true">
+    <div th:title="#{query}" style="padding:5px" id="newGroupAttributesPanel">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',border:false" style="width:54%;padding:1px;">
+                <div class="easyui-layout" data-options="fit:true">
+                    <div data-options="region:'north',border:false" style="height:70px">
+                        <div id="PrincipalSearchForm"/>
+                    </div>
+                    <div data-options="region:'center',border:false">
+                        <div class="easyui-layout" data-options="fit:true">
+                            <div data-options="region:'center',border:false">
+                                <div id="principalQueryResult" class="easyui-datalist"
+                                     data-options="checkbox:true,fit:true,selectOnCheck:false,valueField:'name',textField:'display'"
+                                     th:title="#{queryResult}"></div>
+                            </div>
+                            <div data-options="region:'east',border:false" style="display:table-cell;vertical-align:middle;padding:5px;width:40px">
+                                <button type="button" style="width:30px" onclick="addToRight();">&gt;</button>
+                                <br/><br/>
+                                <button type="button" style="width:30px" onclick="delFromRight();">&lt;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-options="region:'center',border:false">
+                <div class="easyui-layout" data-options="fit:true">
+                    <div data-options="region:'north',border:false" style="height:70px">
+                    </div>
+                    <div data-options="region:'center',border:false">
+                        <table class="easyui-datagrid" data-options="idField:'oid',fit:true" id="selectedPrincipals" th:title="#{selectedPrincipal}">
+                            <thead>
+                            <tr>
+                                <th data-options="field:'oid',checkbox:true"></th>
+                                <th data-options="field:'blank',width:10"></th>
+                                <th data-options="field:'display',width:230,align:'left'" th:text="#{name}"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var oidMap = new Map();
+    flame.loadGrid('PrincipalSearchForm', 'xw.auths.form.PrincipalSearchForm', {});
+
+    function queryPrincipal() {
+        const searchKey = $('#searchKey').textbox('getValue');
+        const principalType = $('#principalType').textbox('getValue');
+        if (isBlank(searchKey)) {
+            $.messager.alert('warning', '[[#{please_input_username}]]');
+            return;
+        }
+        axios.get('XUI$/get/xw.auths.processor.QueryPrincipalProcessor', {
+            params: {
+                principalType: principalType,
+                searchKey: searchKey
+            }
+        }).then(function (response) {
+            const result = response.data;
+            if ('SUCCESS' == result.status) {
+                $('#principalQueryResult').datalist('loadData', result.data)
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    function addToRight() {
+        const principals = $('#principalQueryResult').datalist('getChecked');
+        for (let row of principals) {
+            if (oidMap.has(row.oid))
+                continue;
+
+            oidMap.set(row.oid, row.display);
+            $('#selectedPrincipals').datagrid('appendRow', {
+                oid: row.oid,
+                display: row.display
+            });
+        }
+    }
+
+    function delFromRight() {
+        const principalGrid = $('#selectedPrincipals');
+        const row = principalGrid.datagrid('getSelected');
+        const index = principalGrid.datagrid('getRowIndex', row);
+        principalGrid.datagrid('deleteRow', index);
+    }
+
+    function refreshGroupTree(result) {
+        return true;
+    }
+</script>
+</body>
+</html>

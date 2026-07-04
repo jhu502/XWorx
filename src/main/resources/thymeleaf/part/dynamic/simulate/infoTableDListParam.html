@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+	<table id="SimulateDListTableBuilder"></table>
+	<script type="text/javascript" th:inline="text">
+		flame.loadGrid("SimulateDListTableBuilder", "plm.dynamic.builder.SimulateDListTableBuilder", {
+			queryParams : {
+				rowId : "[[${commandBean.getParameter('rowId')}]]"
+			},
+		});
+	</script>
+</body>
+</html>

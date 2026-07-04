@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='saveXFlowNodeData')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <input id="nodeId" type="hidden" th:value="${commandBean.getTextParameter('nodeId')}">
+    <div title="属性" style="padding:10px">
+        <table>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong>[[#{label_name}]]</strong></td>
+                <td style="padding-top:3px;"><input id="nodeLabel" name="nodeLabel" style="width:250px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;vertical-align:top;padding-right:5px;"><strong>[[#{label_instructions}]]</strong></td>
+                <td style="padding-top:3px;"><textarea id="instructions" name="instructions" rows="4" cols="90"></textarea></td>
+            </tr>
+        </table>
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    (($) => {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        $('#nodeLabel').val(flowData.label);
+        $('#instructions').val(flowData.instructions);
+    })(jQuery);
+
+    function saveXFlowNodeData(o) {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        if (node) {
+            const nodeLabel = $('#nodeLabel').val();
+            const instructions = $('#instructions').val();
+            flowData.label = nodeLabel;
+            flowEditor.modifyNodeLabel(nodeId, nodeLabel);
+        }
+        flame.closeWindow(o);
+    }
+</script>
+</body>
+</html>

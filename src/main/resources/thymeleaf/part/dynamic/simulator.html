@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='completeInvoke')}">
+<section class="easyui-layout" data-options="border:false,fit:true">
+	<div data-options="region:'west',border:false,title:'结构',collapsed:false,maxWidth:350" style="width:300px">
+		<div id="simulate_bom_tree"></div>
+	</div>
+	<div data-options="region:'center',border:false" title="选配">
+		<div class="easyui-layout" data-options="fit:true,border:false" id="charact_selection">
+			<div data-options="region:'center',border:false">
+				<div id="simulate_charact_list"></div>
+			</div>
+			<div data-options="region:'east',border:false,title:'选项',collapsed:true,split:true,maxWidth:500">
+				<div id="simulate_value_decision" class="easyui-panel" data-options="fit:true" style="border: 0"></div>
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" th:inline="text">
+	flame.loadGrid("simulate_bom_tree", "plm.dynamic.builder.SimulateTreeBuilder", {
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		},
+		onClickRow: function (node) {
+			flame.reloadGrid('simulate_charact_list', {
+				rowId: node.rowId
+			});
+		},
+		onLoadSuccess: function (row, data) {
+			if (data && data.rows && data.rows instanceof Array) {
+				if (data.rows.length > 0) {
+					const node = data.rows[0];
+					flame.reloadGrid('simulate_charact_list', {
+						rowId: node.rowId
+					});
+					$('#simulate_bom_tree').treegrid('select', node.rowId);
+				}
+			}
+		}
+	});
+
+	flame.loadGrid("simulate_charact_list", "plm.dynamic.builder.SimulateCharactTableBuilder", {
+		view: detailview,
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		},
+		detailFormatter: function (index, row) {
+			return '<div class="subGrid" style="padding:0px 0; border-radius:8px"></div>';
+		},
+		onExpandRow: function (index, row) { //点击行的修改按钮时调用这个方法去加载数据和界面
+			const subGrid = $(this).datagrid('getRowDetail', index).find('div.subGrid');
+			subGrid.panel({
+				height: 250,
+				border: true,
+				cache: false,
+				href: 'thymeleaf/dynamic/simulate/inputInfoTableParams.html?rowId=' + row.rowId,
+				onLoad: function () {
+					$('#simulate_charact_list').datagrid('fixDetailRowHeight', index);
+				}
+			});
+			$('#simulate_charact_list').datagrid('fixDetailRowHeight', index);
+		},
+		onCollapseRow: function (index, row) {
+			return true;
+		},
+		onClickRow: function (index, row) {
+			$('#charact_selection').layout('collapse', 'east');
+			/** 如果是InfoTable类型的DList参数，则在当前行展开明细表格 */
+			//if (row.expander) {
+			//	$('#simulate_charact_list').datagrid('expandRow', index);
+			//} else {
+			if (row.inputuri) {
+				$('#simulate_value_decision').panel('refresh', row.inputuri + '?rowId=' + row.rowId);
+			}
+			$('#charact_selection').layout('expand', 'east');
+			//}
+		},
+		onRowContextMenu: function (e, index, row) {
+			/** 右击行时，折叠east面板 */
+			e.preventDefault();
+			if (row.expander) {
+				$('#simulate_charact_list').datagrid('collapseRow', index);
+			}
+			$('#charact_selection').layout('collapse', 'east');
+			e.preventDefault();
+		}
+	});
+
+	function completeInvoke() {
+	}
+
+	function refreshSimulateBuilder(result) {
+		var simulate_charact_list = $('#simulate_charact_list');
+		for (let key in result) {
+			let xparam = result[key];
+			const index = simulate_charact_list.datagrid('getRowIndex', key);
+			simulate_charact_list.datagrid('updateRow', {
+				index: index,
+				row: {
+					value: xparam.value ? xparam.value : '',
+					source: xparam.source,
+					display: xparam.display,
+					readonly: xparam.readonly
+				}
+			});
+		}
+
+		return false;
+	}
+
+	function displayStyle(value, row, index) {
+		if (row.readonly) {
+			return "<span style='color:#C0C0C0;'>" + value + "</span>";
+		} else {
+			return value;
+		}
+	}
+
+	function showTooltip(value, row, index) {
+		if (row.readonly) {
+			return "<span style='color:#C0C0C0;' title='" + row.prompt + "'>" + value + "</span>";
+		} else {
+			return "<span title='" + row.prompt + "'>" + value + "</span>";
+		}
+	}
+
+	/**
+	 * 解决Chrome/Edge多次打开Easyui Window时，Layout不完全填充的问题
+	 */
+	(function ($) {
+		$('#simulate_bom_tree').parents('.window-body').eq(0).window('resize');
+	})(jQuery);
+</script>
+</body>
+</html>

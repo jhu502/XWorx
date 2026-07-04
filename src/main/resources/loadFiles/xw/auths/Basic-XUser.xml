@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.auths.XUserDataLoader" description="XUser">
+	<LoadObject type="xw.auths.entity.XUser" where="number">
+		<attr name="number">Administrator</attr>
+		<attr name="name">Administrator</attr>
+		<attr name="fullName">Administrator</attr>
+		<attr name="englishName">Administrator</attr>
+		<attr name="description">System Administrator User.</attr>
+		<attr name="password">admin</attr>
+		<attr name="tel">15386456502</attr>
+		<attr name="fax">000-00000000</attr>
+		<attr name="email">ftadmin@xworx.cn</attr>
+		<attr name="postalCode">000000</attr>
+		<attr name="address">湖南省长沙市开福区三一大道</attr>
+		<attr name="expired">false</attr>
+		<attr name="locked">false</attr>
+		<attr name="enabled">true</attr>
+		<attr name="thingModel">XUser</attr>
+	</LoadObject>
+	<LoadObject type="xw.auths.entity.XUser" where="number">
+		<attr name="number">Guest</attr>
+		<attr name="name">Guest</attr>
+		<attr name="fullName">Guest</attr>
+		<attr name="englishName">Guest</attr>
+		<attr name="description">System Guest User.</attr>
+		<attr name="password">guest</attr>
+		<attr name="tel">15386456502</attr>
+		<attr name="fax">000-00000000</attr>
+		<attr name="email">guest@xworx.cn</attr>
+		<attr name="postalCode">000000</attr>
+		<attr name="address">湖南省长沙市开福区三一大道</attr>
+		<attr name="expired">false</attr>
+		<attr name="locked">false</attr>
+		<attr name="enabled">true</attr>
+		<attr name="thingModel">XUser</attr>
+	</LoadObject>
+</FlameDataLoad>

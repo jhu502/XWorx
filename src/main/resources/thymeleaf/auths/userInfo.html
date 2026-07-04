@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='User Info', link=~{}, script=~{})}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'center',border:false">
+        <div th:id="|InfoTabs-Actions_${randomUUID}|" style="border-left:0px;border-top:0px;border-right:0px;padding-right:20px;display:none;">
+            <div th:if="${commandBean.primaryObj}">
+                <div class="easyui-menubutton" data-options="plain:false" style="height:22px;"
+                     th:onclick="flame.loadActionMenu('XXX:XWX-ActionMenu','[(${commandBean.primaryOid})]',this)">
+                    [[#{action}]]
+                </div>
+                <img style="vertical-align:middle;padding-left:10px;" th:src="${commandBean.primaryObj?.icon}"/>
+                <span style="font-size:14px;vertical-align:middle;">[[${thingModel?.localDisplay}]] - </span>
+                <span style="font-size:14px;vertical-align:middle;font-weight:bold;">[[${commandBean.primaryObj?.name}]]</span>
+            </div>
+            <div th:else style="width:400px;color:red;"><strong>警告：主对象（[[${commandBean.primaryOid}]]）不存在</strong></div>
+        </div>
+        <div class="easyui-tabs" style="width: 100%; border: 0px" th:data-options="|fit:true,border:false,tools:'#InfoTabs-Actions_${randomUUID}'|">
+            <div title="Details" style="padding:2px">
+                <div class="easyui-layout" style="height:100%">
+                    <div data-options="region:'north',border:false" style="height:240px">
+                        <fieldset class="xui-fieldset">
+                            <legend th:text="#{visualization_attributes}"></legend>
+                            <div class="thumbnail">
+                                <img src="images/product_288.png">
+                            </div>
+                            <table>
+                                <tr>
+                                    <th></th>
+                                    <th style="width:200px"></th>
+                                    <th></th>
+                                    <th style="width:200px"></th>
+                                </tr>
+                                <tr>
+                                    <td><label th:text="#{label_name}"/></td>
+                                    <td id="name"><span th:text="${commandBean.primaryObj?.name}"></span></td>
+                                    <td><label th:text="#{label_fullName}"/></td>
+                                    <td id="fullName"><span th:text="${commandBean.primaryObj?.fullName}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label th:text="#{label_tel}"/></td>
+                                    <td id="tel"><span th:text="${commandBean.primaryObj?.tel}"></span></td>
+                                    <td><label th:text="#{label_fax}"/></td>
+                                    <td id="fax"><span th:text="${commandBean.primaryObj?.fax}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label th:text="#{label_email}"/></td>
+                                    <td id="email"><span th:text="${commandBean.primaryObj?.email}"></span></td>
+                                    <td><label th:text="#{label_postalCode}"/></td>
+                                    <td id="postalCode"><span th:text="${commandBean.primaryObj?.postalCode}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label>AppKey:</label></td>
+                                    <td colspan="3" id="appkey"><span th:text="${commandBean.primaryObj?.appKey}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label th:text="#{label_description}"/></td>
+                                    <td colspan="3" id="description"><span th:text="${commandBean.primaryObj?.description}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label th:text="#{label_address}"/></td>
+                                    <td colspan="3" id="address"><span th:text="${commandBean.primaryObj?.address}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label th:text="#{label_createdStamp}"/></td>
+                                    <td id="createdStamp"><span th:text="${commandBean.primaryObj?.createdStamp}"></span></td>
+                                    <td><label th:text="#{label_modifiedStamp}"/></td>
+                                    <td id="modifiedStamp"><span th:text="${commandBean.primaryObj?.modifiedStamp}"></span></td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                    <div data-options="region:'center',border:false" style="padding: 2px">
+                        <table id="userlist" class="easyui-datagrid" style="height: 500px"></table>
+                        <script type="text/javascript" th:inline="text">
+                            flame.loadGrid("userlist", "xw.auths.builder.GroupListTableBuilder", {
+                                queryParams: {
+                                    oid: [[${commandBean.primaryObj?.oid}]]
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div title="Help" data-options="iconCls:'icon-help',closable:true" style="padding: 10px">This is the help content.</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function resize_grid(o, p) {
+        setTimeout(function () {
+            const that = $(o);
+            const parent = that.parents('.tabs-panels');
+            const width = parent.width();
+
+            $(o).datagrid('resize', {
+                height: window.innerHeight - p,
+                width: width - 10
+            })
+        }, 200);
+    }
+
+    resize_grid('#userlist', 290);
+    $(window).resize(function () {
+        resize_grid('#userlist', 290);
+    });
+</script>
+</body>
+</html>

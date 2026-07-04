@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="Basic Data">
+    <LoadFile filename="xw/context/Basic-Contexts.xml"/>
+    <LoadFile filename="xw/domain/Basic-XAdminDomain.xml"/>
+    <LoadFile filename="xw/object/Action-Common.xml"/>
+    <LoadFile filename="xw/domain/Action-XAdminDomain.xml"/>
+    <LoadFile filename="com/thing/Action-XThingModel.xml"/>
+    <LoadFile filename="xw/action/Action-Navigator.xml"/>
+    <LoadFile filename="xw/xflow/Action-XWorkflow.xml"/>
+    <LoadFile filename="plm/part/Action-XPart.xml"/>
+    <LoadFile filename="xw/object/Action-Common.xml"/>
+    <LoadFile filename="xw/context/folder/Action-XFolder.xml"/>
+    <LoadFile filename="xw/context/Action-XContext.xml"/>
+    <LoadFile filename="plm/dynamic/Action-XDynamic.xml"/>
+    <LoadFile filename="mes/apl/Action-AssemblyLine.xml"/>
+    <LoadFile filename="mes/apl/Action-Equipment.xml"/>
+    <LoadFile filename="xw/auths/Basic-XGroup.xml"/>
+</FlameDataLoad>

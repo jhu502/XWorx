@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table id="partStructProperty"></table>
+<script type="text/javascript" th:inline="text">
+    flame.loadGrid("partStructProperty", "plm.part.builder.XPartDetailPropertyBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        }
+    });
+</script>
+</body>
+</html>

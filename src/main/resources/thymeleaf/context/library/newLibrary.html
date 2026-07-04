@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshLibraryList')}">
+<section class="easyui-tabs" data-options="fit:true,border:false">
+    <div th:title="#{attributes}" style="padding: 10px" id="createLibraryAttrsForm"></div>
+</section>
+
+<script type="text/javascript">
+    flame.loadGrid('createLibraryAttrsForm', 'xw.context.form.CreateLibraryPropertyForm', {});
+
+    function refreshLibraryList(result) {
+        if (result.status == 'SUCCESS') {
+            //flame.reloadGrid('browserTable');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

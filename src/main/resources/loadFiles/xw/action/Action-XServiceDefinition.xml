@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="XThingModel ActionMenu">
+    <!-- ThingModel-Service右键菜单 -->
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">newServiceDef</attr>
+        <attr name="type">XServiceDefinition</attr>
+        <attr name="display">New</attr>
+        <attr name="icon">images/add16x16.gif</attr>
+        <attr name="iconCls">icon-new</attr>
+        <attr name="style">width: 900px; height: 460px; padding: 5px;</attr>
+        <attr name="url">thymeleaf/thing/model/newServiceDef.html</attr>
+        <attr name="processor">com.thing.processor.CreateServiceDefProcessor</attr>
+        <attr name="winType">popup</attr>
+        <attr name="supportedType">XThingModel</attr>
+        <attr name="en_US">New</attr>
+        <attr name="zh_CN">新建</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">editServiceDef</attr>
+        <attr name="type">XServiceDefinition</attr>
+        <attr name="display">Edit</attr>
+        <attr name="icon"></attr>
+        <attr name="iconCls">icon-edit</attr>
+        <attr name="style">width: 800px; height: 460px; padding: 5px;</attr>
+        <attr name="url">thymeleaf/thing/model/editServiceDef.html</attr>
+        <attr name="processor">com.thing.processor.EditServiceDefProcessor</attr>
+        <attr name="winType">popup</attr>
+        <attr name="en_US">Edit</attr>
+        <attr name="zh_CN">编辑</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">deleteServiceDef</attr>
+        <attr name="type">XServiceDefinition</attr>
+        <attr name="display">Delete</attr>
+        <attr name="icon"></attr>
+        <attr name="iconCls">icon-delete</attr>
+        <attr name="style"></attr>
+        <attr name="url"></attr>
+        <attr name="processor">com.thing.processor.DeleteServiceDefProcessor</attr>
+        <attr name="windowType">popup</attr>
+        <attr name="en_US">Delete</attr>
+        <attr name="zh_CN">删除</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">testServiceDef</attr>
+        <attr name="type">XServiceDefinition</attr>
+        <attr name="display">Test</attr>
+        <attr name="icon"></attr>
+        <attr name="iconCls">icon-test</attr>
+        <attr name="style">width:900px;height:660px;padding:5px;</attr>
+        <attr name="url">thymeleaf/thing/model/testServiceDef.html</attr>
+        <attr name="processor">com.thing.processor.TestServiceDefProcessor</attr>
+        <attr name="winType">popup</attr>
+        <attr name="supportedType">ServiceDefinition</attr>
+        <attr name="en_US">Test</attr>
+        <attr name="zh_CN">测试</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">serviceDef_menu</attr>
+        <attr name="type">XServiceDefinition</attr>
+        <attr name="display">Service右键菜单</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">newServiceDef</attr>
+                <attr name="type">XServiceDefinition</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">editServiceDef</attr>
+                <attr name="type">XServiceDefinition</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">deleteServiceDef</attr>
+                <attr name="type">XServiceDefinition</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">40</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">testServiceDef</attr>
+                <attr name="type">XServiceDefinition</attr>
+            </where>
+        </link>
+    </LoadObject>
+</FlameDataLoad>

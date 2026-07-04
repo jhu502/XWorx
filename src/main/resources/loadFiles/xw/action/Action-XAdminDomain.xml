@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Folder">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">detail</attr>
+		<attr name="type">XAdminDomain</attr>
+		<attr name="display">Detail</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/domain/domainDetails.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Details</attr>
+		<attr name="zh_CN">详细信息</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XAdminDomain Info Page Info Tabs -->
+		<attr name="name">XWX-InfoTabs</attr>
+		<attr name="type">XAdminDomain</attr>
+		<attr name="display">XAdminDomain Tabs</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">detail</attr>
+				<attr name="type">XAdminDomain</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>

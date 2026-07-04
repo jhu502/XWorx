@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='saveEdgeRoute')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <div title="路由" style="padding:2px">
+        <div id="edgeRouteList" class="easyui-datalist" data-options="fit:true,checkbox:true,singleSelect:false,selectOnCheck:true,valueField:'value',textField:'value'"></div>
+    </div>
+</section>
+<script type="text/javascript">
+    let edgeRoutes = [];
+    let flowEdgeId = "[[${commandBean.getTextParameter('nodeId')}]]";
+    (($) => {
+        const flowEdge = flowEditor.getXFlowEdge(flowEdgeId);
+        const sourceId = flowEdge.store.data.source.cell;
+        const previous = flowEditor.getXFlowNode(sourceId);
+        if (previous.store.data.routevents) {
+            for (let item of previous.store.data.routevents) {
+                if (item.type == 'route') {
+                    edgeRoutes.push({value: item.value});
+                }
+            }
+        }
+
+        $.parser.onComplete = function () {
+            $('#edgeRouteList').datalist('loadData', edgeRoutes);
+        };
+    })(jQuery);
+
+    function saveEdgeRoute() {
+        const flowEdge = flowEditor.getXFlowEdge(flowEdgeId);
+        const checked = $('#edgeRouteList').datalist('getChecked');
+        let routes = '?';
+        for (let item of checked) {
+            if (routes === '?') {
+                routes = item.value;
+            } else {
+                routes = routes + ',' + item.value;
+            }
+        }
+        flowEdge.store.data.routes = routes;
+        modifyEdgeName(flowEdgeId, routes);
+
+        return true;
+    }
+
+    function modifyEdgeName(edgeId, routes) {
+        $("g[data-cell-id='" + edgeId + "']").children('g').children('g').children('text').children('tspan').html(routes);
+    }
+</script>
+</body>
+</html>

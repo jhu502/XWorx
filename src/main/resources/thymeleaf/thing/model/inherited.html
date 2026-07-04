@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::commonHead('继承项')}"></head>
+<body>
+	<table id="inherited_propertylist" class="easyui-datagrid" title="Inherited Property List" iconCls="icon-save" style="height: 500px"
+		th:data-options="|url:'OrganiController/listParentGroup?oid=${commandBean.primaryOid}',method:'get',idField:'oid',singleSelect:false|">
+		<thead>
+			<tr>
+				<th data-options="field:'oid',checkbox:true"></th>
+				<th field="blank" width="20"></th>
+				<th data-options="field:'icons',width:20"></th>
+				<th data-options="field:'name',width:'140',sortable:true">Name</th>
+				<th data-options="field:'fullName',width:'200'">Description</th>
+				<th data-options="field:'groupType',width:'60',align:'center',sortable:true">Base Type</th>
+			</tr>
+		</thead>
+	</table>
+	<table id="inherited_service_list" class="easyui-datagrid" title="Inherited Service List" iconCls="icon-save" style="height: 500px"
+		th:data-options="|url:'OrganiController/listParentGroup?oid=${commandBean.primaryOid}',method:'get',idField:'oid',singleSelect:false|">
+		<thead>
+			<tr>
+				<th data-options="field:'oid',checkbox:true"></th>
+				<th field="blank" width="20"></th>
+				<th data-options="field:'icons',width:20"></th>
+				<th data-options="field:'name',width:'140',sortable:true">Name</th>
+				<th data-options="field:'fullName',width:'200'">Description</th>
+				<th data-options="field:'groupType',width:'60',align:'center',sortable:true">Base Type</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+</html>

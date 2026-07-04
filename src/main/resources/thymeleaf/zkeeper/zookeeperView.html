@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='ZooKeeper View')}">
+</head>
+<body>
+<div class="easyui-panel" data-options="fit:true,closable:false,collapsible:false,minimizable:false,maximizable:false" style="padding:2px">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',border:false" style="height:30px">
+            <div style="padding: 0 0">
+                <div class="easyui-menubutton" data-options="plain:false" onclick="javascript:alert('easyui')">操作</div>
+                <img style="vertical-align: middle; padding-left: 10px;"/>
+                <span style="font-size: 14px; vertical-align: middle;">ZooKeeper - /</span>
+            </div>
+        </div>
+        <div data-options="region:'west',border:false,split:true" style="width:400px;">
+            <table id="zkeeperTree"></table>
+        </div>
+        <div data-options="region:'center',border:true" style="padding:1px">
+            <div class="easyui-tabs" id="zkeeperDetailTabs" data-options="fit:true">
+                <div title="NODE" style="padding:2px">
+
+                </div>
+                <div title="ACL" style="padding:2px">
+
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            flame.loadGrid("zkeeperTree", "xw.object.builder.ZookeeperPathTreeBuilder", {
+                onClickRow: function (node) {
+                    const nodeHref = 'thymeleaf/flame/zkeeper/zookeeperNODE.html?nodePath=';
+                    const aclHref = 'thymeleaf/flame/zkeeper/zookeeperACL.html?nodePath=';
+                    const activeIndex = $('#zkeeperDetailTabs').tabs('getSelected');
+                }
+            });
+
+            function onSelectDetailTabs(o, p) {
+                if (p == 0) {
+
+                } else if (p == 1) {
+
+                }
+            }
+        </script>
+    </div>
+</div>
+</body>
+
+</html>

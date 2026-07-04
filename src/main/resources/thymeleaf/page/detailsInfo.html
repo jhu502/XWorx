@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Details')}"></head>
+<body>
+<script src="javascript/flame/flame.view.js"></script>
+<input type="hidden" name="oid" th:value="${commandBean.primaryOid}"/>
+<input type="hidden" id="contentItemOid" th:value="${appData==null?'':appData.toString()}" th:with="appData=${T(xw.content.XContentHelper).getThumb3DContentItem(commandBean.primaryObj)}"/>
+<div id="detailInfoPagePropertyForm" />
+<script type="text/javascript" th:inline="text">
+    flame.loadGrid('detailInfoPagePropertyForm', 'com.thing.mesher.form.DetailInfoPagePropertyForm', {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        },
+        onXComplete: function (config) {
+            (($) => {
+                const contentOid = $("#contentItemOid").val();
+                if (isBlank(contentOid)) {
+                    $('#Thumbnail3DDiv').append('<img src="images/product_288.png">');
+                } else if (isOid(contentOid)) {
+                    const thumbnail = new flame.view.Thingview('javascript/thingview', "Thumbnail3DDiv");
+                    thumbnail.initializeThingView().then(() => {
+                        thumbnail.unloadAll3dModel();
+                        thumbnail.load3dModelNode("Servlet/downloadContent?oid=" + contentOid);
+                    }, () => {
+                        reject();
+                    });
+                }
+            })(jQuery);
+        }
+    });
+
+</script>
+</body>
+</html>

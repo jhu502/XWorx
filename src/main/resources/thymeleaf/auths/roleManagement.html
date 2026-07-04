@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Role Management', style=~{::style})}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:true" style="height:70px;padding:5px 5px 5px 5px;">
+        <div id="roleSearchForm"></div>
+    </div>
+    <div data-options="region:'center',border:false">
+        <table id="roleManagement" style="height:100%"></table>
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("roleSearchForm", "xw.auths.form.RoleSearchForm", {
+
+    });
+    
+    flame.loadGrid("roleManagement", "xw.auths.builder.RoleManagementTableBuilder", {
+        onClickRow: function (index, row) {
+        }
+    });
+
+    function submitForm() {
+        const roleName = $('#roleName').val();
+        const roleDisplay = $('#roleDisplay').val();
+        flame.reloadGrid('roleManagement', {
+            name: roleName,
+            display: roleDisplay
+        });
+    }
+
+    function clearForm() {
+        $('#roleName').textbox('clear');
+        $('#roleDisplay').textbox('clear');
+        flame.reloadGrid('roleManagement', {
+            name: '',
+            display: ''
+        });
+    }
+</script>
+</body>
+</html>

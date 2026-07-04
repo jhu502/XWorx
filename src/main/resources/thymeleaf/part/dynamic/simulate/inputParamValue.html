@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+	<form id="inputParam" name="inputParam" style="margin: 10px;" method="post"></form>
+	<script type="text/javascript">
+		flame.loadGrid('inputParam', 'plm.dynamic.form.SimulateInputParamForm', {
+			queryParams : {
+				rowId : "[[${commandBean.getParameter('rowId')}]]"
+			},
+		});
+		
+		function submitInputParamValue(el) {
+			const uuid = $('input[name=xworx_param_uuid]').val();
+			const value = $('input[name=xworx_param_value]').val();
+			flame.submitForm(el, "/XUI$/simulate/" + uuid + "~" + value, refreshSimulateBuilder);
+		}
+	</script>
+</body>
+</html>

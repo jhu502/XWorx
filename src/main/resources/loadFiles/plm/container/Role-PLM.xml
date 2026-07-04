@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.auths.loader.RoleRBLoader" description="RoleRB-Role">
+    <LoadObject type="xw.auths.entity.RoleRB" where="name">
+        <attr name="name">PRODUCT_MANAGER</attr>
+        <attr name="display">Product Manager</attr>
+        <attr name="en_US">Product Manager</attr>
+        <attr name="zh_CN">产品经理</attr>
+        <attr name="description">产品经理</attr>
+        <attr name="roleType">ROLE</attr>
+        <attr name="responsibility"><![CDATA[负责产品全生命周期管理，包括产品规划与需求定义、产品结构与BOM配置、产品开发流程协调、工程变更与版本控制，确保产品数据的准确性和一致性。]]></attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.RoleRB" where="name">
+        <attr name="name">LIBRARY_MANAGER</attr>
+        <attr name="display">Library Manager</attr>
+        <attr name="en_US">Library Manager</attr>
+        <attr name="zh_CN">存储库经理</attr>
+        <attr name="description">存储库经理</attr>
+        <attr name="roleType">ROLE</attr>
+        <attr name="responsibility"><![CDATA[负责存储库（零部件库/文档库）的分类体系建立与维护，管理标准件和通用件的生命周期、版本与状态，审核存储库数据的规范性与完整性，控制存储库的访问与使用权限。]]></attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.RoleRB" where="name">
+        <attr name="name">GUEST</attr>
+        <attr name="display">Guest</attr>
+        <attr name="en_US">Guest</attr>
+        <attr name="zh_CN">访客</attr>
+        <attr name="description">访客</attr>
+        <attr name="roleType">ROLE</attr>
+        <attr name="responsibility"><![CDATA[访客角色，仅具有对产品数据和文档的只读查看权限，无法进行任何修改、创建或删除操作。]]></attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.RoleRB" where="name">
+        <attr name="name">ADMINISTRATORS</attr>
+        <attr name="display">Administrators</attr>
+        <attr name="en_US">Administrators</attr>
+        <attr name="zh_CN">系统管理员</attr>
+        <attr name="description">系统管理员</attr>
+        <attr name="roleType">ROLE</attr>
+        <attr name="responsibility"><![CDATA[系统管理员角色，拥有系统的最高管理权限，负责用户与角色管理、系统配置、安全策略设置，以及所有产品数据和文档的完全访问控制权限。]]></attr>
+    </LoadObject>
+</FlameDataLoad>

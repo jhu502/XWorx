@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+	<table id="SimulateSingleSelectBuilder"></table>
+	<script type="text/javascript" th:inline="text">
+		flame.loadGrid("SimulateSingleSelectBuilder", "plm.dynamic.builder.SimulateSingleSelectBuilder", {
+			queryParams : {
+				rowId : "[[${commandBean.getParameter('rowId')}]]"
+			},
+			onCheck : function(index, data) {
+				axios({
+					method: 'post',
+					url: flame.getHREF('/XUI$/simulate/SingleSelect'),
+					params: {
+						choiceGuid : data.rowId,
+						action : 'SELECT'
+					}
+				}).then(function(response) {
+					const result = response.data;
+					if (result.status == 'FAILURE') {
+						$.messager.alert('Question', result.message, 'question');
+						/**启用防重复点击时禁用的按钮 */
+						if (el_btn.hasClass('l-btn')) {
+							el_btn.linkbutton('enable');
+						}
+					} else {
+						refreshSimulateBuilder(result);
+						flame.reloadGrid("SimulateSingleSelectBuilder");
+					}
+				}).catch(function(error) { // 请求失败处理
+					console.log(error);
+				});
+			},
+			onUncheck : function(index, data) {
+				axios({
+					method: 'post',
+					url: flame.getHREF('/XUI$/simulate/SingleSelect'),
+					params: { choiceGuid : data.rowId, action : 'UNSELECT' }
+				}).then(function(response) {
+					const result = response.data;
+					if (result.status == 'FAILURE') {
+						$.messager.alert('Question', result.message, 'question');
+						/**启用防重复点击时禁用的按钮 */
+						if (el_btn.hasClass('l-btn')) {
+							el_btn.linkbutton('enable');
+						}
+					} else {
+						refreshSimulateBuilder(result);
+					}
+				}).catch(function(error) { // 请求失败处理
+					console.log(error);
+				});
+			},
+			onLoadSuccess : function(data) {
+				if (data.rows.length > 0) {
+					const checkboxs = $('#SimulateSingleSelectBuilder').parent().find("div.datagrid-cell-check").children("input[type='checkbox']");
+					let disabled = false;
+					if (data.primary && (data.primary.source === 'DRIVEN' || data.primary.source === 'CONFIG' || data.primary.source === 'CASCADE')) {
+						disabled = true;
+					}
+
+					/** 循环判断操作为新增的不能选择 */
+					for (let i = 0; i < data.rows.length; i++) {
+						if (disabled || data.rows[i].status == 'DISABLED') {
+							checkboxs.eq(i).attr("disabled", "true")
+						}
+					}
+				}
+				/** 隐藏DataGrid的Head上的CheckBox */
+				$("#SimulateSingleSelectBuilder").parent().find("div.datagrid-header-check").children("input[type=\"checkbox\"]").eq(0).attr("style", "display:none;");
+			},
+			rowStyler : function(index, row) {
+				if (row.status == 'DISABLED') {
+					return 'color:gray;';
+				}
+			}
+		});
+
+		function valueTooltip(value, row, index) {
+			return "<span title='" + row.prompt + "'>" + value + "</span>";
+		}
+	</script>
+</body>
+</html>

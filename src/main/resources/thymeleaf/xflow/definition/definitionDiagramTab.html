@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Diagram')}"></head>
+<body>
+<script src="javascript/antv/x6.js" th:href="@{/javascript/antv/x6.js}" type="text/javascript"></script>
+<script src="javascript/flame/flow.xui.js" th:href="@{/javascript/flame/flow.xui.js}" type="text/javascript"></script>
+<section class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:true" style="height:32px;padding-left:5px;display:flex;align-items:center;">
+        <div class="xui-flow">
+            <table>
+                <tr>
+                    <td><button type="button" onclick="javascript:saveProcessDefinition();"><img src="images/save.gif"></button></td>
+                    <td><button type="button" onclick="javascript:printFlowInformation();"><img src="images/flow/json.png"></button></td>
+                    <td><button type="button" onclick="javascript:completeXFlowElement();"><img src="images/flow/completenode.gif"></button></td>
+                    <td>
+                        <button type="button" onclick="javascript:settingProcessDefinition();"><img src="images/flow/setting.png"></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div data-options="region:'center',split:true,border:false">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',border:true" style="width:82px;">
+                <div id="flow.stencil" style="width:80px;height:100%;position:relative;border-right:1px solid #DFE3E8;"></div>
+            </div>
+            <div data-options="region:'center',border:true" id="flow.container"></div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    var flowEditor = null;
+    (($) => {
+        const dom_stencil = document.getElementById('flow.stencil');
+        const dom_graph = document.getElementById('flow.container');
+        flowEditor = new flow.FlowEditor(dom_stencil, dom_graph, {
+            editModel: true,
+            readOnly: false
+        });
+        loadXFlowDefinition();
+    })(jQuery);
+
+    /**
+     * Workflow工作区中, 自动添加Start、End节点, 并且Start、End节点不能删除
+     */
+    function loadXFlowDefinition() {
+        axios.get('XUI$/get/xw.flow.processor.GetXFlowDefinitionProcessor', {
+            params: {
+                oid: '[[${commandBean.primaryOid}]]'
+            }
+        }).then(function (response) {
+            const result = response.data;
+            if ('SUCCESS' == result.status) {
+                const flowData = result.data;
+                flowEditor.loadFlowEditor({
+                    number: flowData.number,
+                    name: flowData.name,
+                    variables: flowData.variables,
+                    nodes: flowData.nodes,
+                    edges: flowData.edges
+                });
+                /** loadFlowEditor()无法将自定义的属性xtype加载进X6.Graph中, 需要单独进行自定义属性的赋值 */
+                for (let i = 0, len = result.data.nodes.length; i < len; i = i + 1) {
+                    const item = result.data.nodes[i];
+                    const node = flowEditor.graph.model.collection.get(item.id);
+                    if (node) {
+                        node.xtype = item.xtype;
+                    }
+                }
+            }
+        }).catch(error => { //请求失败处理
+            console.log(error);
+        });
+    }
+
+    function printFlowInformation() {
+        console.log(flowEditor.selected);
+        flowEditor.graph.model.collection.cells.forEach(function (item, index, self) {
+        });
+    }
+
+    function completeXFlowElement() {
+        if (flowEditor.selected.size == 0) {
+            alert('[[#{please_select_node}]]');
+        } else if (flowEditor.selected.size > 1) {
+            alert('[[#{select_onlyone}]]');
+        } else if (flowEditor.selected.size == 1) {
+            flowEditor.selected.forEach(function (item, index, self) {
+                axios.get('XUI$/get/xw.flow.processor.CompleteFlowNodeProcessor', {
+                    params: {
+                        oid: '[[${commandBean.primaryOid}]]',
+                        nodeId: item.id
+                    }
+                }).then(response => {
+                    const result = response.data;
+                    if ('SUCCESS' == result.status) {
+                        loadXFlowDefinition();
+                    }
+                }).catch(error => { //请求失败处理
+                    console.log(error);
+                });
+            });
+        }
+    }
+
+    function saveProcessDefinition() {
+        axios.post('XUI$/post/xw.flow.processor.SaveProcessDefinitionProcessor', {
+            oid: '[[${commandBean.primaryOid}]]',
+            flow_content: JSON.stringify(flowEditor.genXFlowJson())
+        }).then(response => {
+            const result = response.data;
+            if ('SUCCESS' == result.status) {
+                alert('流程:"' + result.data.name + '"保存成功!');
+            }
+        }).catch(error => { // 请求失败处理
+            console.log(error);
+        });
+    }
+
+    function settingProcessDefinition() {
+        flowEditor.settingWindow({store: {data: {label: '流程设置'}}}, {xtype: 'definition'});
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<form id="xwxPopupWindow_Form" style="height: 100%; width: 100%;" method="post" th:enctype="${enctype}" th:fragment="default()">
+	<input type="hidden" id="rowId" name="rowId" th:value="${commandBean.rowId}" />
+	<input type="hidden" name="primaryOid" th:value="${commandBean.primaryOid}" />
+	<div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'" style="padding: 0px; border: 0px;">
+            <th:block th:replace="${section}"/>
+        </div>
+        <div data-options="region:'south'" style="height: 35px; padding-right: 10px; background-color: #f5f5f5">
+            <div style="text-align: right; padding: 4px 0">
+                <a class="easyui-linkbutton" href="javascript:void(0)" onclick="flame.closeWindow(this)" style="width: 80px">Cancel</a>
+                <a class="easyui-linkbutton" href="javascript:void(0)" style="width: 80px"
+                   th:onclick="flame.submitForm(this,'[(${commandBean.processor})]', [(${#strings.isEmpty(callback)}?undefined:${callback})], [(${#strings.isEmpty(before}?undefined:${before})])">Done</a>
+            </div>
+        </div>
+    </div>
+	<th:block th:replace="${script}" />
+</form>
+</html>

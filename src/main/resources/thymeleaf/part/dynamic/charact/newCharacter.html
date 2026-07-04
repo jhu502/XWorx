@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='completeValidation', callback='refreshCharactGrid')}">
+<section class="easyui-tabs" data-options="fit:true">
+	<div th:title="#{attributes}">
+		<div class="easyui-layout" data-options="fit:true">
+			<input id="charactChoiceJSON" name="charactChoiceJSON" type="hidden">
+			<div data-options="region:'north',border:false" id="charactPropertyPanel" style="padding: 10px; height: 260px"></div>
+			<div data-options="region:'center',border:false" id="charactChoiceDefPanel"></div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" th:inline="text">
+	//$("[name='optionMode'][value='LIST']").attr('checked', true);
+	//choiceGrid.datagrid("getPanel").hide();
+	//choiceGrid.datagrid("getPanel").show()
+
+	(($) => {
+		flame.loadGrid('charactPropertyPanel', 'plm.dynamic.form.CharactPropertyForm', {
+			onXComplete: function (config) {
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterNonePanel.html');
+			}
+		});
+	})(jQuery);
+
+	function completeValidation() {
+		endEditing();
+
+		if (flame.hasValue('number') || flame.hasValue('name') || flame.hasValue('baseType') || flame.hasChecked('inputType') || flame.hasChecked('optionMode')) {
+			alert('有必选属性未设置!');
+			return false;
+		}
+		const mode = $("[name='optionMode']:checked").val();
+		if (mode === 'LIST' || mode === 'DLIST') {
+			var rows = choiceGrid.datagrid("getRows");
+			if (rows.length == 0) {
+				alert('请添加可选值.');
+				return false;
+			}
+			$("#charactChoiceJSON").val(JSON.stringify(rows));
+		}
+		return true;
+	}
+
+	function showChoiceDefPanel() {
+		const baseType = $('#charactBaseType').val();
+		const optionMode = $("input[name='optionMode']:checked").val();
+		switch (optionMode) {
+			case 'DLIST':
+				if ('INFOTABLE' == baseType) {
+					$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterDListTablePanel.html?oid=' + '[[${commandBean.primaryOid}]]');
+				} else if (!isBlank(baseType)) {
+					$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterDListPanel.html?oid=' + '[[${commandBean.primaryOid}]]');
+				} else {
+					$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterNonePanel.html?oid=' + '[[${commandBean.primaryOid}]]');
+				}
+				break;
+			case 'LIST':
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterListPanel.html?oid=' + '[[${commandBean.primaryOid}]]');
+				break;
+			case 'RANGE':
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterRangePanel.html?oid=' + '[[${commandBean.primaryOid}]]');
+				break;
+			case 'NONE':
+				$('#charactChoiceDefPanel').panel('refresh', 'thymeleaf/part/dynamic/charact/characterNonePanel.html?oid=' + '[[${commandBean.primaryOid}]]');
+				break;
+		}
+	}
+</script>
+</body>
+</html>

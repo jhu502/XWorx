@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+	<form id="InputInfoTableForm" name="InputInfoTableForm" style="margin: 10px;" method="post"></form>
+	<script type="text/javascript" th:inline="text">
+		flame.loadGrid("InputInfoTableForm", "plm.dynamic.form.InputInfoTableForm", {
+			queryParams : {
+				rowId : "[[${commandBean.getParameter('rowId')}]]"
+			},
+		});
+	</script>
+</body>
+</html>

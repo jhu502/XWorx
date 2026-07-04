@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta content="text/html;charset=UTF-8" />
+</head>
+<body>
+<form id="newProperty_form" style="height:100%;width:100%;" method="post">
+	<input type="hidden" name="oid" th:value="${commandBean.primaryOid}"/>
+	<div class="easyui-layout" data-options="fit:true" style="font-family:helvetica,arial,sans-serif,Segoe UI,tahoma;">
+		<div data-options="region:'north'" style="padding:2px 0px 0px 10px; height:36px;background-color:#f5f5f5">
+			<label style="padding-right:10px;font-size:18px;font-weight:bold;">New Property</label>
+			<select class="easyui-combobox" name="state" data-options="panelHeight:'auto'" style="width:100px;height:27px;padding-bottom:10px;">
+				<option value="AL">Alabama</option>
+				<option value="AK">Alaska</option>
+			</select>
+		</div>
+		<div data-options="region:'center'" style="padding:2px">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',collapsible:false,split:true" style="width:33%;border-radius:8px">
+					<div class="easyui-panel" title="General Property Info" data-options="fit:true" style="width:100%;padding:10px 10px 20px 20px">
+						<div style="margin-bottom:10px">
+							<input class="easyui-textbox" name="name" data-options="label:'Name:',required:true" style="width:94%;height:27px;"/>
+						</div>
+						<div style="margin-bottom:10px">
+							<input class="easyui-textbox" name="display" data-options="label:'Display:',multiline:true" style="width:94%;height:80px">
+						</div>
+					</div>
+				</div>
+				<div data-options="region:'center'" style="border-radius:8px">
+					<div class="easyui-panel" title="Base Type Info" data-options="fit:true" style="width:100%;padding:10px 20px 20px 20px">
+						<div style="margin-bottom:20px">
+							<select class="easyui-combobox" id="baseType" name="baseType" data-options="label:'Base Type:',editable:false,panelHeight:'auto'"
+									style="width:200px;height:27px">
+								<option th:each="baseType:${T(com.flame.type.XBaseType).propertyTypes()}" th:value="${baseType.name}" th:text="${baseType.display}"></option>
+							</select>
+						</div>
+						<div style="margin-bottom:10px">
+							<input class="easyui-textbox" name="defaultValue" value="" data-options="label:'Default Val:'" style="width:100%;height:27px;"/>
+						</div>
+					</div>
+				</div>
+				<div data-options="region:'east',collapsible:false,split:true" style="width:33%;border-radius:8px">
+					<div class="easyui-panel" title="Data Change Info" data-options="fit:true" style="width:100%;padding:5px 20px 20px 20px">
+						<fieldset>
+							<legend style="font-size:16px;font-style:italic;margin-bottom:5px;">Aspects</legend>
+							<label>Persistent: <input type="checkbox" name="persistent"/></label>
+							<label>Read-only: <input type="checkbox" name="readOnly"/></label>
+							<br>
+							<label>Logged: <input type="checkbox" name="logged"/></label>
+							<label>Nullable: <input type="checkbox" name="nullable"/></label>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'south'" style="height:36px; padding-right:10px; background-color:#f5f5f5">
+			<div style="text-align:right; padding:5px 0">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.closeWindow(this)" style="width:80px">Cancel</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.submitForm(this, 'com.thing.processor.CreateXPropertyDefProcessor', refreshPropertyGrid)"
+				   style="width:80px">Done</a>
+			</div>
+		</div>
+	</div>
+</form>
+</body>
+</html>

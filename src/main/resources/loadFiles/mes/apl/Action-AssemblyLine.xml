@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Production Line">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">detail</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">Detail</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/mes/apl/plineDetailsTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="beforeJS"></attr>
+		<attr name="afterJS"></attr>
+		<attr name="en_US">Details</attr>
+		<attr name="zh_CN">详细信息</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">equipt</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">Equipment</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/mes/apl/plineEquipmentsTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="beforeJS"></attr>
+		<attr name="afterJS"></attr>
+		<attr name="en_US">Equipment Management</attr>
+		<attr name="zh_CN">设备管理</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+		<attr name="name">XWX-InfoTabs</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">XAssemblyLine Tabs</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">detail</attr>
+				<attr name="type">XAssemblyLine</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">equipt</attr>
+				<attr name="type">XAssemblyLine</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newProductLine</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">New</attr>
+		<attr name="icon">images/newdoc.gif</attr>
+		<attr name="style">width:680px;height:380px;padding:5px;</attr>
+		<attr name="url">thymeleaf/mes/apl/newProductionLine.html</attr>
+		<attr name="processor">mes.apl.processor.CreateProductionLineProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="beforeJS"></attr>
+		<attr name="afterJS"></attr>
+		<attr name="en_US">New</attr>
+		<attr name="zh_CN">新建</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- Navigator Menu -->
+		<attr name="name">ProductLineToolbar</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">Product Line Toolbar</attr>
+		<attr name="icon"></attr>
+		<attr name="style"></attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newProductLine</attr>
+				<attr name="type">XAssemblyLine</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">delete</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newEquipment</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">New Equipment</attr>
+		<attr name="style"></attr>
+		<attr name="icon">images/newEquipt.png</attr>
+		<attr name="url">thymeleaf/mes/apl/newEquipment.html</attr>
+		<attr name="processor">mes.apl.processor.CreateEquipmentProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="style">width:680px;height:380px;padding:5px;</attr>
+		<attr name="beforeJS"></attr>
+		<attr name="afterJS"></attr>
+		<attr name="en_US">New</attr>
+		<attr name="zh_CN">新建</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+		<attr name="name">PLineEquipt-Toolbar</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">XAssemblyLine Tabs</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newEquipment</attr>
+				<attr name="type">XAssemblyLine</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">equiptInstanceTab</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">设备</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/mes/equipt/equiptInstanceTab.html</attr>
+		<attr name="winType">popup</attr>
+		<attr name="beforeJS"></attr>
+		<attr name="afterJS"></attr>
+		<attr name="en_US">Equiptment</attr>
+		<attr name="zh_CN">设备</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">PLineEquipt-EquiptNavTabs</attr>
+		<attr name="type">XAssemblyLine</attr>
+		<attr name="display">XAssemblyLine Tabs</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">equiptInstanceTab</attr>
+				<attr name="type">XAssemblyLine</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>

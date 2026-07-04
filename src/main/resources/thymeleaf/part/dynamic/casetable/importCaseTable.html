@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='completeValidation', callback='refreshCaseTableGrid', enctype='multipart/form-data')}">
+<section class="easyui-panel" data-options="fit:true" id="casetableImportPanel" style="padding: 20px;">
+
+</section>
+<script type="text/javascript">
+    (($) => {
+        flame.loadGrid('casetableImportPanel', 'plm.dynamic.form.CaseTableImportForm', {
+            queryParams: {
+                oid: "[[${commandBean.primaryOid}]]"
+            },
+            onXComplete: function (config) {
+            }
+        });
+    })(jQuery);
+
+    function completeValidation() {
+        return true;
+    }
+</script>
+</body>
+</html>

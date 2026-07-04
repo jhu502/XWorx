@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Model Layout',style=~{::style},link=~{::link})}">
+    <link href="css/font-awesome.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true,border:false" id="modelPropertyLayout">
+    <div data-options="region:'north'" style="height:30px;padding:2px;text-align:right;">
+        <table>
+            <tr>
+                <td style="padding-right:20px;padding-top:5px;">
+                    <label style="font-weight: bold" th:text="#{label_name}"></label>[[${commandBean.primaryObj.name}]]
+                </td>
+                <td style="padding-right:20px;padding-top:5px;">
+                    <label style="font-weight: bold" th:text="#{label_type}"></label>[[${commandBean.primaryObj.layoutType}]]
+                </td>
+                <td style="text-align:right;padding-bottom:3px;">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="viewLayoutJson()">JSON</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div data-options="region:'west',split:true,border:false" style="width:300px;">
+        <div id="model-propertyList"></div>
+    </div>
+    <div data-options="region:'center'" style="padding:10px;">
+        <xui-meshlayout style="display:block;width:100%">
+            <script type="module" th:inline="text">
+                window.i18n = {
+                    delete: '[(#{delete})]', moveUp: '[(#{moveUp})]', moveDown: '[(#{moveDown})]', moveLeft: '[(#{moveLeft})]', moveRight: '[(#{moveRight})]', mergeSplit: '[(#{mergeSplit})]', editCell: '[(#{editCell})]'
+                }
+                import {XUIMeshLayout} from "/javascript/flame/layout.xui.js";
+
+                const xuiMeshLayout = XUIMeshLayout.mount('xui-meshlayout', {
+                    onSaveLayout: function (layout) {
+                        axios.post('XUI$/post/com.thing.processor.SavePropertyLayoutProcessor', {
+                            oid: '[[${commandBean.primaryOid}]]',
+                            json: layout
+                        }).then((response) => {
+                            const result = response.data;
+                            if ('SUCCESS' == result.status) {
+                                alert(String.format("[(#{layout{0}Save_Successfully})]", result.data.name));
+                                loadPropertyLayout();
+                            }
+                        }).catch((e) => { // 请求失败处理
+                            console.error(e);
+                        });
+                    }
+                });
+                window.xuiMeshLayout = xuiMeshLayout;
+                flame.loadGrid("model-propertyList", "com.thing.builder.PropertyLayoutTableBuilder", {
+                    queryParams: {
+                        oid: '[[${commandBean.primaryOid}]]'
+                    },
+                    onLoadSuccess: function () {
+                        const gridBTables = $('#model-propertyList').parent().find("div[class=datagrid-view2]").find("table[class=datagrid-btable]");
+                        if (gridBTables) {
+                            const gridTable = gridBTables[0];
+                            if (gridTable) {
+                                /** 禁止table中tr的内容被选中 */
+                                const xuiMeshDrag = xuiMeshLayout.getXUIMeshDrag();
+                                xuiMeshDrag.pickPallet = (event) => {
+                                    if (!event) return;
+                                    if (event.target.classList.contains("datagrid-cell")) {
+                                        const trRow = event.target.parentNode.parentNode;
+                                        const getVal = (field) => {
+                                            const td = trRow.querySelector('td[field="' + field + '"]');
+                                            return td ? td.textContent.trim() : '';
+                                        };
+                                        return {
+                                            id: getVal('oid'),
+                                            name: getVal('name'),
+                                            display: getVal('display')
+                                        }
+                                    }
+                                }
+                                gridTable.addEventListener("mousedown", xuiMeshDrag.onDraggingStart.bind(xuiMeshDrag));
+                            }
+                        }
+                    },
+                    onXComplete: function () {
+                        loadPropertyLayout();
+                    }
+                });
+
+                function loadPropertyLayout() {
+                    const propertyList = $('#model-propertyList').parent();
+                    /** selectstart:选中动作刚开始,尚未实质性被选中;该事件禁止目标对象变蓝 */
+                    propertyList.bind('selectstart', function (event) {
+                        event.preventDefault();
+                    });
+
+                    axios.get('XUI$/get/com.thing.processor.GetPropertyLayoutProcessor', {
+                        params: {
+                            oid: '[[${commandBean.primaryOid}]]'
+                        }
+                    }).then((response) => {
+                        const result = response.data;
+                        if ('SUCCESS' == result.status) {
+                            if (result.data) {
+                                xuiMeshLayout.initXUIMeshLayout(result.data);
+                            }
+                        }
+                    }).catch((e) => {
+                        console.error(e);
+                    });
+                }
+
+                window.viewLayoutJson = function () {
+                    const jsonWin = document.createElement('x-window');
+                    jsonWin.id = 'xui-layout-json-view';
+                    jsonWin.title = '布局JSON';
+                    jsonWin.setAttribute('x-options', "park:'center',minimize:false,maximize:true,resize:true,destroy:true");
+                    jsonWin.style.cssText = 'width:640px;height:500px';
+                    jsonWin.content(`
+                        <div style="padding:12px;display:flex;flex-direction:column;height:100%;">
+                            <pre id="xui-json-content" style="background:#f5f5f5;border:1px solid #ccc;border-radius:4px;padding:12px;flex:1;overflow:auto;font-size:12px;white-space:pre-wrap;word-break:break-all;">加载中...</pre>
+                            <div style="text-align:right;margin-top:12px;">
+                                <button style="padding:6px 18px;border:1px solid #ccc;border-radius:3px;background:#f5f5f5;cursor:pointer;margin-right:8px;" onclick="this.closest('x-window').getIncoming().loadJson(this.closest('x-window'))">刷新</button>
+                                <button style="padding:6px 18px;border:1px solid #ccc;border-radius:3px;background:#f5f5f5;cursor:pointer;" onclick="this.closest('x-window')?.close()">关闭</button>
+                            </div>
+                        </div>
+                    `, {
+                        oid: '[[${commandBean.primaryOid}]]',
+                        loadJson: function (win) {
+                            const pre = win.querySelector('#xui-json-content');
+                            if (pre) pre.textContent = '加载中...';
+                            axios.get('XUI$/get/com.thing.processor.GetPropertyLayoutProcessor', {
+                                params: { oid: win.incoming.oid }
+                            }).then((response) => {
+                                const result = response.data;
+                                if (pre) {
+                                    if ('SUCCESS' == result.status) {
+                                        pre.textContent = result.data ? JSON.stringify(result.data, null, 2) : 'null';
+                                    } else {
+                                        pre.textContent = '加载失败: ' + result.status;
+                                    }
+                                }
+                            }).catch((e) => {
+                                if (pre) pre.textContent = '加载失败: ' + e.message;
+                            });
+                        }
+                    });
+                    jsonWin.open((w) => w.incoming.loadJson(w));
+                }
+            </script>
+        </xui-meshlayout>
+    </div>
+    <div data-options="region:'south'" style="height:40px;text-align:center;padding:4px 0px;vertical-align:middle;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.closeWindow()" style="width:80px;margin-right:5px;" th:text="#{cancel}"></a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="xuiMeshLayout.saveLayoutEdit()" style="width:80px" th:text="#{done}"></a>
+    </div>
+</div>
+</body>
+</html>

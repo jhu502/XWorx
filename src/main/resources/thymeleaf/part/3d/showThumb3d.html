@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="javascript/flame/flame.view.js"></script>
+</head>
+<body th:insert="~{thymeleaf/util/diagram::default(section=~{::section}, script=~{::script}, before='completeValidation')}">
+<section class="easyui-layout" data-options="fit:true">
+    <input type="hidden" id="showThumb3dOid" th:with="appData=${T(xw.content.XContentHelper).getThumb3DContentItem(commandBean.primaryObj)}"
+           th:value="${appData==null?'':appData.toString()}"/>
+    <div data-options="region:'center',border:false">
+        <div id="Thumb3dWebGLDiv" style="width: 100%; height: 99%; border: 1px solid #DCDCDC; float: left"></div>
+    </div>
+</section>
+<script type="text/javascript">
+    (($) => {
+        const contentOid = $("#showThumb3dOid").val();
+        if (isBlank(contentOid)) {
+            $('#Thumbnail3DDiv').append('<img style="width: 100%; height: 100%;" src="images/product_288.png">');
+        } else {
+            const xworxview = new flame.view.Thingview('javascript/thingview', "Thumb3dWebGLDiv");
+            xworxview.initializeThingView().then(() => {
+                xworxview.unloadAll3dModel();
+                xworxview.load3dModelNode("http://flame.xworx.cn/XWorx/Servlet/downloadContent?oid=" + contentOid);
+            }, () => {
+                reject();
+            });
+        }
+    })(jQuery);
+
+    function completeValidation() {
+        return true;
+    }
+</script>
+</body>
+</html>

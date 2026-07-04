@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Root Model">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">detail</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Detail</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/page/detailsInfo.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Details</attr>
+		<attr name="zh_CN">详细信息</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">struct</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Struct</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/partStructureTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Structure</attr>
+		<attr name="zh_CN">结构</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">variant</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Variant</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/dynamic/dynamicStructureTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Variant</attr>
+		<attr name="zh_CN">变型</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+		<attr name="name">XWX-InfoTabs</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">XPart Tabs</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">detail</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">struct</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">variant</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">process</attr>
+				<attr name="type">XFlow</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Operation Menu -->
+		<attr name="name">TypeMenu</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Type Menu</attr>
+		<attr name="icon">images/part.gif</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">copy</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">paste</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">newPart</attr>
+		<attr name="type">XPart</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">New Part</attr>
+		<attr name="icon">images/newpart.gif</attr>
+		<attr name="style">width:680px;height:580px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/newPart</attr>
+		<attr name="processor">plm.part.processor.CreateXPartProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">New Part</attr>
+		<attr name="zh_CN">新建部件</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">insertExistPart</attr>
+		<attr name="type">XPart</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">Insert Part</attr>
+		<attr name="icon">images/part_add.gif</attr>
+		<attr name="style">width:680px;height:480px;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/insertExistPart.html</attr>
+		<attr name="processor">plm.part.processor.InsertExistPartProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Insert Part</attr>
+		<attr name="zh_CN">插入部件</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Product Structure Context Menu -->
+		<attr name="name">PSB-ContextMenu</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">PSB Context Menu</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">copy</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">paste</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">newPart</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">40</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">insertExistPart</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">attributes</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Attributes</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/attributes.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Attributes</attr>
+		<attr name="zh_CN">属性</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">uses</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Uses</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/uses.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Uses</attr>
+		<attr name="zh_CN">使用关系</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">occurrence</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Occurrence</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/occurrence.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Occurrences</attr>
+		<attr name="zh_CN">具体值</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">PSB-StructTabs</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">PSB Second Tab</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">attributes</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">uses</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">occurrence</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">addRow</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Add</attr>
+		<attr name="icon">images/add16x16.gif</attr>
+		<attr name="url"></attr>
+		<attr name="winType">script</attr>
+		<attr name="beforeJS">alert('Add Row');</attr>
+		<attr name="en_US">Add Row</attr>
+		<attr name="zh_CN">添加行</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">removeRow</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Remove</attr>
+		<attr name="icon">images/remove16x16.gif</attr>
+		<attr name="url"></attr>
+		<attr name="winType">invoke</attr>
+		<attr name="processor">plm.part.processor.RemoveUseslinkProcessor</attr>
+		<attr name="beforeJS">return confirm("Are you sure?");</attr>
+		<attr name="en_US">Remove Row</attr>
+		<attr name="zh_CN">删除行</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">PSB-UsesTablebar</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">PSB Uses Table Toolbar</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">addRow</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">removeRow</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">characteristics</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Characteristics</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/dynamic/charact/characteristics.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Characteristics</attr>
+		<attr name="zh_CN">特征</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">expression</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Expression</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/dynamic/express/expression.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Expression</attr>
+		<attr name="zh_CN">表达式</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">casetable</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">CaseTable</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/part/dynamic/casetable/casetables.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Case Table</attr>
+		<attr name="zh_CN">案例表</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">PSB-ConfigTabs</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">PSB Config Tab</attr>
+		<attr name="icon">images/part.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">characteristics</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">expression</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">casetable</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+	</LoadObject>
+	
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">import</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Import</attr>
+		<attr name="icon">images/e3.png</attr>
+		<attr name="url"></attr>
+		<attr name="onclick">alert('Import');</attr>
+		<attr name="winType">script</attr>
+		<attr name="en_US">Import</attr>
+		<attr name="zh_CN">导入</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">export</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Export</attr>
+		<attr name="icon">images/e4.png</attr>
+		<attr name="url"></attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Export</attr>
+		<attr name="zh_CN">导出</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">upload3d</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">Upload3D</attr>
+		<attr name="icon">images/e8.png</attr>
+		<attr name="style">width:500;height:600;padding:5px;</attr>
+		<attr name="url">thymeleaf/part/3d/upload3d.html</attr>
+		<attr name="processor">plm.part.processor.UploadThumb3DProcessor</attr>
+		<attr name="winType">popup</attr>
+		<attr name="en_US">Upload3D</attr>
+		<attr name="zh_CN">上传3D</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">PSB-ToolBar</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">PSB Toolbar</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">import</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">export</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">upload3d</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">XWX-ActionMenu</attr>
+		<attr name="type">XPart</attr>
+		<attr name="display">PSB Toolbar</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">copy</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">export</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">upload3d</attr>
+				<attr name="type">XPart</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">100</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">delete</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>

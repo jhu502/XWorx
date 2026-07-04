@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Properties')}">
+	<meta content="text/html;charset=UTF-8" />
+</head>
+<body>
+	<div class="easyui-layout" data-options="fit:true" style="font-family: helvetica, arial, sans-serif, Segoe UI, tahoma;">
+		<div data-options="region:'center',border:false" style="padding: 2px;">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'north',split:true,border:false" style="height: 70%">
+					<div id="propertyList"></div>
+				</div>
+				<div data-options="region:'center',border:false" style="height: 30%">
+					<div id="inheritedList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="propertyList-tb">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+			th:onclick="flame.popupWindow('New Property', 'thymeleaf/thing/model/newProperty.html', {oid:'[(${commandBean.primaryOid})]'}, 'width:1000px; height:338px; padding:5px;');">New</a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-delete',plain:true"
+			onclick="flame.submitProcessor('com.thing.processor.RemoveXPropertyDefProcessor', {}, removePropertyProcessor, refreshPropertyGrid);">Delete</a>
+	</div>
+
+	<script type="text/javascript" th:inline="text">
+		flame.loadGrid("propertyList", "com.thing.builder.ThingModelPropertyBuilder", {
+			view : detailview,
+			queryParams : {
+				oid : '[[${commandBean.primaryOid}]]'
+			},
+			detailFormatter : function(index, row) {
+				return '<div class="editProperty" style="padding:0px 0; border-radius:8px"></div>';
+			},
+			onExpandRow : function(index, row) { //点击行的修改按钮时调用这个方法去加载数据和界面
+				const editProperty = $(this).datagrid('getRowDetail', index).find('div.editProperty');
+				editProperty.panel({
+					height : 180,
+					border : true,
+					cache : false,
+					href : 'thymeleaf/thing/model/editProperty.html?oid=' + row.oid + '&index=' + index,
+					onLoad : function() {
+						$('#propertyList').datagrid('fixDetailRowHeight', index);
+					}
+				});
+				$('#propertyList').datagrid('fixDetailRowHeight', index);
+			},
+			onCollapseRow : function(index, row) {
+				return true;
+			}
+		});
+
+		flame.loadGrid("inheritedList", "com.thing.builder.ThingModelInheritedBuilder", {
+			queryParams : {
+				oid : '[[${commandBean.primaryOid}]]'
+			}
+		});
+
+		function removePropertyProcessor(params) {
+			const selections = $('#propertyList').datagrid('getSelections');
+			const oids = [];
+			for (var i = 0; i < selections.length; i++) {
+				if (selections[i].oid) {
+					oids.push(selections[i].oid);
+				}
+			}
+
+			params['oids'] = oids;
+			return true;
+		}
+
+		function refreshPropertyGrid() {
+			flame.reloadGrid('propertyList');
+		}
+
+		function cancelForm(index) {
+			$('#propertyList').datagrid('getExpander', index).trigger('click');
+		};
+
+		$(window).resize(function() {
+			//	resize_grid('#propertyList', 77);
+		});
+	</script>
+</body>
+</html>

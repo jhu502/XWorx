@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="easyui-layout" style="height:100%">
+    <div data-options="region:'north',border:false" style="height:240px">
+        <fieldset class="xui-fieldset">
+            <legend th:text="#{visualization_attributes}"/>
+            <div class="thumbnail">
+                <img src="images/product_288.png">
+            </div>
+            <table style="width:auto">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th style="width:20px;"></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><label th:text="#{label_name}"/></td>
+                    <td id="name"><span th:text="${commandBean.primaryObj?.name}"></span></td>
+                    <td></td>
+                    <td><label th:text="#{label_fullName}"/></td>
+                    <td id="fullName"><span th:text="${commandBean.primaryObj?.fullName}"></span></td>
+                </tr>
+                <tr>
+                    <td><label th:text="#{label_tel}"/></td>
+                    <td id="tel"><span th:text="${commandBean.primaryObj?.tel}"></span></td>
+                    <td></td>
+                    <td><label th:text="#{label_fax}"/></td>
+                    <td id="fax"><span th:text="${commandBean.primaryObj?.fax}"></span></td>
+                </tr>
+                <tr>
+                    <td><label th:text="#{label_email}"/></td>
+                    <td id="email"><span th:text="${commandBean.primaryObj?.email}"></span></td>
+                    <td></td>
+                    <td><label th:text="#{label_postalCode}"/></td>
+                    <td id="postalCode"><span th:text="${commandBean.primaryObj?.postalCode}"></span></td>
+                </tr>
+                <tr>
+                    <td><label>AppKey:</label></td>
+                    <td colspan="3" id="appkey"><span th:text="${commandBean.primaryObj?.appKey}"></span></td>
+                </tr>
+                <tr>
+                    <td><label th:text="#{label_description}"/></td>
+                    <td colspan="3" id="description"><span th:text="${commandBean.primaryObj?.description}"></span></td>
+                </tr>
+                <tr>
+                    <td><label th:text="#{label_address}"/></td>
+                    <td colspan="3" id="address"><span th:text="${commandBean.primaryObj?.address}"></span></td>
+                </tr>
+                <tr>
+                    <td><label th:text="#{label_createdStamp}"/></td>
+                    <td id="createdStamp"><span th:text="${commandBean.primaryObj?.createdStamp}"></span></td>
+                    <td></td>
+                    <td><label th:text="#{label_modifiedStamp}"/></td>
+                    <td id="modifiedStamp"><span th:text="${commandBean.primaryObj?.modifiedStamp}"></span></td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <div data-options="region:'center',border:false" style="padding: 2px">
+        <table id="grouplist" class="easyui-datagrid" style="height: 500px"></table>
+        <script th:inline="text">
+            flame.loadGrid("grouplist", "xw.auths.builder.RelatedPrincipalTableBuilder", {
+                queryParams: {
+                    oid: '[(${commandBean.primaryOid})]'
+                }
+            });
+        </script>
+        <div id="grouplist-tb">
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+               onclick="popupWindow('Create Group','thymeleaf/auths/createGroup.html',{oid: $('#selectedOid')[0].value},'width:680px;height:500px;padding:5px;');">Create</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-delete',plain:true" onclick="deletePrincipal()">Delete</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

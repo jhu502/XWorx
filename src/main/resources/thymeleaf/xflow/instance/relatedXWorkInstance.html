@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='相关流程列表')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="padding:2px;height:150px;">
+        <div id="flowInstanceList"></div>
+    </div>
+    <div data-options="region:'center',border:false" style="padding:2px">
+        <div id="flowWorkItemList"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("flowInstanceList", "xw.flow.builder.XProcessInstanceTableBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        },
+        onCheck: function (index, row) {
+            flame.reloadGrid('flowWorkItemList', {
+                oid: row.oid
+            });
+        },
+        onLoadSuccess: function (data) {
+            if (data && data.total && data.total > 0) {
+                $('#flowInstanceList').datagrid('checkRow', data.total - 1);
+            }
+        }
+    });
+    flame.loadGrid("flowWorkItemList", "xw.flow.builder.XProcessWorkTaskTableBuilder", {});
+</script>
+</body>
+
+</html>

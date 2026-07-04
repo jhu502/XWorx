@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='saveXFlowNodeData')}">
+<section class="easyui-tabs" data-options="fit:true,onSelect:onSelectActivityTab">
+    <input type="hidden" id="nodeId" th:value="${commandBean.getTextParameter('nodeId')}">
+    <div th:title="#{attributes}" style="padding:10px">
+        <table>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong th:text="#{label_name}"></strong></td>
+                <td style="padding-top:3px;"><input id="nodeLabel" name="nodeLabel" style="width:250px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong th:text="#{label_taskform}"></strong></td>
+                <td style="padding-top:3px;"><input id="taskForm" name="taskForm" style="width:500px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;vertical-align:top;padding-right:5px;"><strong th:text="#{label_instructions}"></strong></td>
+                <td style="padding-top:3px;"><textarea id="instructions" name="instructions" rows="4" cols="90"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div th:title="#{variables}" style="padding:2px">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'center',border:false">
+                <table class="easyui-datagrid" data-options="fit:true,singleSelect:true" id="variableGrid" th:title="#{variableList}">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'blank',width:10"></th>
+                        <th data-options="field:'name',width:120" th:text="#{name}"></th>
+                        <th data-options="field:'display',width:150" th:text="#{displayName}"></th>
+                        <th data-options="field:'type',width:200,align:'left'" th:text="#{type}"></th>
+                        <th data-options="field:'value',width:230" th:text="#{defaultValue}"></th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="easyui-window" id="winVariable" style="width:320px;height:250px;padding:10px 20px;"
+                     data-options="modal:true,closed:true,collapsible:false,minimizable:false,maximizable:false,closable:false,inline:true">
+                    <table>
+                        <tr style="height:30px">
+                            <td style="width:60px;padding-right:5px;" th:text="#{label_name}"></td>
+                            <td><input class="easyui-textbox" id="varName" data-options="required:true" style="height:25px"></input></td>
+                        </tr>
+                        <tr style="height:30px">
+                            <td style="width:60px;padding-right:5px;" th:text="#{label_display}"></td>
+                            <td><input class="easyui-textbox" id="varDisplay" data-options="required:true" style="width:200px;height:25px"></input></td>
+                        </tr>
+                        <tr style="height:30px">
+                            <td style="width:60px;padding-right:5px;" th:text="#{label_type}"></td>
+                            <td>
+                                <select class="easyui-combobox" id="varType" data-options="required:true,panelHeight:'auto'" style="width:200px;height:25px">
+                                    <option th:each="varType:${T(xw.flow.constants.FlowConstant).varTypes()}" th:value="${varType.key}" th:text="${varType.value}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="height:30px">
+                            <td style="width:60px;">Default:</td>
+                            <td><input class="easyui-textbox" id="varValue" data-options="required:false" style="width:200px;height:25px"></input></td>
+                        </tr>
+                        <tr style="height:50px">
+                            <td colspan="2" style="text-align:right">
+                                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#winVariable').window({title:'New'}).window('close')">Close</a>
+                                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveVariable();">Save</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div data-options="region:'east',border:true" style="width:55px;padding-top:10px;padding-left:2px;">
+                <div style="display:table-cell;vertical-align: middle">
+                    <button type="button" style="width:50px" onclick="$('#winVariable').window('open');" th:text="#{create}"></button>
+                    <br/><br/>
+                    <button type="button" style="width:50px" onclick="editVariable();" th:text="#{edit}"></button>
+                    <br/><br/>
+                    <button type="button" style="width:50px" onclick="delVariable();" th:text="#{delete}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:title="#{participants}" data-options="closable:false" style="padding:2px">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',border:true" style="width:360px;padding-left:2px;">
+                <div class="easyui-tabs" data-options="tabPosition:'left',headerWidth:60,fit:true,border:false" id="participantTab">
+                    <div th:title="#{group}" style="padding:5px 3px 3px">
+                        <div class="easyui-layout" data-options="fit:true,border:false">
+                            <div data-options="region:'north',border:false" style="height:30px;padding-left:2px;">
+                                <input class="easyui-textbox" th:data-options="|buttonText:'#{user}',buttonIcon:'icon-search',prompt:'Search...',onClickButton:searchUser|"
+                                       id="btnSearchUser"
+                                       style="width:250px;height:24px;">
+                            </div>
+                            <div data-options="region:'center',split:true,border:false">
+                                <div class="easyui-datalist" data-options="checkbox:true,fit:true,selectOnCheck:false,valueField:'name',textField:'display'" id="activityUserList"
+                                     th:title="#{userList}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:title="#{role}" style="padding:5px 3px 3px">
+                        <div class="easyui-layout" data-options="fit:true,border:false">
+                            <div data-options="region:'north',border:false" style="height:30px;padding-left:2px;">
+                                <input class="easyui-textbox" th:data-options="|buttonText:'#{role}',buttonIcon:'icon-search',prompt:'Search...',onClickButton:searchRole|"
+                                       id="btnSearchRole"
+                                       style="width:250px;height:24px;">
+                            </div>
+                            <div data-options="region:'center',split:true,border:false">
+                                <div class="easyui-datalist" data-options="checkbox:true,fit:true,selectOnCheck:false,valueField:'value',textField:'value'" id="activityRoleList"
+                                     th:title="#{roleList}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:title="#{group}" style="padding:5px 3px 3px">
+                        <div class="easyui-layout" data-options="fit:true,border:false">
+                            <div data-options="region:'north',border:false" style="height:30px;padding-left:2px;">
+                                <input class="easyui-textbox" th:data-options="|buttonText:'#{group}',buttonIcon:'icon-search',prompt:'Search...',onClickButton:searchGroup|"
+                                       id="btnSearchGroup"
+                                       style="width:250px;height:24px;">
+                            </div>
+                            <div data-options="region:'center',split:true,border:false">
+                                <div class="easyui-datalist" data-options="checkbox:true,fit:true,selectOnCheck:false,valueField:'value',textField:'display'" id="activityGroupList"
+                                     th:title="#{groupList}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-options="region:'center',split:true,border:false">
+                <div class="easyui-layout" data-options="fit:true,border:false">
+                    <div data-options="region:'north',border:true" style="height:30px;padding-left:20px;padding-top:2px;">
+                        <label>[[#{label_necessity}]]</label>
+                        <select class="easyui-combobox" data-options="panelHeight:'auto'" id="necessity" name="necessity" style="width:80px;height:24px">
+                            <option value="ANY" th:text="#{any}"></option>
+                            <option value="ALL" th:text="#{all}"></option>
+                            <option value="QTY" th:text="#{quantity}"></option>
+                        </select>
+                    </div>
+                    <div data-options="region:'west',border:true" style="display:table;width:40px;padding:4px;">
+                        <div style="display:table-cell;vertical-align: middle">
+                            <button type="button" style="width:30px" onclick="addAllLeft2Right()">&gt;&gt;</button>
+                            <br/><br/>
+                            <button type="button" style="width:30px" onclick="alert();">&gt;</button>
+                            <br/><br/>
+                            <button type="button" style="width:30px" onclick="alert();">&lt;&lt;</button>
+                            <br/><br/>
+                            <button type="button" style="width:30px" onclick="alert();">&lt;</button>
+                        </div>
+                    </div>
+                    <div data-options="region:'center',border:false">
+                        <table class="easyui-datagrid" data-options="fit:true" id="participantGrid" th:title="#{participantList}">
+                            <thead>
+                            <tr>
+                                <th data-options="field:'value',width:80,hidden:true"></th>
+                                <th data-options="field:'blank',width:10"></th>
+                                <th data-options="field:'type',width:50" th:text="#{type}"></th>
+                                <th data-options="field:'display',width:230,align:'left'" th:text="#{name}"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:title="#{routing}" style="padding:2px">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',border:false" style="width:150px;">
+                <div class="easyui-datalist" id="routeEventsGrid" th:title="#{event_routing}"
+                     data-options="fit:true,checkbox:true,selectOnCheck:true,valueField:'value',textField:'value',tools:'#routeTbar'">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'type',hidden:true">Code</th>
+                        <th data-options="field:'value',editor:{type:'text'}">Name</th>
+                        <th data-options="field:'expression',hidden:true">Price</th>
+                    </tr>
+                    </thead>
+                </div>
+            </div>
+            <div data-options="region:'center',border:false" style="padding-left:5px;">
+                <div class="easyui-layout" data-options="fit:true">
+                    <div data-options="region:'north',border:true" style="padding:1px 0px 1px 10px;height:28px;">
+                        <label style="color:#009ae7;margin-right:300px">[[#{label_transition_condition}]]</label>
+                        <button type="button" style="width:100px;height:20px;" onclick="alert();">[[#{check_syntax}]]</button>
+                    </div>
+                    <div data-options="region:'center',border:false">
+                        <input class="easyui-textbox" data-options="fit:true,multiline:true">
+                    </div>
+                </div>
+            </div>
+            <div id="routeTbar">
+                <a href="javascript:void(0)" class="icon-add" onclick="javascript:addRouteRow()"></a>
+                <a href="javascript:void(0)" class="icon-edit" onclick="javascript:alert('ok')"></a>
+                <a href="javascript:void(0)" class="icon-delete" onclick="javascript:delRouteRow()"></a>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    var gridVariables = [];
+    var gridParticipants = [];
+    var girdRouteEvents = [];
+    (($) => {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        $('#nodeLabel').val(flowData.label);
+        $('#taskForm').val(flowData.taskForm);
+        $('#instructions').val(flowData.instructions);
+        /** 复制XFlowDefinition定义的变量到：gridVariables中, 取消时不会误保存;*/
+        if (flowData.variables) {
+            for (let i = 0; i < flowData.variables.length; i++) {
+                const variable = flowData.variables[i];
+                if (variable) {
+                    gridVariables.push({
+                        name: variable.name,
+                        display: variable.display,
+                        type: variable.type,
+                        value: variable.value
+                    })
+                }
+            }
+        }
+        if (flowData.participants) {
+            for (let i = 0; i < flowData.participants.length; i++) {
+                const participant = flowData.participants[i];
+                if (participant) {
+                    gridParticipants.push({
+                        type: participant.type,
+                        value: participant.value,
+                        display: participant.display
+                    })
+                }
+            }
+        }
+        if (flowData.routevents) {
+            for (let i = 0; i < flowData.routevents.length; i++) {
+                const routevent = flowData.routevents[i];
+                if (routevent) {
+                    girdRouteEvents.push({
+                        type: routevent.type,
+                        value: routevent.value,
+                        expression: routevent.expression
+                    })
+                }
+            }
+        } else {
+            girdRouteEvents = [
+                {type: "event", value: "Created", expression: ""},
+                {type: "event", value: "Initialized", expression: ""},
+                {type: "event", value: "Completed", expression: ""},
+                {type: "event", value: "Deleted", expression: ""}
+            ];
+        }
+    })(jQuery);
+
+    function onSelectActivityTab(o, p) {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        if (p == 1) {
+            $('#variableGrid').datagrid('loadData', gridVariables);
+        } else if (p == 2) {
+            $('#participantGrid').datagrid('loadData', gridParticipants);
+        } else if (p == 3) {
+            $('#routeEventsGrid').datalist('loadData', girdRouteEvents);
+        }
+    }
+
+    function saveXFlowNodeData(o) {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        if (node) {
+            const nodeLabel = $('#nodeLabel').val();
+            const taskForm = $('#taskForm').val();
+            const formUrl = $('#formUrl').val();
+            const instructions = $('#instructions').val();
+            const necessity = $('#necessity').combobox("getValue");
+            flowData.variables = gridVariables;
+            flowData.participants = gridParticipants;
+            flowData.routevents = girdRouteEvents;
+            flowData.label = nodeLabel;
+            flowData.taskForm = taskForm;
+            flowData.necessity = necessity;
+            flowData.instructions = instructions;
+            modifyNodeLabel(nodeId, nodeLabel);
+        }
+        flame.closeWindow(o);
+    }
+
+    function searchUser() {
+        const searchKey = $('#btnSearchUser').textbox('getValue');
+        if (isBlank(searchKey)) {
+            $.messager.alert('warning', '[[#{please_input_username}]]');
+            return;
+        }
+        axios.get('XUI$/get/xw.auths.processor.QueryPrincipalProcessor', {
+            params: {
+                principalType: 'xw.auths.entity.XUser',
+                searchKey: searchKey
+            }
+        }).then(function (response) {
+            const result = response.data;
+            if ('SUCCESS' == result.status) {
+                $('#activityUserList').datalist('loadData', result.data)
+            }
+        }).catch(error => { //请求失败处理
+            console.log(error);
+        });
+    }
+
+    function searchRole() {
+        const searchKey = $('#btnSearchRole').textbox('getValue');
+        if (isBlank(searchKey)) {
+            $.messager.alert('warning', '[[#{please_input_rolename}]]');
+            return;
+        }
+        axios.get('XUI$/get/xw.auths.processor.QueryRoleProcessor', {
+            params: {
+                searchKey: searchKey
+            }
+        }).then(function (response) {
+            const result = response.data;
+            if ('SUCCESS' == result.status) {
+                $('#activityRoleList').datalist('loadData', result.data)
+            }
+        }).catch(error => { //请求失败处理
+            console.log(error);
+        });
+    }
+
+    function searchGroup() {
+        const searchKey = $('#btnSearchGroup').textbox('getValue');
+        if (isBlank(searchKey)) {
+            $.messager.alert('warning', '[[#{please_input_groupname}]]');
+            return;
+        }
+        axios.get('XUI$/get/xw.auths.processor.QueryPrincipalProcessor', {
+            params: {
+                principalType: 'xw.auths.entity.XGroup',
+                searchKey: searchKey
+            }
+        }).then(function (response) {
+            const result = response.data;
+            if ('SUCCESS' == result.status) {
+                $('#activityGroupList').datalist('loadData', result.data)
+            }
+        }).catch(error => { //请求失败处理
+            console.log(error);
+        });
+    }
+
+    function addAllLeft2Right() {
+        const tab = $('#participantTab').tabs('getSelected');
+        const index = $('#participantTab').tabs('getTabIndex', tab);
+        if (index == 0) {
+            const userData = $('#activityUserList').datalist('getData');
+            if (userData && userData.rows) {
+                for (let row of userData.rows) {
+                    $('#participantGrid').datagrid('appendRow', {
+                        type: 'user',
+                        value: row.name,
+                        display: row.display
+                    });
+                }
+            }
+        } else if (index == 1) {
+            const roleData = $('#activityRoleList').datalist('getData');
+            if (roleData && roleData.rows) {
+                for (let row of roleData.rows) {
+                    $('#participantGrid').datagrid('appendRow', {
+                        type: 'role',
+                        value: row.name,
+                        display: row.display
+                    });
+                }
+            }
+        } else if (index == 2) {
+            const groupData = $('#activityGroupList').datalist('getData');
+            if (groupData && groupData.rows) {
+                for (let row of groupData.rows) {
+                    $('#participantGrid').datagrid('appendRow', {
+                        type: 'group',
+                        value: row.name,
+                        display: row.display
+                    });
+                }
+            }
+        }
+    }
+
+    function addRouteRow() {
+        $.messager.prompt('[[#{input_routing}]]', '[[#{label_routing_name}]]', function (route) {
+            if (route) {
+                $('#routeEventsGrid').datalist('insertRow', {
+                    row: {
+                        type: 'route',
+                        value: route,
+                        expression: ''
+                    }
+                });
+            }
+        });
+    }
+
+    function delRouteRow() {
+        const selected = $('#routeEventsGrid').datalist('getSelections');
+        for (let i = 0; i < selected.length; i++) {
+            if (selected[i].type == 'route') {
+                const index = $('#routeEventsGrid').datalist('getRowIndex', selected[i]);
+                $('#routeEventsGrid').datalist('selectRow', index).datalist('endEdit', index);
+                //删除行
+                $('#routeEventsGrid').datalist('deleteRow', index);
+            }
+        }
+        $('#routeEventsGrid').datalist('clearSelections');
+    }
+
+    function saveVariable() {
+        const varName = $('#varName').val();
+        const varDisplay = $('#varDisplay').val();
+        const varType = $('#varType').val();
+        const varValue = $('#varValue').val();
+        if (isBlank(varName)) {
+            alert('Name is blank.');
+            return;
+        }
+        if (isBlank(varType)) {
+            alert('Type is blank.');
+            return;
+        }
+        let variable;
+        for (let i = 0; i < gridVariables.length; i++) {
+            const target = gridVariables[i];
+            if (varName == target.name) {
+                variable = target;
+                break;
+            }
+        }
+        //如果变量不存在, 则往gridVariables中push新变量
+        if (variable == undefined) {
+            variable = {
+                name: varName,
+                display: varDisplay,
+                type: varType,
+                value: varValue
+            };
+            gridVariables.push(variable);
+        } else {// 如果变量存在, 则更新存在的变量
+            variable.display = varDisplay;
+            variable.type = varType;
+            variable.value = varValue;
+        }
+        $('#variableGrid').datagrid('loadData', gridVariables);
+        setVariableWindow({});
+        $('#winVariable').window('close');
+    }
+
+    function editVariable() {
+        const row = $('#variableGrid').datagrid('getSelected');
+        if (row == undefined) {
+            alert("Please select variable rows.");
+            return;
+        }
+        $('#winVariable').window('open');
+        setVariableWindow(row);
+    }
+
+    function delVariable() {
+        const row = $('#variableGrid').datagrid('getSelected');
+        if (row == undefined) {
+            alert("Please select variable rows.");
+            return;
+        }
+        const index = $('#variableGrid').datagrid('getRowIndex', row);
+        if (index > -1) {
+            $('#variableGrid').datagrid('deleteRow', index);
+        }
+    }
+
+    function setVariableWindow(o) {
+        $('#varName').textbox('setValue', o.name);
+        $('#varDisplay').textbox('setValue', o.display);
+        $('#varType').combobox('setValue', o.type);
+        $('#varValue').textbox('setValue', o.value);
+    }
+
+    /**
+     * 修改X6节点的显示名称
+     * @param nodeId
+     * @param nodeLabel
+     */
+    function modifyNodeLabel(nodeId, nodeLabel) {
+        $("g[data-cell-id='" + nodeId + "']").children('text').children('tspan').html(nodeLabel);
+    }
+</script>
+</body>
+</html>

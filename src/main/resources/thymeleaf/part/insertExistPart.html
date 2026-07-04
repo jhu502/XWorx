@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshFolderTree')}">
+<section class="easyui-layout" data-options="fit:true,border:false">
+    <div data-options="region:'north'" style="height: 100px">
+        <input id="rowOid" type="hidden" th:value="${commandBean.primaryOid}"/>
+    </div>
+    <div data-options="region:'center'">
+        <table id="searchResult"></table>
+    </div>
+</section>
+
+<script type="text/javascript">
+    flame.loadGrid("searchResult", "plm.part.builder.PartSearchTableBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        }
+    });
+
+    function refreshFolderTree(result) {
+        if (typeof (result) == 'string')
+            result = $.parseJSON(result);
+        if (result.status == 'SUCCESS') {
+            flame.reloadGrid('browserTable');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

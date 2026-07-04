@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='User Info', link=~{}, script=~{})}">
+</head>
+<body>
+<div style="padding:0px">
+    <div class="easyui-menubutton" data-options="menu:'#TypeMenu',plain:false">操作</div>
+    <img style="vertical-align: middle; padding-left: 10px;" src="images/person.png"/>
+    <span style="font-size: 14px; vertical-align: middle;"> 用户 - </span>
+    <span style="font-size: 14px; vertical-align: middle; font-weight: bold;" th:text="${primaryObj.name}"></span>
+</div>
+<div id="TypeMenu" style="width: 150px;">
+    <div data-options="iconCls:'icon-undo'">Undo</div>
+    <div data-options="iconCls:'icon-redo'">Redo</div>
+    <div class="menu-sep"></div>
+    <div>Cut</div>
+    <div>Copy</div>
+    <div>Paste</div>
+    <div class="menu-sep"></div>
+    <div data-options="iconCls:'icon-remove'">Delete</div>
+    <div>Select All</div>
+</div>
+<br>
+<br>
+<table style="width: 800px; height: 120px">
+    <tr>
+        <th style="width: 30px"></th>
+        <th style="width: 80px"></th>
+        <th></th>
+        <th style="width: 80px"></th>
+        <th></th>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">姓名：</label></td>
+        <td id="name"><span th:text="${primaryObj.name}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">全名：</label></td>
+        <td id="fullName"><span th:text="${primaryObj.fullName}"></span></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">电话：</label></td>
+        <td id="tel"><span th:text="${primaryObj.tel}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">传真：</label></td>
+        <td id="fax"><span th:text="${primaryObj.fax}"></span></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">电子邮件：</label></td>
+        <td id="email"><span th:text="${primaryObj.email}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">邮编：</label></td>
+        <td id="postalCode"><span th:text="${primaryObj.postalCode}"></span></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">AppKey:</label></td>
+        <td colspan="3" id="appkey"><span th:text="${primaryObj.appKey}"></span></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">描述：</label></td>
+        <td colspan="3" id="description"><span th:text="${primaryObj.description}"></span></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">地址：</label></td>
+        <td colspan="3" id="address"><span th:text="${primaryObj.address}"></span></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><label style="font-size: 12px; font-weight: bold">创建时间：</label></td>
+        <td id="createdStamp"><span th:text="${primaryObj.createdStamp}"></span></td>
+        <td><label style="font-size: 12px; font-weight: bold">修改时间：</label></td>
+        <td id="modifiedStamp"><span th:text="${primaryObj.modifiedStamp}"></span></td>
+    </tr>
+</table>
+</body>
+</html>

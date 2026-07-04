@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div class="easyui-panel" data-options="title:'Range',fit:true,border:true">
+	<div style="padding: 20px">
+		<span><b>Dynamic:</b></span>
+		<input class="easyui-textbox" data-options="prompt:'Enter mapping attribute'" id="charactDynamicMapping" name="dynamicMapping"
+			   style="width: 200px; height: 32px" th:if="${commandBean.primaryObj instanceof T(com.flame.dynamic.XCharacteristic)}"
+			   th:value="${commandBean.primaryObj.dynamicMapping}">
+		<input class="easyui-textbox" data-options="prompt:'Enter mapping attribute'" id="charactDynamicMapping" name="dynamicMapping"
+			   style="width: 200px; height: 23px" th:unless="${commandBean.primaryObj instanceof T(com.flame.dynamic.XCharacteristic)}">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-add'" href="javascript:void(0)" onclick="$('#w').window('open')"></a>
+		<span>e.g.:(number or Class:com.flame.DynamicHandleClass)</span>
+	</div>
+	<div class="easyui-window" id="w" style="width: 500px; height: 400px; padding: 10px;"
+		 th:data-options="|modal:true,closed:true,minimizable:false,cache:false,href:'thymeleaf/part/dynamic/charact/selectMappingAttr.html?oid=${commandBean.primaryOid}'|"
+		 title="选择属性"></div>
+</div>
+	<script type="text/javascript" th:inline="text">
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='用户任务列表')}">
+</head>
+<body style="padding:3px;">
+<div id="userTaskList"></div>
+<script type="text/javascript">
+    flame.loadGrid("userTaskList", "xw.flow.builder.XFlowTaskEntityTableBuilder", {
+        onClickRow: function (node) {
+        }
+    });
+
+    function refreshProcessDefintionList() {
+        alert('xxx');
+    }
+</script>
+</body>
+
+</html>

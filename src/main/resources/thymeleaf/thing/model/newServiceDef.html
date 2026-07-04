@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='submitPreprocess', callback='refreshServiceDefTree')}">
+<section class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'west',border:false" style="width:350px;">
+		<input type="hidden" id='arguments' name="arguments" value=""/>
+		<div class="easyui-panel" title="Service Info" id="servicePropertyPanel" data-options="fit:true" style="width: 100%; padding: 10px;"></div>
+	</div>
+	<div data-options="region:'center',collapsible:false,border:false,split:true">
+		<div class="easyui-panel" title="Input Arguments" data-options="fit:true" style="width: 100%; padding: 3px;">
+			<div id="inputParamBuilder"></div>
+			<div id="inputOutput-tb">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()"></a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-delete',plain:true" onclick="removeit()"></a>
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	(($) => {
+		flame.loadGrid("inputParamBuilder", "com.thing.builder.InputParameterBuilder", {
+			queryParams: {
+				oid: '[[${commandBean.primaryOid}]]'
+			},
+			onClickCell: function (index, field) {
+				if (editIndex != index) {
+					if (endEditing()) {
+						$('#inputParamBuilder').datagrid('selectRow', index).datagrid('beginEdit', index);
+						const ed = $('#inputParamBuilder').datagrid('getEditor', {
+							index: index,
+							field: field
+						});
+						if (ed) {
+							($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+						}
+						editIndex = index;
+					} else {
+						setTimeout(function () {
+							$('#inputParamBuilder').datagrid('selectRow', editIndex);
+						}, 0);
+					}
+				}
+			}
+		});
+
+		flame.loadGrid('servicePropertyPanel', 'com.thing.form.ServicePropertyDefForm', {
+			onXComplete: function (config) {
+			}
+		});
+	})(jQuery);
+
+	var editIndex;
+	function endEditing() {
+		if (editIndex == undefined)
+			return true
+
+		if ($('#inputParamBuilder').datagrid('validateRow', editIndex)) {
+			$('#inputParamBuilder').datagrid('endEdit', editIndex);
+			editIndex = undefined;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function append() {
+		if (endEditing()) {
+			$('#inputParamBuilder').datagrid('appendRow', {
+				type: 'STRING'
+			});
+			editIndex = $('#inputParamBuilder').datagrid('getRows').length - 1;
+			$('#inputParamBuilder').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
+		}
+	}
+
+	function removeit() {
+		if (editIndex == undefined) {
+			return
+		}
+		$('#inputParamBuilder').datagrid('cancelEdit', editIndex).datagrid('deleteRow', editIndex);
+		editIndex = undefined;
+	}
+
+	function submitPreprocess() {
+		endEditing(); //编辑状态的行无法去获取数据，需要强制结束编辑状态;
+		const rows = $('#inputParamBuilder').datagrid('getRows');
+		const array = [];
+		for (i = 0; i < rows.length; i++) {
+			array.push(rows[i]);
+		}
+		$('#arguments').val(JSON.stringify(array));
+
+		return true;
+	}
+
+	function refreshServiceDefTree() {
+
+	}
+</script>
+</body>
+</html>

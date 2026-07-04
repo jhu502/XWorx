@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshTeamTree', before='collectSelectedObject')}">
+    <section class="easyui-layout" data-options="fit:true">
+        <input type="hidden" name="selectedOids" id="selectedOids" />
+        <div data-options="region:'west',border:false" style="width:55%;padding:1px;">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false" style="height:70px">
+                    <div id="principalSearchForm" />
+                </div>
+                <div data-options="region:'center',border:false">
+                    <div class="easyui-layout" data-options="fit:true">
+                        <div data-options="region:'center',border:false">
+                            <table id="principalQueryResult" class="easyui-datagrid" data-options="idField:'oid',fit:true,selectOnCheck:false,rownumbers:false" th:title="#{queryResult}">
+                                <thead>
+                                    <tr>
+                                        <th data-options="field:'oid',checkbox:true"></th>
+                                        <th data-options="field:'icon',width:25,align:'center',formatter:flame.iconFormatter"></th>
+                                        <th data-options="field:'display',width:190,align:'left'" th:text="#{name}"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div data-options="region:'east',border:false" style="display:table-cell;vertical-align:middle;padding:5px;width:40px">
+                            <button type="button" style="width:30px" onclick="addToRight();">&gt;</button>
+                            <br /><br />
+                            <button type="button" style="width:30px" onclick="delFromRight();">&lt;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center',border:false">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false" style="height:70px"></div>
+                <div data-options="region:'center',border:false">
+                    <table class="easyui-datagrid" data-options="idField:'oid',fit:true" id="selectedPrincipals" th:title="#{selectedPrincipal}">
+                        <thead>
+                            <tr>
+                                <th data-options="field:'oid',checkbox:true"></th>
+                                <th data-options="field:'icon',width:25,align:'center',formatter:flame.iconFormatter"></th>
+                                <th data-options="field:'display',width:205,align:'left'" th:text="#{name}"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script type="text/javascript">
+        flame.loadGrid('principalSearchForm', 'xw.auths.form.PrincipalSearchForm', {});
+
+        var oidMap = new Map();
+        function queryPrincipal() {
+            const searchKey = $('#searchKey').textbox('getValue');
+            const principalType = $('#principalType').textbox('getValue');
+            if (isBlank(searchKey)) {
+                $.messager.alert('warning', '请输入用户名');
+                return;
+            }
+            axios.get('XUI$/get/xw.auths.processor.QueryPrincipalProcessor', {
+                params: {principalType: principalType, searchKey: searchKey}
+            }).then(function (response) {
+                const result = response.data;
+                if ('SUCCESS' == result.status) {
+                    $('#principalQueryResult').datagrid('loadData', result.data);
+                }
+            }).catch(error => {console.log(error);});
+        }
+
+        function addToRight() {
+            const principals = $('#principalQueryResult').datagrid('getChecked');
+            for (let i = 0; i < principals.length; i++) {
+                const row = principals[i];
+                if (oidMap.has(row.oid)) continue;
+                oidMap.set(row.oid, row.display);
+                $('#selectedPrincipals').datagrid('appendRow', {oid: row.oid, icon: row.icon, display: row.display});
+            }
+        }
+
+        function delFromRight() {
+            const grid = $('#selectedPrincipals');
+            const rows = grid.datagrid('getChecked');
+            for (let i = 0; i < rows.length; i++) {
+                oidMap.delete(rows[i].oid);
+                var index = grid.datagrid('getRowIndex', rows[i]);
+                grid.datagrid('deleteRow', index);
+            }
+        }
+
+        function collectSelectedObject(o) {
+            const rows = $('#selectedPrincipals').datagrid('getRows');
+            const oids = [];
+            for (let i = 0; i < rows.length; i++) {
+                oids.push(rows[i].oid);
+            }
+            // 将选中的数据写入隐藏域，由 flame.submitForm 统一序列化提交
+            $('#selectedOids').val(JSON.stringify(oids));
+            return true;
+        }
+
+        function refreshTeamTree(result) {
+            if (result && result.status == 'SUCCESS') {
+                flame.reloadGrid('contextTeamTree');
+            }
+            return true;
+        }
+    </script>
+</body>
+
+</html>

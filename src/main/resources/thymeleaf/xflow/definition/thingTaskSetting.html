@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='saveXFlowNodeData')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <input id="nodeId" type="hidden" th:value="${commandBean.getTextParameter('nodeId')}">
+    <div th:title="#{attributes}" style="padding:10px">
+        <table>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong>*[[#{label_name}]]</strong></td>
+                <td style="padding-top:3px;"><input id="nodeLabel" name="nodeLabel" style="width:250px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;padding-right:5px;"><strong>[[#{label_taskform}]]</strong></td>
+                <td style="padding-top:3px;"><input id="taskForm" name="taskForm" style="width:150px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:70px;text-align:right;vertical-align:top;padding-right:5px;"><strong>[[#{label_instructions}]]</strong></td>
+                <td style="padding-top:3px;"><textarea id="instructions" name="instructions" rows="4" cols="90"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div title="活动" style="padding:10px">
+
+    </div>
+    <div title="参与者" data-options="closable:false" style="padding:10px">
+
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    (($) => {
+        const nId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nId);
+        const nData = node.store.data;
+        $('#nodeLabel').val(nData.label);
+        $('#instructions').val(nData.instructions);
+    })(jQuery);
+
+    function saveXFlowNodeData(o) {
+        const nId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nId);
+        const nData = node.store.data;
+        if (node) {
+            const nodeLabel = $('#nodeLabel').val();
+            const taskForm = $('#taskForm').val();
+            const formUrl = $('#formUrl').val();
+            const instructions = $('#instructions').val();
+            nData.label = nodeLabel;
+            flowEditor.modifyNodeLabel(nId, nodeLabel);
+        }
+        flame.closeWindow(o);
+    }
+</script>
+</body>
+</html>

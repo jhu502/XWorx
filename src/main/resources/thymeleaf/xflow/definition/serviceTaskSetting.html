@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body th:insert="~{thymeleaf/util/popup::basic(section=~{::section}, script=~{::script}, before='saveXFlowNodeData')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <input id="nodeId" type="hidden" th:value="${commandBean.getTextParameter('nodeId')}">
+    <div th:title="#{attributes}" style="padding:10px">
+        <table>
+            <tr>
+                <td style="width:100px;text-align:right;"><strong>*[[#{label_name}]]</strong></td>
+                <td style="padding-top:3px;"><input id="nodeLabel" name="nodeLabel" style="width:250px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:90px;text-align:right;padding-right:5px;"><strong>*[[#{label_service_type}]]</strong></td>
+                <td style="padding-top:3px;">
+                    <select class="easyui-combobox" id="implementedType" name="implementedType" data-options="panelHeight:'auto',editable:false" style="width:150px;height:27px;padding-bottom:10px;">
+                        <option value="class">Class</option>
+                        <option value="expression">Expression</option>
+                        <option value="delegateExpression">Delegate Expression</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:90px;text-align:right;padding-right:5px;"><strong>*[[#{label_implementation}]]</strong></td>
+                <td style="padding-top:3px;"><input id="implementation" name="implementation" style="width:500px;height:25px"></input></td>
+            </tr>
+            <tr>
+                <td style="width:90px;text-align:right;vertical-align:top;padding-right:5px;"><strong>[[#{label_instructions}]]</strong></td>
+                <td style="padding-top:3px;"><textarea id="instructions" name="instructions" rows="4" cols="90"></textarea></td>
+            </tr>
+        </table>
+    </div>
+</section>
+<script type="text/javascript" th:inline="text">
+    (($) => {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        const flowData = node.store.data;
+        $('#nodeLabel').val(flowData.label);
+        $('#instructions').val(flowData.instructions);
+        $('#implementation').val(flowData.implementation);
+        $('#implementedType').val(flowData.implementedType);
+    })(jQuery);
+
+    function saveXFlowNodeData(o) {
+        const nodeId = $('#nodeId').val();
+        const node = flowEditor.getXFlowNode(nodeId);
+        if (node) {
+            const flowData = node.store.data;
+            const nodeLabel = $('#nodeLabel').val();
+            const implementation = $('#implementation').val();
+            const implementedType = $('#implementedType').val();
+            if (isBlank(implementation)) {
+                alert('请设置“服务实现”');
+            } else if (isBlank(implementedType)) {
+                alert('请设置“服务类型”');
+            } else {
+                flowData.label = nodeLabel;
+                flowData.instructions = $('#instructions').val();
+                flowData.implementation = implementation;
+                flowData.implementedType = implementedType;
+                flowEditor.modifyNodeLabel(nodeId, nodeLabel);
+                flame.closeWindow(o);
+            }
+        }
+        return false;
+    }
+</script>
+</body>
+</html>

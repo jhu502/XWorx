@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.localize.EnumeratedLoader" description="EGroupType">
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">SYSTEM</attr>
+        <attr name="display">System</attr>
+        <attr name="en_US">System</attr>
+        <attr name="zh_CN">系统</attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">CORPORATION</attr>
+        <attr name="display">Corporation</attr>
+        <attr name="en_US">Corporation</attr>
+        <attr name="zh_CN">企业</attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">COMPANY</attr>
+        <attr name="display">Company</attr>
+        <attr name="en_US">Company</attr>
+        <attr name="zh_CN">公司</attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">DEPARTMENT</attr>
+        <attr name="display">Department</attr>
+        <attr name="en_US">Department</attr>
+        <attr name="zh_CN">部门</attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">OFFICE</attr>
+        <attr name="display">Office</attr>
+        <attr name="en_US">Office</attr>
+        <attr name="zh_CN">办公室</attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">SECTION</attr>
+        <attr name="display">Section</attr>
+        <attr name="en_US">Section</attr>
+        <attr name="zh_CN">小组</attr>
+    </LoadObject>
+    <LoadObject type="xw.auths.entity.GroupTypeRB" where="name">
+        <attr name="name">NONE</attr>
+        <attr name="display">None</attr>
+        <attr name="en_US">None</attr>
+        <attr name="zh_CN">无</attr>
+    </LoadObject>
+</FlameDataLoad>

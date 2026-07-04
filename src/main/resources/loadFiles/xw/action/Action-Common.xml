@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Folder">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">delete</attr>
+		<attr name="type">XObject</attr>
+		<attr name="supported_type"></attr>
+		<attr name="display">Delete</attr>
+		<attr name="icon">images/delete.png</attr>
+		<attr name="style"></attr>
+		<attr name="url"></attr>
+		<attr name="processor">xw.object.processor.DeleteObjectProcessor</attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Delete</attr>
+		<attr name="zh_CN">删除</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">copy</attr>
+		<attr name="type">XObject</attr>
+		<attr name="display">Copy</attr>
+		<attr name="icon">images/copy.gif</attr>
+		<attr name="style"></attr>
+		<attr name="processor">xw.object.processor.CopyObjectProcessor</attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Copy</attr>
+		<attr name="zh_CN">复制</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">paste</attr>
+		<attr name="type">XObject</attr>
+		<attr name="display">Paste</attr>
+		<attr name="icon">images/paste.gif</attr>
+		<attr name="style"></attr>
+		<attr name="processor">xw.object.processor.PasteObjectProcessor</attr>
+		<attr name="winType">invoke</attr>
+		<attr name="en_US">Paste</attr>
+		<attr name="zh_CN">粘贴</attr>
+	</LoadObject>
+</FlameDataLoad>

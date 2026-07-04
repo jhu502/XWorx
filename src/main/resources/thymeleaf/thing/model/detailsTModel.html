@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Model Details')}"></head>
+<body>
+<div class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'north',border:false" style="height:240px">
+		<fieldset class="xui-fieldset">
+			<legend th:text="#{visualization_attributes}"></legend>
+			<div class="thumbnail">
+				<img src="images/product_288.png">
+			</div>
+			<table>
+				<tr>
+					<th></th>
+					<th style="width:200px"></th>
+					<th></th>
+					<th style="width:200px"></th>
+				</tr>
+				<tr>
+					<td><label th:text="#{label_number}"></label></td>
+					<td id="number"><span th:text="${commandBean.primaryObj.number}"></span></td>
+					<td><label th:text="#{label_name}"></label></td>
+					<td id="name"><span th:text="${commandBean.primaryObj.name}"></span></td>
+				</tr>
+				<tr>
+					<td><label th:text="#{label_configEntity}"></label></td>
+					<td id="entity"><span th:text="${commandBean.primaryObj.entity}"></span></td>
+					<td><label th:text="#{label_thingEntity}"></label></td>
+					<td id="model"><span th:text="${commandBean.primaryObj.model}"></span></td>
+				</tr>
+				<tr>
+					<td><label th:text="#{label_pageUri}"></label></td>
+					<td id="pageUri"><span th:text="${commandBean.primaryObj.pageUri}"></span></td>
+				</tr>
+				<tr>
+					<td><label th:text="#{label_createdStamp}"></label></td>
+					<td id="createdStamp"><span th:text="${commandBean.primaryObj.createdStamp}"></span></td>
+					<td><label th:text="#{label_modifiedStamp}"></label></td>
+					<td id="modifiedStamp"><span th:text="${commandBean.primaryObj.modifiedStamp}"></span></td>
+				</tr>
+				<tr>
+					<td><label th:text="#{label_description}"></label></td>
+					<td id="description"><span th:text="${commandBean.primaryObj.description}"></span></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</fieldset>
+	</div>
+	<div data-options="region:'center',border:false" style="padding: 2px">
+		<table id="configuration"></table>
+		<script type="text/javascript" th:inline="text">
+			flame.loadGrid("configuration", "com.thing.builder.ThingModelAPITableBuilder", {
+				queryParams: {
+					oid: '[[${commandBean.primaryOid}]]'
+				}
+			});
+		</script>
+	</div>
+</div>
+</body>
+</html>

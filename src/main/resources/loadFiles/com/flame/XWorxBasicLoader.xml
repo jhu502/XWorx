@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="Basic Data">
+    <LoadFile filename="com/flame/EnumDataLoadSet.xml"/>
+    <LoadFile filename="com/flame/ModelDataLoadSet.xml"/>
+    <LoadFile filename="xw/auths/Basic-XUser.xml"/>
+</FlameDataLoad>

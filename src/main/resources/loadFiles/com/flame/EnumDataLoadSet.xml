@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="Basic Enum">
+    <LoadFile filename="xw/auths/Basic-GroupTypeRB.xml"/>
+    <LoadFile filename="xw/auths/Basic-RoleRB.xml"/>
+    <LoadFile filename="xw/context/Basic-LibraryTypeRB.xml"/>
+</FlameDataLoad>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshParamListBuilder')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <div th:title="#{attributes}" style="padding:10px" id="editAttributesPanel"></div>
+</section>
+
+<script type="text/javascript">
+    flame.loadGrid('editAttributesPanel', 'mes.equipt.form.XEquiptParameterForm', {
+        queryParams: {
+            oid: '[[${commandBean.rowId}]]',
+            model: 'Value'
+        },
+        onXComplete: function (config) {
+        }
+    });
+
+    function refreshParamListBuilder(result) {
+        const json = flame.toObject(result);
+        if (json.status == 'SUCCESS') {
+        	flame.reloadGrid('equiptParameterList');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

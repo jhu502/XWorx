@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<table id="dynamic_express"></table>
+	<div id="showExpressWin"></div>
+	<script type="text/javascript" th:inline="text">
+		flame.loadGrid("dynamic_express", "plm.dynamic.builder.ExpressionTableBuilder", {
+			queryParams : {
+				oid : '[[${commandBean.primaryOid}]]'
+			}
+		});
+
+		function selectOptionMode(el) {
+			console.log(el.value);
+		}
+
+		function showCharactDetail(oid) {
+			$('#showExpressWin').window({
+				title : "Express Info",
+				href : flame.getHREF('jsp/plm/express/displayExpression.jsp'),
+				width : 600,
+				height : 400,
+				collapsible : false,
+				minimizable : false,
+				maximizable : false,
+				modal : true,
+				queryParams : {
+					oid : oid
+				}
+			});
+		}
+
+		function refreshExpressionGrid(result) {
+			if (result.status === 'SUCCESS') {
+				flame.reloadGrid('dynamic_express');
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>

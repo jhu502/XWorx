@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.content.XContextDataLoader" description="XContext">
+    <LoadObject type="xw.context.entity.XSite" where="number">
+        <attr name="number">SITE</attr>
+        <attr name="name">Site</attr>
+        <attr name="description">Site</attr>
+    </LoadObject>
+    <LoadObject type="xw.context.entity.XOrganization" where="number">
+        <attr name="number">FLAME</attr>
+        <attr name="name">Flame</attr>
+        <attr name="description">Flame Organization</attr>
+        <attr name="container">SITE</attr>
+    </LoadObject>
+</FlameDataLoad>

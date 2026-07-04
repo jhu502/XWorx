@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::div}, script=~{::script}, before='completeValidation', callback='')}">
+
+<div id="localizationForm" style="margin:5px;"></div>
+<script type="text/javascript" th:inline="text">
+    (($) => {
+        flame.loadGrid('localizationForm', 'com.flame.localize.LocalizationSettingForm', {
+            queryParams: {
+                oid: "[[${commandBean.primaryOid}]]"
+            },
+            onXComplete: function (config) {
+            }
+        });
+    })(jQuery);
+
+    function completeValidation() {
+        return true;
+    }
+</script>
+</body>
+</html>

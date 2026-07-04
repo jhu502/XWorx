@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshGrid')}">
+<section class="easyui-tabs" data-options="fit:true,border:false">
+    <div th:title="#{attributes}" style="padding:8px 2px 2px 2px;">
+        <input type="hidden" name="entityType" th:value="${commandBean.getTextParameter('entityType')}"/>
+        <div id="createEntityPropertyPanel" />
+    </div>
+</section>
+
+<script type="text/javascript" th:inline="text">
+    flame.loadGrid('createEntityPropertyPanel', 'com.thing.mesher.form.CreateModelEntityPropertyForm', {
+        queryParams: {
+            "entityType": "[[${commandBean.getTextParameter('entityType')}]]"
+        }
+    });
+
+    function refreshGrid(result) {
+        if (result.status == 'SUCCESS') {
+            flame.reloadGrid("[[${commandBean.getTextParameter('refreshGrid')}]]");
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

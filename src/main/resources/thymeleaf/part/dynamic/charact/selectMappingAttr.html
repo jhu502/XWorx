@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head></head>
+<body>
+<div class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'north',border:false" style="padding-left: 5px; height: 25px">
+		说明：<b style="color: red">双击</b>目标行即可进行属性选择
+	</div>
+	<div data-options="region:'center',border:false">
+		<div id="dynamic-attribute" style="display: none;"></div>
+	</div>
+</div>
+<script type="text/javascript">
+	flame.loadGrid('dynamic-attribute', 'plm.dynamic.builder.MappingAttrTableBuilder', {
+		queryParams: {
+			oid: "[[${commandBean.primaryOid}]]"
+		},
+		onDblClickRow: function (index, row) {
+			$('#charactDynamicMapping').textbox('setValue', row.attribute);
+			flame.closeWindow(this);
+		},
+		onXComplete: function (config) {
+		}
+	});
+</script>
+</body>
+</html>

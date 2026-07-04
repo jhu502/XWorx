@@ -1,0 +1,107 @@
+package com.flame.core.script;
+
+import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Value;
+
+import com.oracle.graal.python.PythonLanguage;
+
+public class FlamePythonFactory {
+	private static Engine engine = Engine.newBuilder().out(System.out).err(System.err).build();
+
+	public static Context getPolyglotContext() {
+		return Context.newBuilder(PythonLanguage.ID).engine(engine).allowCreateThread(true).allowExperimentalOptions(true).allowAllAccess(true).option("python.WithThread", "true").build();
+	}
+
+	public static void test() {
+		Context context = getPolyglotContext();
+		StringBuffer script = new StringBuffer();
+		script.append("try:\n");
+		script.append("    print(value)\n");
+		script.append("except:\n");
+		script.append("    print('hello world')\n");
+		script.append("    value='world'");
+		Source source = Source.create(PythonLanguage.ID, script.toString());
+		context.eval(source);
+	}
+
+	public static void test1() {
+		Context context = getPolyglotContext();
+		StringBuffer script = new StringBuffer();
+		script.append("class Employee:\n");
+		script.append("    def __init__(self, name, salary):\n");
+		script.append("        self.name = name\n");
+		script.append("        self.salary = salary\n");
+		script.append("    def getName(self):\n");
+		script.append("        return self.name\n");
+		Source source = Source.create(PythonLanguage.ID, script.toString());
+		long l0 = System.currentTimeMillis();
+		context.eval(source);
+		long l1 = System.currentTimeMillis();
+		System.out.println("------------------:::" + (l1 - l0) / 1000);
+	}
+
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
+
+		StringBuffer script = new StringBuffer();
+		script.append("class Employee:\n");
+		script.append("    def __init__(self, name, salary):\n");
+		script.append("        self.name = name\n");
+		script.append("        self.salary = salary\n");
+		script.append("    def getName(self):\n");
+		script.append("        return self.name\n");
+
+		System.out.println(script.toString());
+
+		//	NodeFactory nodeFactory = PythonLanguage.getCurrent().getNodeFactory();
+		//	PNode node = StringUtils.parseString(new String[] { script.toString() }, nodeFactory, null);
+		//	System.out.println("----------____TT" + node);
+
+		Context context = getPolyglotContext();
+
+		try {
+			context.eval(Source.create(PythonLanguage.ID, script.toString()));
+			Value binding = context.getBindings(PythonLanguage.ID);
+			Value Employee = binding.getMember("Employee");
+			Value google = Employee.newInstance("google", " 1000000$");
+			Value baidu = Employee.newInstance("baidu", " 1000000$");
+
+			FutureTask<Void> future0 = new FutureTask<Void>(new Callable<Void>() {
+				int j = 100;
+
+				public Void call() throws Exception {
+					while (j-- > 0) {
+						System.out.println("A:" + google.invokeMember("getName"));
+					}
+
+					return null;
+				}
+			});
+			new Thread(future0).start();
+
+			FutureTask<Void> future1 = new FutureTask<Void>(new Callable<Void>() {
+				int j = 100;
+
+				public Void call() throws Exception {
+					while (j-- > 0) {
+						System.out.println("B:" + baidu.invokeMember("getName"));
+					}
+
+					return null;
+				}
+			});
+			new Thread(future1).start();
+
+			System.out.println(future0.get());
+			System.out.println(future1.get());
+		} finally {
+		}
+	}
+
+}

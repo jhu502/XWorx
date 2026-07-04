@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="XThingModel ActionMenu">
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">newThingModel</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">New</attr>
+        <attr name="icon"></attr>
+        <attr name="iconCls">icon-add</attr>
+        <attr name="style">width:680px;height:480px;padding:5px;</attr>
+        <attr name="url">thymeleaf/thing/createThingModel.html</attr>
+        <attr name="winType">popup</attr>
+        <attr name="en_US">Create Model</attr>
+        <attr name="zh_CN">创建</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">editThingModel</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Edit</attr>
+        <attr name="icon"></attr>
+        <attr name="iconCls">icon-edit</attr>
+        <attr name="style">width:680px;height:480px;padding:5px;</attr>
+        <attr name="url">thymeleaf/thing/editThingModel.html</attr>
+        <attr name="winType">popup</attr>
+        <attr name="en_US">Edit Model</attr>
+        <attr name="zh_CN">编辑</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">saveThingModel</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Save</attr>
+        <attr name="icon"></attr>
+        <attr name="style"></attr>
+        <attr name="url"></attr>
+        <attr name="winType">invoke</attr>
+        <attr name="en_US">Save</attr>
+        <attr name="zh_CN">保存</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">deleteThingModel</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Delete</attr>
+        <attr name="icon"></attr>
+        <attr name="iconCls">icon-delete</attr>
+        <attr name="style"></attr>
+        <attr name="url"></attr>
+        <attr name="winType">invoke</attr>
+        <attr name="en_US">Delete Model</attr>
+        <attr name="zh_CN">删除</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">ModelTree_RightMenu</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Model Tree Right-Click Menu</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">newThingModel</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">editThingModel</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">deleteThingModel</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">detail</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Details</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/thing/model/modelDetailsTab.html</attr>
+        <attr name="winType"></attr>
+        <attr name="beforeJS"></attr>
+        <attr name="afterJS"></attr>
+        <attr name="en_US">Details</attr>
+        <attr name="zh_CN">详细信息</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">properties</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Properties</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/thing/model/modelPropertiesTab.html</attr>
+        <attr name="winType"></attr>
+        <attr name="beforeJS"></attr>
+        <attr name="afterJS"></attr>
+        <attr name="en_US">Properties</attr>
+        <attr name="zh_CN">属性</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">layout</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Layout</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/thing/model/modelLayoutTab.html</attr>
+        <attr name="winType"></attr>
+        <attr name="beforeJS"></attr>
+        <attr name="afterJS"></attr>
+        <attr name="en_US">Layout</attr>
+        <attr name="zh_CN">布局</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">services</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Services</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/thing/model/modelServicesTab.html</attr>
+        <attr name="winType"></attr>
+        <attr name="beforeJS"></attr>
+        <attr name="afterJS"></attr>
+        <attr name="en_US">Services</attr>
+        <attr name="zh_CN">服务</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">actions</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">Actions</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/thing/model/modelActionsTab.html</attr>
+        <attr name="winType"></attr>
+        <attr name="beforeJS"></attr>
+        <attr name="afterJS"></attr>
+        <attr name="en_US">Actions</attr>
+        <attr name="zh_CN">菜单项</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name">
+        <attr name="name">XWX-InfoTabs</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">ThingModel Info Tabs</attr>
+        <attr name="icon">images/navsite.gif</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">detail</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">properties</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">layout</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">40</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">services</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">99</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">actions</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+    </LoadObject>
+    
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XThingModel Info Page Action Menu -->
+        <attr name="name">XWX-ActionMenu</attr>
+        <attr name="type">XThingModel</attr>
+        <attr name="display">XThingModel Operations</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">copy</attr>
+                <attr name="type">XObject</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">editThingModel</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">30</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">saveThingModel</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">40</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">deleteThingModel</attr>
+                <attr name="type">XThingModel</attr>
+            </where>
+        </link>
+    </LoadObject>
+</FlameDataLoad>

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Visibility',style=~{::style},script=~{::script})}">
+    <style></style>
+    <script type="text/javascript"></script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" style="font-family: helvetica, arial, sans-serif, Segoe UI, tahoma;">
+    <div data-options="region:'center',border:false" style="padding: 2px;">
+        <input type="hidden" name="oid" th:value="${commandBean.primaryOid}"/>
+        <div id="propertyVisibilityPanel"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    flame.loadGrid("propertyVisibilityPanel", "com.thing.builder.PropertyVisibilityBuilder", {
+        queryParams: {
+            oid: '[[${commandBean.primaryOid}]]'
+        }
+    });
+</script>
+</body>
+</html>

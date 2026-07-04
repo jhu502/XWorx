@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+</head>
+<body>
+<form id="propertyDefinitionForm" method="post">
+    <br>
+    <table style="align:center;font-size:12px">
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <td colspan="3"><input class="easyui-textbox" id="name" name="name" style="width:300px;height:25px"
+                                   data-options="label:'名称：',required:true" value=""></td>
+        </tr>
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <td colspan="3"><input class="easyui-textbox" id="description" name="description"
+                                   style="width:100%;height:100px" data-options="label:'描述：',multiline:true"></td>
+        </tr>
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <td colspan="3">
+                <select class="easyui-combobox" id="baseType" name="baseType" style="width:200px; height:25px"
+                        data-options="label:'类型：', panelHeight:'auto'">
+                    <option value="STRING" selected="selected">字符串</option>
+                    <option value="NUMBER">数值</option>
+                    <option value="BOOLEAN">布尔</option>
+                    <option value="DATETIME">日期</option>
+                    <option value="JSON">JSON</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <td colspan="3">
+                <select class="easyui-combobox" id="uniqueKey" name="uniqueKey" style="width:200px; height:25px"
+                        data-options="label:'是否主键：', panelHeight:'auto'">
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <select class="easyui-combobox" id="nullable" name="nullable" style="width:200px; height:25px"
+                    data-options="label:'是否必需：', panelHeight:'auto'">
+                <option value="true">是</option>
+                <option value="false">否</option>
+            </select>
+            </td>
+        </tr>
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <select class="easyui-combobox" id="persistent" name="persistent" style="width:200px; height:25px"
+                    data-options="label:'是否持久化：', panelHeight:'auto'">
+                <option value="true">是</option>
+                <option value="false">否</option>
+            </select>
+            </td>
+        </tr>
+        <tr style="height:30px">
+            <td style="width:10px"></td>
+            <select class="easyui-combobox" id="readOnly" name="readOnly" style="width:200px; height:25px"
+                    data-options="label:'是否只读：', panelHeight:'auto'">
+                <option value="true">是</option>
+                <option value="false">否</option>
+            </select>
+            </td>
+        </tr>
+    </table>
+</form>
+<br>
+<br>
+<div style="text-align:right;padding:5px 0">
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="cancelForm()" style="width:80px">Cancel</a>
+</div>
+<script type="text/javascript">
+		function submitForm() {
+			$('#propertyDefinitionForm').form('submit', {
+				url : '/ThingModels/' + $('#createPropertyDefinition').window('options')['queryParams']['number'] + '/PropertyDefinitions',
+				onSubmit : function() {
+					return $(this).form('validate');
+				}
+			});
+		}
+		function clearForm() {
+			$('#propertyDefinitionForm').form('clear');
+		}
+		function cancelForm() {
+			$('#createPropertyDefinition').window('close');
+		}
+
+</script>
+</body>
+</html>

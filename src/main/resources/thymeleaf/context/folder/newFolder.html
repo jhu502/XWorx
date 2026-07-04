@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshFolderTree')}">
+<section class="easyui-tabs" data-options="fit:true">
+	<div th:title="#{attributes}" style="padding:10px">
+		<table style="width:100%;">
+			<tr>
+				<td><input class="easyui-textbox" id="name" name="name" th:data-options="|label:'#{label_name}',required:true|" style="width:400px;height:24px"></td>
+			</tr>
+			<tr>
+				<td style="padding-top:3px">
+					<input class="easyui-textbox" id="description" name="description" th:data-options="|label:'#{label_description}',multiline:true|" style="width:500px;height:100px">
+				</td>
+			</tr>
+		</table>
+	</div>
+</section>
+<script type="text/javascript">
+	function refreshFolderTree(result) {
+		if (result.status == 'SUCCESS') {
+			flame.reloadGrid('browserTable');
+			flame.reloadGrid('folderTree');
+		}
+		return true;
+	}
+</script>
+</body>
+</html>

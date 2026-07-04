@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, callback='refreshPLineBuilder')}">
+<section class="easyui-tabs" data-options="fit:true">
+    <div th:title="#{attributes}" style="padding:10px" id="createAttributesPanel"></div>
+</section>
+
+<script type="text/javascript">
+    flame.loadGrid('createAttributesPanel', 'mes.apl.form.XAssemblyLinePropertyForm', {});
+
+    function refreshPLineBuilder(result) {
+        let json = JSON.parse(result);
+        if (json.status == 'SUCCESS') {
+        //    flame.reloadGrid('browserTable');
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

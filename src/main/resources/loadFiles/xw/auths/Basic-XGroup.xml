@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.auths.XGroupDataLoader" description="XGroup">
+	<LoadObject type="xw.auths.entity.XGroup" where="number">
+		<attr name="number">XROOT</attr>
+		<attr name="name">XROOT</attr>
+		<attr name="fullName">XROOT</attr>
+		<attr name="englishName">XROOT</attr>
+		<attr name="description">System XRoot Group</attr>
+		<attr name="tel">15300000000</attr>
+		<attr name="fax">000-00000000</attr>
+		<attr name="email">xxxx@xworx.cn</attr>
+		<attr name="postalCode">000000</attr>
+		<attr name="address"></attr>
+		<attr name="groupType">SYSTEM</attr>
+		<attr name="domain">/</attr>
+		<attr name="scope">all</attr>
+		<attr name="secretRequired">false</attr>
+		<attr name="resourceIds"></attr>
+		<attr name="grantTypes">authorization_code,refresh_token,implicit</attr>
+		<attr name="redirectUri">http://flame.xworx.cn/XWorx/</attr>
+		<attr name="thingModel">XGroup</attr>
+	</LoadObject>
+	<LoadObject type="xw.auths.entity.XGroup" where="number">
+		<attr name="number">Administrators</attr>
+		<attr name="name">Administrators</attr>
+		<attr name="fullName">Administrators</attr>
+		<attr name="englishName">Administrators</attr>
+		<attr name="description">System Administrators Group</attr>
+		<attr name="tel">15300000000</attr>
+		<attr name="fax">000-00000000</attr>
+		<attr name="email">xxxx@xworx.com</attr>
+		<attr name="postalCode">000000</attr>
+		<attr name="address"></attr>
+		<attr name="groupType">SYSTEM</attr>
+		<attr name="domain">/</attr>
+		<attr name="scope">all</attr>
+		<attr name="secretRequired">false</attr>
+		<attr name="resourceIds"></attr>
+		<attr name="grantTypes">authorization_code,refresh_token,password</attr>
+		<attr name="redirectUri">http://flame.xworx.cn/XWorx/</attr>
+		<attr name="thingModel">XGroup</attr>
+		<link type="xw.auths.entity.XGroupGroupLink" refer="right">
+			<where type="xw.auths.entity.XGroup" refer="left">
+				<attr name="number">XROOT</attr>
+			</where>
+		</link>
+	</LoadObject>
+	<LoadObject type="xw.auths.entity.XGroup" where="number">
+		<attr name="number">Guests</attr>
+		<attr name="name">Guests</attr>
+		<attr name="fullName">Guests</attr>
+		<attr name="englishName">Guests</attr>
+		<attr name="description">System Guests Group</attr>
+		<attr name="tel">15300000000</attr>
+		<attr name="fax">000-00000000</attr>
+		<attr name="email">xxxx@xworx.com</attr>
+		<attr name="postalCode">000000</attr>
+		<attr name="address"></attr>
+		<attr name="groupType">SYSTEM</attr>
+		<attr name="domain">/</attr>
+		<attr name="scope">all</attr>
+		<attr name="secretRequired">false</attr>
+		<attr name="resourceIds"></attr>
+		<attr name="grantTypes">authorization_code,refresh_token,password</attr>
+		<attr name="redirectUri">http://flame.xworx.cn/XWorx/</attr>
+		<attr name="thingModel">XGroup</attr>
+		<link type="xw.auths.entity.XGroupGroupLink" refer="right">
+			<where type="xw.auths.entity.XGroup" refer="left">
+				<attr name="number">XROOT</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>

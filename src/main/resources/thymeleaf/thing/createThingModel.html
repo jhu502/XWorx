@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::default('Create ThingModel', ~{}, ~{})}">
+</head>
+<body>
+	<form id="thingModelForm" method="post" action="/ThingModels/createThingModel">
+		<input type="hidden" id="baseModel" name="baseModel" th:value="${commandBean.primaryOid}"> <br>
+		<table style="align: center; font-size: 12px; font-family:1.2rem/1.618 Arial, Helvetica Neue, Helvetica, sans-serif;">
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td><input class="easyui-textbox" id="number" name="number" style="width: 300px; height: 25px" data-options="label:'编号：',required:true" value=""></td>
+				<td style="width: 10px"></td>
+				<td><input class="easyui-textbox" id="name" name="name" style="width: 300px; height: 25px" data-options="label:'名称：',required:true"></td>
+			</tr>
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td colspan="3"><input class="easyui-textbox" id="icon" name="icon" style="width: 100%; height: 25px" data-options="label:'图标：',required:true"></td>
+			</tr>
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td colspan="3"><input class="easyui-textbox" id="thingEntity" name="thingEntity" style="width: 100%; height: 25px" data-options="label:'包装类：',prompt:'<Inherited>',required:false">
+				</td>
+			</tr>
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td colspan="3"><input class="easyui-textbox" id="pageUri" name="pageUri" style="width: 100%; height: 25px" data-options="label:'Page Uri：',required:false"></td>
+			</tr>
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td colspan="3"><input class="easyui-textbox" id="description" name="description" style="width: 100%; height: 100px" data-options="label:'描述：',multiline:true"></td>
+			</tr>
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td colspan="3"><label for="parentModel" class="textbox-label textbox-label-before">父模型：</label> <span th:text="${commandBean.primaryObj.name}"></span></td>
+			</tr>
+		</table>
+		<br>
+		<div style="text-align: right; padding: 5px 0">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.closeWindow(this)" style="width: 80px">Cancel</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width: 80px">Submit</a>
+		</div>
+	</form>
+	<script type="text/javascript">
+		function submitForm() {
+			$('#thingModelForm').form('submit', {
+				onSubmit : function() {
+					return $(this).form('validate');
+				},
+				success : function(result) {
+					if (result != '') {
+						var json = jQuery.parseJSON(result);
+						if (isBlank(json.code) || json.code == 0) {
+							//idField:'oid'【oid:用传入的oid加载整个treegrid，id:用传入的oid刷新id对应的行】
+							$("#tmodelTree").treegrid('reload', {
+								id : $('#baseModel').val()
+							});
+							$('#newThingModel').window('close');
+							$.messager.alert('Success', 'Update Successfully.', 'info');
+						} else {
+							$.messager.alert('Error', json.msg, 'error');
+						}
+					} else {
+						$.messager.alert('Error', 'Update Failed!', 'error');
+					}
+				},
+				error : function() {
+					alert('smx失败 ');
+				}
+			});
+		}
+	</script>
+</body>
+</html>

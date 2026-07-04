@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body th:insert="~{thymeleaf/util/popup::default(section=~{::section}, script=~{::script}, before='completeValidation', callback='refreshCharactGrid')}">
+<section style="height: 100%;">
+	<input id="charactSortOids" name="charactSortOids" type="hidden">
+	<table id="charactSortTable"></table>
+	<div id="sortCharact-tb" style="display: none">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-moveup',plain:true" onclick="moveUp()" th:text="#{moveUp}"></a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-movedown',plain:true" onclick="moveDown()" th:text="#{moveDown}"></a>
+	</div>
+</section>
+<script type="text/javascript" th:inline="text">
+	flame.loadGrid("charactSortTable", "plm.dynamic.builder.CharactSortTableBuilder", {
+		queryParams: {
+			oid: '[[${commandBean.primaryOid}]]'
+		}
+	});
+
+	function completeValidation() {
+		const oids = [];
+		const sortTable = $('#charactSortTable');
+		const rows = sortTable.datagrid('getRows');
+		for (var i in rows) {
+			oids.push(rows[i].rowId);
+		}
+		$("#charactSortOids").val(JSON.stringify(oids));
+		return true;
+	}
+
+	function moveUp() {
+		const sortTable = $('#charactSortTable');
+		const rows = sortTable.datagrid('getRows');
+		const rowlength = rows.length;
+		const selectrow = sortTable.datagrid('getSelected');
+
+		let index = sortTable.datagrid('getRowIndex', selectrow);
+		if (index == 0) {
+			$.messager.alert('Prompt', '顶行无法上移!', 'warning');
+		} else {
+			sortTable.datagrid('deleteRow', index);//删除一行
+			index--;
+			sortTable.datagrid('insertRow', {
+				index: index,
+				row: selectrow
+			});
+			sortTable.datagrid('selectRow', index);
+		}
+	}
+
+	function moveDown() {
+		const sortTable = $('#charactSortTable');
+		const rows = sortTable.datagrid('getRows');
+		const rowlength = rows.length;
+		const selectrow = sortTable.datagrid('getSelected');
+		let index = sortTable.datagrid('getRowIndex', selectrow);
+		if (index == rowlength - 1) {
+			$.messager.alert('Prompt', '底行无法下移!', 'warning');
+		} else {
+			sortTable.datagrid('deleteRow', index);//删除一行
+			index++;
+			sortTable.datagrid('insertRow', {
+				index: index,
+				row: selectrow
+			});
+			sortTable.datagrid('selectRow', index);
+		}
+	}
+</script>
+</body>
+</html>

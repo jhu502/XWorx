@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="/echarts/echarts.min.js"></script>
+<script src="/jquery/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	const myChart = echarts.init($("#container")[0]);
+
+	const symbolSize = 20;
+	const data = [
+		[40, -10],
+		[-30, -5],
+		[-76.5, 20],
+		[-63.5, 40],
+		[-22.1, 50]
+	];
+
+	myChart.setOption({
+		title: {
+			text: '节点拖拽',
+			left: 'center',
+			textStyle: {
+				color: '#826'
+			}
+		},
+		tooltip: {
+			triggerOn: 'none',
+			formatter: function(params) {
+				return ('X: ' + params.data[0].toFixed(2) + '<br>Y: ' + params.data[1].toFixed(2));
+			}
+		},
+		grid: {
+			top: '8%',
+			bottom: '12%'
+		},
+		dataset: {
+			source: data
+		},
+		xAxis: {
+			min: -100,
+			max: 70,
+			type: 'value',
+			axisLine: { onZero: false }
+		},
+		yAxis: {
+			min: -30,
+			max: 60,
+			type: 'value',
+			axisLine: { onZero: false }
+		},
+		dataZoom: [
+			{
+				type: 'slider',
+				xAxisIndex: 0,
+				filterMode: 'none'
+			},
+			{
+				type: 'slider',
+				yAxisIndex: 0,
+				filterMode: 'none'
+			}
+		],
+		series: [
+			{
+				id: 'a',
+				type: 'line',
+				smooth: true,
+				symbolSize: symbolSize,
+			}
+		]
+	});
+
+	setTimeout(function() {
+		myChart.setOption({
+			graphic: echarts.util.map(data, function(dataItem, dataIndex) {
+				//使用graphic组件，在每个点上覆盖一个可拖拽的圆点
+				return {
+					type: 'circle',               //每个数据节点都是一个圆点
+					shape: { r: symbolSize / 2 },  //圆点半径
+					position: myChart.convertToPixel('grid', dataItem), //圆点位置
+					invisible: true,              //若为false，则为实心圆；为true，则为空心圆
+					draggable: true,              //表示节点可拖拽
+					ondrag: echarts.util.curry(onPointDragging, dataIndex),   //节点拖拽，修改series数据
+					onmousemove: echarts.util.curry(showTooltip, dataIndex),  //鼠标移入，显示提示框
+					onmouseout: echarts.util.curry(hideTooltip),              //鼠标移出，隐藏提示框
+					z: 100
+				};
+			})
+		})
+	}, 0);
+
+	window.addEventListener('resize', updatePosition);  //窗口大小改变时，调整节点位置
+	myChart.on('dataZoom', updatePosition);             //容器大小改变时，调整节点位置
+	function updatePosition() {          //调整节点位置
+		myChart.setOption({
+			graphic: echarts.util.map(data, function(item, dataIndex) {
+				return {
+					position: myChart.convertToPixel('grid', item)
+				};
+			})
+		});
+	}
+
+	function showTooltip(dataIndex) {     //显示提示框
+		myChart.dispatchAction({
+			type: 'showTip',
+			seriesIndex: 0,
+			dataIndex: dataIndex
+		});
+	}
+
+	function hideTooltip() {              //隐藏提示框
+		myChart.dispatchAction({
+			type: 'hideTip'
+		});
+	}
+
+	function onPointDragging(dataIndex) {  //节点拖拽
+		data[dataIndex] = myChart.convertFromPixel('grid', this.position);
+
+		myChart.setOption({
+			series: [
+				{
+					id: 'a',
+					data: data
+				}
+			]
+		});
+	}
+})
+</script>
+</head>
+<body>
+	<!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+	<div id="container" style="width: 600px; height: 400px;"></div>
+</body>
+</html>

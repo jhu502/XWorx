@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='PLine-Struct')}">
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',border:false" style="height: 45px">
+        <input id="focusPLineOid" type="hidden" th:value="${commandBean.primaryOid}"/>
+        <button th:each="item:${@ActionService.getSubActions('PLineEquipt-Toolbar','XAssemblyLine')}" th:title="${item.localDisplay}" class="xui-fillet"
+            th:onclick="flame.handleBarAction({key:'[(${item.key})]',winType:'[(${item.winType})]',url:'[(${item.url})]',processor:'[(${item.processor})]',onclick:[[${item.onclick}]],display:'[(${item.localDisplay})]',style:'[(${item.style})]',beforeJS:[[${item.beforeJS}]],afterJS:[[${item.afterJS}]]});">
+            <img th:src="${item.icon}"/>
+        </button>
+    </div>
+    <div data-options="region:'west',split:true,border:false" style="width: 400px;">
+        <table id="plineEquipt_StructTree"></table>
+        <script type="text/javascript" th:inline="text">
+            flame.loadGrid("plineEquipt_StructTree", "mes.apl.builder.XAssemblyLineStructTreeBuilder", {
+                queryParams: {
+                    oid: '[[${commandBean.primaryOid}]]'
+                },
+                onClickRow: function (node) {
+                    $("#focusPLineOid").val(node.rowId);
+                    const plineEquiptNavTabs = $('#plineEquipt_NavTabs');
+                    const currentTab = plineEquiptNavTabs.tabs("getSelected");
+                    plineEquiptNavTabs.tabs('update', {
+                        tab: currentTab,
+                        options: {
+                            queryParams: {
+                                rowId: $('#focusPLineOid').val()
+                            }
+                        }
+                    });
+                    /**
+                     * 仅仅设置queryParams并不会触发easyui Tabs去刷新Tab的内容，需要调用下面代码去主动刷新
+                     */
+                    currentTab.panel('refresh');
+                }
+            });
+        </script>
+    </div>
+    <div data-options="region:'center',border:false">
+        <div id="plineEquipt_NavTabs" class="easyui-tabs" data-options="fit:true,onSelect:onSelectNavTab" style="width: 700px; height: 250px">
+            <div th:each="actionItem:${@ActionService.getSubActions('PLineEquipt-EquiptNavTabs','XAssemblyLine')}"
+                 th:title="${actionItem.localDisplay}" th:data-options="|fit:true,border:false,href:'${actionItem.url}'|"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:inline="text">
+    function onSelectNavTab(title, index) {
+        const plineEquiptNavTabs = $('#plineEquipt_NavTabs');
+        plineEquiptNavTabs.tabs('update', {
+            tab: plineEquiptNavTabs.tabs("getSelected"),
+            options: {
+                queryParams: {
+                    oid: $('#focusPLineOid').val()
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

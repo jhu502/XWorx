@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Edit Property')}"></head>
+</head>
+<body>
+<form id="edit_PropertyDef_form" method="post">
+	<input type="hidden" name="oid" th:value="${commandBean.primaryOid}"/>
+	<div class="easyui-layout" data-options="border:false" style="height: 180px; font-family: helvetica, arial, sans-serif, Segoe UI, tahoma;">
+		<div data-options="region:'center'" style="padding: 1px">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',collapsible:false,split:true" style="width: 33%; border-radius: 8px">
+					<div class="easyui-panel" title="General Property Info" data-options="border:false,fit:true" style="width: 100%; padding: 5px 20px 5px 20px">
+						<div>
+							<input class="easyui-textbox" name="name" th:value="${commandBean.primaryObj.name}" data-options="label:'Name:',required:true"
+								   style="width: 100%; height: 27px;"/>
+						</div>
+						<div>
+							<input class="easyui-textbox" name="display" th:value="${commandBean.primaryObj.localDisplay}" data-options="label:'Display:',multiline:true"
+								   style="width: 100%; height: 70px">
+						</div>
+					</div>
+				</div>
+				<div data-options="region:'center'">
+					<div class="easyui-panel" title="Base Type Info" data-options="border:false,fit:true" style="width: 100%; padding: 10px 20px 20px 20px">
+						<div>
+							<select class="easyui-combobox" id="baseType" name="baseType" style="width: 200px; height: 27px"
+									data-options="label:'Base Type:',editable:false,panelHeight:'auto'">
+								<option th:each="baseType:${T(com.flame.type.XBaseType).propertyTypes()}" th:value="${baseType.name}" th:text="${baseType.localDisplay}"
+                                        th:selected="${baseType == commandBean.primaryObj.baseType}"></option>
+							</select>
+						</div>
+						<div>
+							<input class="easyui-textbox" name="defaultValue" th:value="${commandBean.primaryObj.defaultValue}" data-options="label:'Default Val:'"
+								   style="width: 100%; height: 27px;"/>
+						</div>
+					</div>
+				</div>
+				<div data-options="region:'east',collapsible:false,split:true" style="width: 33%; border-radius: 8px">
+					<div class="easyui-panel" title="Data Change Info" data-options="border:false,fit:true" style="width: 100%; padding: 5px 20px 20px 20px">
+						<fieldset>
+							<legend style="font-size:14px;font-style:italic;margin-bottom:5px;">Aspects</legend>
+							<label>Persistent: <input type="checkbox" name="persistent" th:checked="${commandBean.primaryObj.persistent}"></label>
+							<label>Read-only: <input type="checkbox" name="readOnly" th:checked="${commandBean.primaryObj.readOnly}"></label>
+							<br>
+							<label>Logged: <input type="checkbox" name="logged" th:checked="${commandBean.primaryObj.logged}"></label>
+							<label>Nullable: <input type="checkbox" name="nullable" th:checked="${commandBean.primaryObj.nullable}"></label>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'south'" style="height: 35px; padding-right: 10px; background-color: #f5f5f5">
+			<div style="text-align: right; padding: 5px 0">
+				<a href="javascript:void(0)" class="easyui-linkbutton" th:onclick="cancelForm('[(${commandBean.getParameter('index')})]')" style="width: 80px">Cancel</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.submitForm(this, 'com.thing.processor.EditPropertyDefinitionProcessor', collapseProperty)"
+				   style="width: 80px">Done</a>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" th:inline="text">
+	var index = "[[${commandBean.getParameter('index')}]]";
+
+	function collapseProperty(result) {
+		$('#propertyList').datagrid('getExpander', index).trigger('click');
+		flame.reloadGrid('propertyList');
+	}
+</script>
+</body>
+</html>

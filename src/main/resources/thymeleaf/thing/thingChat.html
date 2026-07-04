@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::default('Thing Chat', ~{}, ~{::script})}">
+<script type="text/javascript">
+	var FTUser = FTUser || class {
+		constructor() {
+			this.info_show = null;
+			this.cmd_input = null;
+		}
+		receiveMessage(message) {
+			if (this.info_show == null) {
+				this.info_show = $("#cmd_infos");
+			}
+			this.info_show.val(this.info_show.val() + "\n" + message);
+			this.info_show.scrollTop(this.info_show[0].scrollHeight);
+			return '消息已收到';
+		}
+	}
+
+	$(function() {
+		let userName = $('#loginUser').attr("value");
+		let targetUser = '';
+		let loginThing = '';
+		if (userName == 'Guest') {
+			targetUser = 'Administrator';
+			loginThing = 'FTUser:Guest';
+		} else {
+			targetUser = 'Guest';
+			loginThing = 'FTUser:Administrator';
+		}
+
+		var thingClient = new FlameThingClient();
+		thingClient.connectServer("ws://localhost/XWorx/Websocket");
+		thingClient.onOpen = function() {
+			if (WebSocket.OPEN == thingClient.socket.readyState) {
+				this.binding(loginThing, new FTUser());
+			}
+		}
+		
+		$("#command").bind("keypress", function() {
+			if (event.keyCode == "13") {
+				let message = $("#command").val();
+
+				thingClient.invoke(loginThing, 'sendMessage', {
+					'userName' : BaseType.encode('STRING', targetUser),
+					'message' : BaseType.encode('STRING', message)
+				}, function(result) {
+					alert(result);
+				})
+			}
+		});
+		$("#cmd_infos").val("");
+	});
+</script>
+</head>
+<body>
+	<input type="hidden" id="loginUser" th:value="${commandBean.currentUser.fullName}" />
+	<h1 th:text="${commandBean.currentUser.fullName}"></h1>
+	<textarea id="cmd_infos" readonly rows="20" cols="100"></textarea>
+	<br> 请输入命令(按回车结束)：
+	<br>
+	<input type="text" id="command" style="width: 670px; height: 20px;" />
+</body>
+</html>

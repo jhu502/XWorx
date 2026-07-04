@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta content="text/html;charset=UTF-8"/>
+	<link href="/css/flame/easyui/easyui.css" th:href="@{/css/flame/easyui/easyui.css}" rel="stylesheet"/>
+	<link href="/css/flame/easyui/tabs.css" th:href="@{/css/flame/easyui/tabs.css}" rel="stylesheet"/>
+	<link href="/css/flame/themes-icon.css" th:href="@{/css/flame/themes-icon.css}" rel="stylesheet"/>
+
+	<script src="/javascript/easyui/jquery.min.js" th:src="@{/javascript/easyui/jquery.min.js}" type="text/javascript"></script>
+	<script src="/javascript/easyui/jquery.easyui.min.js" th:src="@{/javascript/easyui/jquery.easyui.min.js}" type="text/javascript"></script>
+	<script src="/javascript/flame/flame.thing.js" th:src="@{/javascript/flame/flame.thing.js}" type="text/javascript"></script>
+	<script src="/javascript/flame/flame.xui.js" th:src="@{/javascript/flame/flame.xui.js}" type="text/javascript"></script>
+</head>
+<body>
+	<form id="userForm" method="post">
+		<br>
+		<table style="align: center; font-size: 12px">
+			<tr style="height: 30px">
+				<td style="width: 10px"></td>
+				<td><input name="oid" class="easyui-combobox" style="width: 300px; height: 25px"
+					data-options="label:'用户名：', valueField:'oid',textField:'name',loader:suggest,mode:'remote',panelHeight:'auto'"></td>
+			</tr>
+			<tr>
+				<td style="width: 10px"></td>
+				<td><input class="easyui-textbox" id="role" name="role" style="width: 300px; height: 25px" data-options="label:'角色：'"></td>
+			</tr>
+		</table>
+	</form>
+	<br>
+	<br>
+	<div style="text-align: right; padding: 5px 0">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width: 80px">提交</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width: 80px">清理</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="cancelForm()" style="width: 80px">取消</a>
+	</div>
+	<script type="text/javascript">
+		function suggest(param, success, error) {
+			var q = param.q || '';
+			if (q.length <= 0) {
+				return false;
+			}
+			$.ajax({
+				url : '/OrganiController/searchUserByName',
+				type : 'get',
+				data : {
+					name : q
+				},
+				success : function(data) {
+					console.log(data[0]);
+					var items = $.each(data, function(i, val) {
+						return val;
+					});
+					success(items);
+				}
+			});
+		}
+		function submitForm() {
+			$('#userForm').form('submit', {
+				url : "/OrganiController/addUser?pid=" + $('#selectedOid')[0].value,
+				onSubmit : function() {
+					var value = $('#selectedOid')[0].value;
+					if (typeof value == "undefined" || value == null || value == "")
+						return false;
+					else
+						return $(this).form('validate');
+				},
+				success : function(result) {
+					if (result != '') {
+						var json = jQuery.parseJSON(result);
+						if (!isBlank(json.oid)) {
+							$('#userForm').form('clear');
+							//刷新grouplist DataGrid列表
+							$("#userlist").datagrid('reload', {
+								oid : $('#selectedOid')[0].value
+							});
+							$('#addUser').window('close');
+							$.messager.alert('Success', 'Update Successfully.', 'info');
+						} else {
+							$.messager.alert('Error', result, 'error');
+						}
+					} else {
+						$.messager.alert('Error', 'Update Failed!', 'error');
+					}
+				}
+			});
+		}
+		function clearForm() {
+			$('#userForm').form('clear');
+		}
+		function cancelForm() {
+			$('#addUser').window('close');
+		}
+	</script>
+</body>
+</html>

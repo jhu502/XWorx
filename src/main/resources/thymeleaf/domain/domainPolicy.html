@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{thymeleaf/util/begin::easyUI(title='Domain Policy', style=~{::style})}">
+</head>
+<body>
+<input id="focusDomainOid" type="hidden" th:value="${commandBean.primaryOid}"/>
+<div class="easyui-layout" data-options="fit:true">
+  <div data-options="region:'west',border:false" style="width:550px;">
+    <div id="domainTreeBuilder"></div>
+    <script type="text/javascript">
+      flame.loadGrid("domainTreeBuilder", "xw.domain.builder.DomainHierarchyTreeBuilder", {
+        onClickRow: function (node) {
+          $("#focusDomainOid").val(node.oid);
+          const domainDetailTabs = $('#domainDetailTabs');
+          const currentTab = domainDetailTabs.tabs("getSelected");
+          domainDetailTabs.tabs('update', {
+            tab: currentTab,
+            options: {
+              queryParams: {
+                oid: $('#focusDomainOid').val()
+              }
+            }
+          });
+          /** 仅仅设置queryParams并不会触发easyui Tabs去刷新Tab的内容，需要调用下面代码去主动刷新 */
+          currentTab.panel('refresh');
+        }
+      });
+    </script>
+  </div>
+  <div data-options="region:'center',border:false" style="padding:5px;">
+    <div id="domainDetailTabs" class="easyui-tabs" data-options="fit:true,border:false,onSelect:onSelectNavTab" style="width: 700px; height: 250px">
+      <div th:each="actionItem:${@ActionService.getSubActions('XWX-InfoTabs','XAdminDomain')}" th:title="${actionItem.localDisplay}" th:data-options="|fit:true,border:false,href:'${actionItem.url}'|"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function onSelectNavTab(title, index) {
+    const domainDetailTabs = $('#domainDetailTabs');
+    domainDetailTabs.tabs('update', {
+      tab: domainDetailTabs.tabs("getSelected"),
+      options: {
+        queryParams: {
+          oid: $('#focusDomainOid').val()
+        }
+      }
+    });
+  }
+</script>
+</body>
+
+</html>

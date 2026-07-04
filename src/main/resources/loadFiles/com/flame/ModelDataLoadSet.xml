@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="Basic Model">
+    <LoadClass classname="com.thing.entity.XThingModel" />
+    <LoadClass classname="xw.auths.entity.XPrincipal" />
+    <LoadClass classname="xw.auths.entity.XGroup" />
+    <LoadClass classname="xw.auths.entity.XUser" />
+    <LoadClass classname="xw.context.entity.XSite" />
+    <LoadClass classname="xw.context.entity.XLibrary" />
+    <LoadClass classname="xw.context.entity.XOrganization" />
+    <LoadClass classname="xw.flow.entity.XFlowDefinition" />
+    <LoadClass classname="xw.flow.entity.XWorkInstance" />
+    <LoadClass classname="mes.apl.XAssemblyLine" />
+    <LoadClass classname="mes.equipt.XEquipment" />
+    <LoadClass classname="mes.equipt.XEquiptInstance" />
+    <LoadClass classname="mes.equipt.XEquiptParameter" />
+    <LoadClass classname="plm.part.XPart" />
+    <LoadClass classname="plm.cad.CADDocument" />
+    <LoadClass classname="plm.doc.XDocument" />
+    <LoadClass classname="com.thing.entity.ConnectableEntity" />
+</FlameDataLoad>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="xw.action.ActionDataLoader" description="Root Model">
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">detail</attr>
+		<attr name="type">XLibrary</attr>
+		<attr name="display">Detail</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/page/detailsInfo.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Details</attr>
+		<attr name="zh_CN">详细信息</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">folder</attr>
+		<attr name="type">XLibrary</attr>
+		<attr name="display">Folder</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/context/library/libFoldersTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Folder</attr>
+		<attr name="zh_CN">文件夹</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">team</attr>
+		<attr name="type">XLibrary</attr>
+		<attr name="display">Library Team</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/context/library/libTeamsTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Team</attr>
+		<attr name="zh_CN">团队</attr>
+	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+		<attr name="name">XWX-InfoTabs</attr>
+		<attr name="type">XLibrary</attr>
+		<attr name="display">XLibrary Tabs</attr>
+		<attr name="icon">images/library.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">detail</attr>
+				<attr name="type">XLibrary</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">20</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">folder</attr>
+				<attr name="type">XLibrary</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">team</attr>
+				<attr name="type">XLibrary</attr>
+			</where>
+		</link>
+	</LoadObject>
+
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+		<attr name="name">XWX-ActionMenu</attr>
+		<attr name="type">XLibrary</attr>
+		<attr name="display">XLibrary Tabs</attr>
+		<attr name="icon">images/library.png</attr>
+		<attr name="style">dropdown-toggle</attr>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">10</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">copy</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+	</LoadObject>
+</FlameDataLoad>
