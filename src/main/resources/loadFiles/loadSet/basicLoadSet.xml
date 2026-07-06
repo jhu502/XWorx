@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="basic model load files">
+    <LoadFile filename="xw/auths/Basic-GroupTypeRB.xml"/>
+    <LoadFile filename="xw/auths/Basic-RoleRB.xml"/>
+    <LoadFile filename="xw/context/Basic-LibraryTypeRB.xml"/>
+
+    <LoadFile filename="xw/action/Action-Common.xml"/>
+    <LoadFile filename="xw/action/Action-Navigator.xml"/>
+    <LoadFile filename="xw/action/Action-XAdminDomain.xml"/>
+    <LoadFile filename="xw/action/Action-XContext.xml"/>
+    <LoadFile filename="xw/action/Action-XFolder.xml"/>
+    <LoadFile filename="xw/action/Action-XGroup.xml"/>
+    <LoadFile filename="xw/action/Action-XPropertyDefinition.xml"/>
+    <LoadFile filename="xw/action/Action-XServiceDefinition.xml"/>
+    <LoadFile filename="xw/action/Action-XThingModel.xml"/>
+
+    <LoadFile filename="xw/auths/Basic-GroupTypeRB.xml"/>
+    <LoadFile filename="xw/auths/Basic-RoleRB.xml"/>
+    <LoadFile filename="xw/auths/Basic-XGroup.xml"/>
+    <LoadFile filename="xw/auths/Basic-XUser.xml"/>
+
+    <LoadFile filename="xw/context/Basic-Contexts.xml"/>
+    <LoadFile filename="xw/context/Basic-LibraryTypeRB.xml"/>
+
+    <LoadFile filename="xw/domain/Basic-XAdminDomain.xml"/>
+</FlameDataLoad>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="PLM module load set">
+    <LoadFile filename="plm/container/Role-PLM.xml"/>
+    <LoadFile filename="plm/dynamic/Action-XDynamic.xml"/>
+    <LoadFile filename="plm/part/Action-XPart.xml"/>
+    <LoadFile filename="plm/part/Basic-ViewRB.xml"/>
+</FlameDataLoad>

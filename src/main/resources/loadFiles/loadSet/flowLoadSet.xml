@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="Flow module load set">
+    <LoadFile filename="xw/xflow/Action-XWorkflow.xml"/>
+</FlameDataLoad>

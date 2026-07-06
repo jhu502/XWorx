@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FlameDataLoad SYSTEM "../../StandardX01.dtd">
+<FlameDataLoad loader="com.flame.loader.FlameDataSetLoader" description="PLM module load set">
+    <LoadFile filename="mes/apl/Action-AssemblyLine.xml"/>
+    <LoadFile filename="mes/apl/Action-Equipment.xml"/>
+</FlameDataLoad>
