@@ -6,42 +6,26 @@
 <form id="flame_taskForm" method="post" th:enctype="${enctype}" th:fragment="default()" style="height:100%;width:100%;">
     <input type="hidden" id="rowId" name="rowId" th:value="${commandBean.rowId}"/>
     <input type="hidden" id="primaryOid" name="primaryOid" th:value="${commandBean.primaryOid}"/>
-    <input type="hidden" id="returnXWorkItemURL" th:value="${T(com.flame.xui.HREFactory).getHREF('#thymeleaf/xflow/instance/listUserTask.html')}"/>
-    <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'north',border:false" style="height:60px;padding-top:3px;">
-            <div class="easyui-layout" data-options="fit:true,border:false">
-                <div data-options="region:'center',border:false" id="XFlowWorkitemRouteForm" style="overflow-y:hidden;text-align:right;padding-left:10px;"></div>
-                <div data-options="region:'east',border:false" style="display:table-cell;vertical-align:middle;width:120px;">
-                    <div th:if="${commandBean.primaryObj?.isOpenStatus()}" id="flame$$xflow-completeTask" class="easyui-linkbutton" data-options="plain:false,iconCls:'icon-ok'"
-                         onClick="flame.submitForm(this, 'xw.flow.processor.CompleteWorkTaskProcessor', xCompleteCallback, (typeof(xComplete)==='function')?xComplete:undefined);"
-                         style="height:24px;" th:text="#{completeTask}" />
-                </div>
-            </div>
-        </div>
-        <div data-options="region:'center',border:false" style="padding-left:15px;">
-            <div id="XFlowWorkItemPrimaryForm" style="overflow-y:hidden;"></div>
-            <th:block th:with="taskForm=${T(xw.flow.XFlowExecutionHelper).getTaskForm(commandBean)}">
-                <th:block th:if="${taskForm!=null}">
-                    <th:block th:replace="${taskForm}::default()"/>
-                </th:block>
-            </th:block>
-        </div>
-    </div>
+    <input type="hidden" id="returnWorkTaskURL" th:value="${T(com.flame.xui.HREFactory).getHREF('#thymeleaf/xflow/instance/listUserTask.html')}"/>
+
+    <div id="XWorkTaskPrimaryForm" style="overflow-y:hidden;"></div>
+
+    <th:block th:with="taskForm=${T(xw.flow.XFlowExecutionHelper).getTaskForm(commandBean)}">
+        <th:block th:if="${taskForm!=null}">
+            <th:block th:replace="${taskForm}::default()"/>
+        </th:block>
+    </th:block>
+
     <script type="text/javascript">
-        flame.loadGrid('XFlowWorkitemRouteForm', 'xw.flow.form.XFlowWorkitemRouteForm', {
+        flame.loadGrid('XWorkTaskPrimaryForm', 'xw.flow.form.XWorkTaskPrimaryForm', {
             queryParams: {
-                oid: '[[${commandBean.primaryOid}]]'
-            }
-        });
-        flame.loadGrid('XFlowWorkItemPrimaryForm', 'xw.flow.form.XFlowWorkItemPrimaryForm', {
-            queryParams: {
-                oid: '[[${commandBean.primaryOid}]]'
+                oid: '[(${commandBean.primaryOid})]'
             }
         });
 
-        function xCompleteCallback() {
+        function completeCallback() {
             $.messager.alert('消息','任务完成');
-            $(location).attr('href', $('#returnXWorkItemURL').val());
+            $(location).attr('href', $('#returnWorkTaskURL').val());
         }
     </script>
 </form>

@@ -76,6 +76,14 @@ public class XWorkInstance extends ModeledEntity {
 		return businessRef;
 	}
 
+	public XObject getBusinessObject() {
+		if (this.businessRef == null) {
+			return null;
+		} else {
+			return this.businessRef.getObject();
+		}
+	}
+
 	public void setBusinessRef(ObjectReference<XObject> businessRef) {
 		this.businessRef = businessRef;
 	}

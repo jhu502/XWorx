@@ -16,6 +16,48 @@
 
     <LoadObject type="xw.action.entity.XActionItem" where="type,name">
         <attr name="name">detail</attr>
+        <attr name="type">XWorkTask</attr>
+        <attr name="display">Details</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/taskform/workitemTaskForm.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">Details</attr>
+        <attr name="zh_CN">详细信息</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">history</attr>
+        <attr name="type">XWorkTask</attr>
+        <attr name="display">History</attr>
+        <attr name="style"></attr>
+        <attr name="url">thymeleaf/xflow/flowReviewHistory.html</attr>
+        <attr name="winType">page</attr>
+        <attr name="en_US">History</attr>
+        <attr name="zh_CN">历史</attr>
+    </LoadObject>
+    <LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
+        <attr name="name">XWX-InfoTabs</attr>
+        <attr name="type">XWorkTask</attr>
+        <attr name="display">XWorkTask Tabs</attr>
+        <attr name="icon">images/flow/usertask.png</attr>
+        <attr name="style">dropdown-toggle</attr>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">10</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">detail</attr>
+                <attr name="type">XWorkTask</attr>
+            </where>
+        </link>
+        <link type="xw.action.entity.XActionItemLink" refer="left">
+            <attr name="sort">20</attr>
+            <where type="xw.action.entity.XActionItem" refer="right">
+                <attr name="name">history</attr>
+                <attr name="type">XWorkTask</attr>
+            </where>
+        </link>
+    </LoadObject>
+
+    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
+        <attr name="name">detail</attr>
         <attr name="type">XWorkInstance</attr>
         <attr name="display">Details</attr>
         <attr name="style"></attr>
@@ -94,48 +136,6 @@
             <where type="xw.action.entity.XActionItem" refer="right">
                 <attr name="name">diagram</attr>
                 <attr name="type">XFlowDefinition</attr>
-            </where>
-        </link>
-    </LoadObject>
-
-    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
-        <attr name="name">detail</attr>
-        <attr name="type">XWorkTask</attr>
-        <attr name="display">Details</attr>
-        <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/taskform/workitemTaskForm.html</attr>
-        <attr name="winType">page</attr>
-        <attr name="en_US">Details</attr>
-        <attr name="zh_CN">详细信息</attr>
-    </LoadObject>
-    <LoadObject type="xw.action.entity.XActionItem" where="type,name">
-        <attr name="name">history</attr>
-        <attr name="type">XWorkTask</attr>
-        <attr name="display">History</attr>
-        <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/flowReviewHistory.html</attr>
-        <attr name="winType">page</attr>
-        <attr name="en_US">History</attr>
-        <attr name="zh_CN">历史</attr>
-    </LoadObject>
-    <LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Info Tabs -->
-        <attr name="name">XWX-InfoTabs</attr>
-        <attr name="type">XWorkTask</attr>
-        <attr name="display">XWorkTask Tabs</attr>
-        <attr name="icon">images/flow/usertask.png</attr>
-        <attr name="style">dropdown-toggle</attr>
-        <link type="xw.action.entity.XActionItemLink" refer="left">
-            <attr name="sort">10</attr>
-            <where type="xw.action.entity.XActionItem" refer="right">
-                <attr name="name">detail</attr>
-                <attr name="type">XWorkTask</attr>
-            </where>
-        </link>
-        <link type="xw.action.entity.XActionItemLink" refer="left">
-            <attr name="sort">20</attr>
-            <where type="xw.action.entity.XActionItem" refer="right">
-                <attr name="name">history</attr>
-                <attr name="type">XWorkTask</attr>
             </where>
         </link>
     </LoadObject>

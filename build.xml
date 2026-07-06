@@ -18,7 +18,7 @@
 	<property name="maven.exec" value="${maven.home}/bin/mvn.cmd" />
 
 	<!-- 合并各模块 src 目录代码到 XWorx -->
-	<target name="merge-sources" description="将 XVersion/XUtil/XModel/XBasic/XFlow/XMES/XPLM 模块的 src 代码合并复制到 XWorx">
+	<target name="merge" description="将 XVersion/XUtil/XModel/XBasic/XFlow/XMES/XPLM 模块的 src 代码合并复制到 XWorx">
 		<echo message="开始合并各模块源码到 XWorx..."/>
 
 		<!-- XVersion - 版本管理模块 -->
