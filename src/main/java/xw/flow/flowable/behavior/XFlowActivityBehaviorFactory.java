@@ -16,13 +16,14 @@ import org.flowable.engine.impl.bpmn.parser.factory.DefaultActivityBehaviorFacto
  * 4. 注册XFlowTimerRobotBehavior以实现时间自动机的功能;
  */
 public class XFlowActivityBehaviorFactory extends DefaultActivityBehaviorFactory {
+	@Override
 	public XFlowStartEventBehavior createNoneStartEventActivityBehavior(StartEvent startEvent) {
 		return new XFlowStartEventBehavior();
 	}
 
 	@Override
 	public UserTaskActivityBehavior createUserTaskActivityBehavior(UserTask userTask) {
-		return new UserTaskActivityBehavior(userTask);
+		return new XFlowUserTaskBehavior(userTask);
 	}
 
 	@Override
@@ -41,8 +42,8 @@ public class XFlowActivityBehaviorFactory extends DefaultActivityBehaviorFactory
 	}
 
 	public ReceiveTaskActivityBehavior createReceiveTaskActivityBehavior(ReceiveTask receiveTask) {
-	    XFlowTimerRobotBehavior robotBehavior = new XFlowTimerRobotBehavior(receiveTask.getId(), receiveTask.getSkipExpression());
-	    robotBehavior.setReceiveTask(receiveTask);
-		return robotBehavior;
+	    XFlowTimerRobotBehavior timerRobotBehavior = new XFlowTimerRobotBehavior(receiveTask.getId(), receiveTask.getSkipExpression());
+	    timerRobotBehavior.setReceiveTask(receiveTask);
+		return timerRobotBehavior;
 	}
 }

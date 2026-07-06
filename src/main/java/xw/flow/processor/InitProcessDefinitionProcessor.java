@@ -18,7 +18,7 @@ public class InitProcessDefinitionProcessor extends DefaultFormProcessor {
         FlowDataBean flowData = new FlowDataBean();
         EventNodeVO startNode = new EventNodeVO();
         startNode.setId(UUID.randomUUID().toString());
-        startNode.setShape(FlowConstant.X_NODE);
+        startNode.setShape(FlowConstant.NODE);
         startNode.setXType(FlowConstant.START_EVENT);
         startNode.setLabel("开始");
         startNode.addAttr(FlowConstant.IMAGE, Map.of("xlink:href", "images/flow/start.png"));
@@ -30,7 +30,7 @@ public class InitProcessDefinitionProcessor extends DefaultFormProcessor {
 
         EventNodeVO endNode = new EventNodeVO();
         endNode.setId(UUID.randomUUID().toString());
-        endNode.setShape(FlowConstant.X_NODE);
+        endNode.setShape(FlowConstant.NODE);
         endNode.setXType(FlowConstant.END_EVENT);
         endNode.setLabel("结束");
         endNode.addAttr(FlowConstant.IMAGE, Map.of("xlink:href", "images/flow/end.png"));

@@ -31,8 +31,6 @@ import org.flowable.bpmn.model.StartEvent;
 import org.flowable.bpmn.model.Task;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.RepositoryService;
-import org.flowable.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
-import org.flowable.engine.impl.bpmn.parser.factory.ActivityBehaviorFactory;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.DeploymentBuilder;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -75,7 +73,6 @@ import xw.flow.entity.XFlowThing;
 import xw.flow.entity.XFlowTimer;
 import xw.flow.entity.XFlowUserTask;
 import xw.flow.flowable.XFlowThingTaskDelegate;
-import xw.flow.flowable.behavior.XFlowActivityBehaviorFactory;
 import xw.flow.repos.XFlowRepository;
 
 /**
@@ -147,7 +144,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ProcessDefinitionQuery definitionQuery = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId());
 		ProcessDefinition processDefinition = definitionQuery.processDefinitionKey(oid2NCName(definition.getOid())).singleResult();
 		definition.setDeployed(true);
-		definition.setProcessDefId(processDefinition.getId());
+		definition.setProcessDefinition(processDefinition);
 		definition = PersistenceHelper.service().save(definition);
 		LOGGER.info("Flow Definition:%s was deployed successfully.", definition.getName());
 
@@ -201,7 +198,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		BpmnModel bpmnModel = new BpmnModel();
 		bpmnModel.addNamespace(FlowConstant.NS_PREFIX, FlowConstant.NAMESPACE);
 		Process process = new Process();
-		process.setId(this.oid2NCName(definition.getOid()));
+		process.setId(oid2NCName(definition.getOid()));
 		process.setName(definition.getMaster().getOid());
 		bpmnModel.addProcess(process);
 
@@ -273,7 +270,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement typeElement = new ExtensionElement();
 		typeElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		typeElement.setNamespace(FlowConstant.NAMESPACE);
-		typeElement.setName(FlowConstant.X_CONFIG);
+		typeElement.setName(FlowConstant.CONFIG);
 
 		ExtensionElement typeItem = new ExtensionElement();
 		typeItem.setNamespacePrefix(FlowConstant.NS_PREFIX);
@@ -306,7 +303,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement routeElement = new ExtensionElement();
 		routeElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		routeElement.setNamespace(FlowConstant.NAMESPACE);
-		routeElement.setName(FlowConstant.X_ROUTE);
+		routeElement.setName(FlowConstant.ROUTE);
 		ExtensionAttribute routeType = new ExtensionAttribute(FlowConstant.TYPE);
 		routeType.setValue(FlowRouteType.Exclusive.toString());
 		routeElement.addAttribute(routeType);
@@ -349,7 +346,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement eventElement = new ExtensionElement();
 		eventElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		eventElement.setNamespace(FlowConstant.NAMESPACE);
-		eventElement.setName(FlowConstant.X_EVENT);
+		eventElement.setName(FlowConstant.EVENT);
 
 		// 为X-ROUTE 扩展元素添加子元素: ROUTE name="Approved"
 		for (FlowEvent event : flowEvent.getEvents()) {
@@ -400,7 +397,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement actorElement = new ExtensionElement();
 		actorElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		actorElement.setNamespace(FlowConstant.NAMESPACE);
-		actorElement.setName(FlowConstant.X_ACTOR);
+		actorElement.setName(FlowConstant.ACTOR);
 		ExtensionAttribute necessity = new ExtensionAttribute(FlowConstant.NECESSITY);
 		necessity.setValue(flowActor.getNecessity());
 		actorElement.addAttribute(necessity);
@@ -472,7 +469,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement timerElement = new ExtensionElement();
 		timerElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		timerElement.setNamespace(FlowConstant.NAMESPACE);
-		timerElement.setName(FlowConstant.X_TIMER);
+		timerElement.setName(FlowConstant.TIMER);
 
 		ExtensionElement timerItem = new ExtensionElement();
 		timerItem.setNamespacePrefix(FlowConstant.NS_PREFIX);
@@ -523,7 +520,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement variableElement = new ExtensionElement();
 		variableElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		variableElement.setNamespace(FlowConstant.NAMESPACE);
-		variableElement.setName(FlowConstant.X_VARIABLE);
+		variableElement.setName(FlowConstant.VARIABLE);
 
 		// 为X-ROUTE 扩展元素添加子元素: ROUTE name="Approved"
 		for (FlowVariable variable : flowVariable.getVariables()) {
@@ -559,7 +556,6 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 	 * <p>转换过程：</p>
 	 * <ol>
 	 *   <li>创建 UserTask 并设置 ID（nodeId）/ Name</li>
-	 *   <li>通过 XFlowActivityBehaviorFactory 创建自定义的 UserTaskActivityBehavior 作为任务行为</li>
 	 *   <li>设置表单 Key（formKey）：若节点配置了 taskForm 则使用配置值，否则使用默认表单 {@code workitemReviewData}</li>
 	 *   <li>依次添加扩展元素：X-TYPE → X-VARIABLE → X-ROUTE → X-EVENT → X-ACTOR</li>
 	 * </ol>
@@ -568,12 +564,9 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 	 * @return Flowable UserTask 模型元素
 	 */
 	private UserTask convertTask2Bpmn(XFlowUserTask node) {
-		ActivityBehaviorFactory factory = new XFlowActivityBehaviorFactory();
 		UserTask task = new UserTask();
-		UserTaskActivityBehavior behavior = factory.createUserTaskActivityBehavior((UserTask) task);
 		task.setId(node.getNodeId());
 		task.setName(node.getName());
-		task.setBehavior(behavior);
 		if (FlameUtils.isBlank(node.getTaskForm())) {
 			task.setFormKey(DEFAULT_TASKFORM);
 		} else {
@@ -649,20 +642,19 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 	 *   <li><b>endEvent：</b>创建 EndEvent，流程到达时正常终止</li>
 	 *   <li><b>groundEvent：</b>创建 EndEvent（终止结束事件），流程到达时强制终止当前分支</li>
 	 * </ul>
-	 * <p>所有事件节点均添加 X-TYPE 扩展元素，并初始化 ExecutionListener 列表。</p>
+	 * <p>所有事件节点均添加 X-TYPE 扩展元素。StartEvent 的 ActivityBehavior
+	 * 由全局注册的 {@code XFlowActivityBehaviorFactory} 在执行阶段自动创建，部署时无需显式设置。</p>
 	 *
 	 * @param node XFlow 事件节点
 	 * @return Flowable Event 模型元素（StartEvent 或 EndEvent）
 	 */
 	private Event convertEvent2Bpmn(XFlowEvent node) {
-		XFlowActivityBehaviorFactory behaviorFactory = new XFlowActivityBehaviorFactory();
 		Event event = null;
 		switch (node.getNodeType()) {
 		case startEvent:
 			event = new StartEvent();
 			event.setId(node.getNodeId());
 			event.setName(node.getName());
-			event.setBehavior(behaviorFactory.createNoneStartEventActivityBehavior((StartEvent) event));
 			event.addExtensionElement(this.buildTypeElement(node));
 			break;
 		case endEvent:
@@ -837,7 +829,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 		ExtensionElement routeElement = new ExtensionElement();
 		routeElement.setNamespacePrefix(FlowConstant.NS_PREFIX);
 		routeElement.setNamespace(FlowConstant.NAMESPACE);
-		routeElement.setName(FlowConstant.X_ROUTE);
+		routeElement.setName(FlowConstant.ROUTE);
 
 		String routes = edge.getRoutes();
 		if (FlameUtils.isNotBlank(routes)) {
@@ -1298,7 +1290,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 	 */
 	public List<FlowRoute> getFlowRoute(UserTask userTask) {
 		List<FlowRoute> result = new ArrayList<>();
-		for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.X_ROUTE)) {
+		for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.ROUTE)) {
 			List<ExtensionElement> routeList = element.getChildElements().get(FlowConstant.ROUTE);
 			if (routeList == null || routeList.isEmpty())
 				return result;
@@ -1325,7 +1317,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 	 */
 	public List<FlowEvent> getFlowEvent(UserTask userTask) {
 		List<FlowEvent> result = new ArrayList<>();
-		for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.X_EVENT)) {
+		for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.EVENT)) {
 			List<ExtensionElement> eventList = element.getChildElements().get(FlowConstant.EVENT);
 			if (eventList == null || eventList.isEmpty())
 				return result;

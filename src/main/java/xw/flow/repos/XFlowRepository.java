@@ -92,14 +92,14 @@ public interface XFlowRepository extends JpaRepository<XFlowDefinition, Long> {
     List<XWorkTimer> findXWorkTimer(FlowStatus status, Timestamp time);
 
     @Query(value = "select a from XWorkTask a where a.assignee.xid = :#{#user.xid} and a.status = :#{#status}")
-    List<XWorkTask> findXWorkItem(XUser user, FlowStatus status);
+    List<XWorkTask> findXWorkTask(XUser user, FlowStatus status);
 
     @Query(value = "select a from XWorkTask a where a.instance.xid = :#{#instance.xid}")
-    List<XWorkTask> findXWorkItem(XWorkInstance instance);
+    List<XWorkTask> findXWorkTask(XWorkInstance instance);
 
     @Query(value = "select a from XWorkTask a where a.taskId = :#{#taskInfo.id}")
-    List<XWorkTask> findXWorkItem(TaskInfo taskInfo);
+    List<XWorkTask> findXWorkTask(TaskInfo taskInfo);
 
     @Query(value = "select a from XWorkTask a where a.activity.xid = :#{#activity.xid} and a.status = :status")
-    List<XWorkTask> findXWorkItem(XWorkActivity activity, FlowStatus status);
+    List<XWorkTask> findXWorkTask(XWorkActivity activity, FlowStatus status);
 }

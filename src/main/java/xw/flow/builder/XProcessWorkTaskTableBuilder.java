@@ -41,7 +41,7 @@ public class XProcessWorkTaskTableBuilder extends AbstractTableComponentBuilder 
             return result;
         }
         XWorkInstance instance = (XWorkInstance) xobject;
-        List<XWorkTask> list = XFlowRepositoryHelper.repository().findXWorkItem(instance);
+        List<XWorkTask> list = XFlowRepositoryHelper.repository().findXWorkTask(instance);
         for (XWorkTask workItem : list) {
             TableComponentRow tableRow = TableComponentRow.newInstance(workItem, workItem.getOid());
             if (FlowStatus.OPEN.equals(workItem.getStatus())) {

@@ -5,6 +5,7 @@ import xw.flow.entity.XFlowDefinition;
 import com.flame.xui.XCommandBean;
 import com.flame.common.form.DefaultFormProcessor;
 import com.flame.common.form.FormResult;
+import com.flame.common.form.FormStatus;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class DeployFlowDefinitionProcessor extends DefaultFormProcessor {
                 XFlowDefinitionHelper.definition().deployFlowDefinition(definition);
             }
         }
+
+        formResult.setStatus(FormStatus.SUCCESS);
+        formResult.setMessage("部署成功");
 
         return formResult;
     }

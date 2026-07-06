@@ -59,21 +59,14 @@ public class XWorkTask extends XObject {
 	@ManyToOne(targetEntity = XWorkInstance.class)
 	@JoinColumn(name = "instanceId", foreignKey = @ForeignKey(name = "FLOWINSTANCE_ID_FK"))
 	private XWorkInstance instance;
-	@ManyToOne(targetEntity = XThingModel.class)
-	@JoinColumn(name = "modelId", nullable = false, foreignKey = @ForeignKey(name = "THINGMODEL_FK"))
-	private IThingModel thingModel;
 
-	public static XWorkTask newInstance(XWorkInstance instance, XWorkActivity activity, Task entity) {
+	public static XWorkTask newInstance(XWorkInstance instance, XWorkActivity activity, Task entity, XUser user) {
 		XWorkTask workItem = new XWorkTask();
 		workItem.setInstance(instance);
 		workItem.setActivity(activity);
 		workItem.setName(entity.getName());
 		workItem.setTaskId(entity.getId());
-		String assignee = entity.getAssignee();
-		if (FlameUtils.isNotBlank(assignee)) {
-			XUser xuser = PersistenceHelper.service().find(assignee);
-			workItem.setAssignee(xuser);
-		}
+		workItem.setAssignee(user);
 
 		return workItem;
 	}

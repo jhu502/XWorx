@@ -29,7 +29,7 @@ public class XFlowDefinitionHelper {
 
     public static List<XUser> getUsers(UserTask userTask) {
         List<XUser> result = new ArrayList<>();
-        for (ExtensionElement children : userTask.getExtensionElements().get(FlowConstant.X_ACTOR)) {
+        for (ExtensionElement children : userTask.getExtensionElements().get(FlowConstant.ACTOR)) {
             List<ExtensionElement> userList = children.getChildElements().get(FlowConstant.USER);
             if (userList == null || userList.isEmpty())
                 return result;
@@ -49,7 +49,7 @@ public class XFlowDefinitionHelper {
 
     public static List<XGroup> getGroups(UserTask userTask) {
         List<XGroup> result = new ArrayList<>();
-        for (ExtensionElement children : userTask.getExtensionElements().get(FlowConstant.X_ACTOR)) {
+        for (ExtensionElement children : userTask.getExtensionElements().get(FlowConstant.ACTOR)) {
             List<ExtensionElement> groupList = children.getChildElements().get(FlowConstant.GROUP);
             if (groupList == null || groupList.isEmpty())
                 return result;
@@ -70,7 +70,7 @@ public class XFlowDefinitionHelper {
 
     public static List<FlowRole> getRoles(UserTask userTask) {
         List<FlowRole> result = new ArrayList<>();
-        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.X_ACTOR)) {
+        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.ACTOR)) {
             List<ExtensionElement> roleList = element.getChildElements().get(FlowConstant.ROLE);
             if (roleList == null || roleList.isEmpty())
                 return result;
@@ -88,7 +88,7 @@ public class XFlowDefinitionHelper {
 
     public static List<String> getRoutes(SequenceFlow seqFlow) {
         List<String> result = new ArrayList<>();
-        for (ExtensionElement element : seqFlow.getExtensionElements().get(FlowConstant.X_ROUTE)) {
+        for (ExtensionElement element : seqFlow.getExtensionElements().get(FlowConstant.ROUTE)) {
             List<ExtensionElement> routeList = element.getChildElements().get(FlowConstant.ROUTE);
             if (routeList == null || routeList.isEmpty())
                 return result;
@@ -106,7 +106,7 @@ public class XFlowDefinitionHelper {
 
     public static List<String> getRoutes(UserTask userTask) {
         List<String> result = new ArrayList<>();
-        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.X_ROUTE)) {
+        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.ROUTE)) {
             List<ExtensionElement> routeList = element.getChildElements().get(FlowConstant.ROUTE);
             if (routeList == null || routeList.isEmpty())
                 return result;
@@ -124,7 +124,7 @@ public class XFlowDefinitionHelper {
 
     public static List<FlowVariable> getVariables(UserTask userTask) {
         List<FlowVariable> result = new ArrayList<>();
-        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.X_VARIABLE)) {
+        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.VARIABLE)) {
             List<ExtensionElement> variables = element.getChildElements().get(FlowConstant.VARIABLE);
             if (variables == null || variables.isEmpty())
                 return result;
@@ -148,7 +148,7 @@ public class XFlowDefinitionHelper {
 
     public static List<FlowVariable> getVariables(Process process) {
         List<FlowVariable> result = new ArrayList<>();
-        for (ExtensionElement element : process.getExtensionElements().get(FlowConstant.X_VARIABLE)) {
+        for (ExtensionElement element : process.getExtensionElements().get(FlowConstant.VARIABLE)) {
             List<ExtensionElement> variables = element.getChildElements().get(FlowConstant.VARIABLE);
             if (variables == null || variables.isEmpty())
                 return result;
@@ -194,7 +194,7 @@ public class XFlowDefinitionHelper {
     }
 
     public static String getNecessity(UserTask userTask) {
-        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.X_ACTOR)) {
+        for (ExtensionElement element : userTask.getExtensionElements().get(FlowConstant.ACTOR)) {
             List<ExtensionAttribute> attrList = element.getAttributes().get(FlowConstant.NECESSITY);
             if (attrList != null && !attrList.isEmpty()) {
                 for (ExtensionAttribute attribute : attrList) {
@@ -211,7 +211,7 @@ public class XFlowDefinitionHelper {
         TimeRobotVO robotVO = new TimeRobotVO();
 
         robotVO.setId(receiveTask.getId());
-        for (ExtensionElement element : receiveTask.getExtensionElements().get(FlowConstant.X_TIMER)) {
+        for (ExtensionElement element : receiveTask.getExtensionElements().get(FlowConstant.TIMER)) {
             for (ExtensionElement timer : element.getChildElements().get(FlowConstant.TIMER)) {
                 String year = timer.getAttributeValue(null, FlowConstant.YEAR);
                 year = year == null ? "0" : year;
@@ -241,8 +241,8 @@ public class XFlowDefinitionHelper {
         if (node == null || FlameUtils.isBlank(el))
             return "";
 
-        if (node.getExtensionElements().containsKey(FlowConstant.X_CONFIG)) {
-            for (ExtensionElement element : node.getExtensionElements().get(FlowConstant.X_CONFIG)) {
+        if (node.getExtensionElements().containsKey(FlowConstant.CONFIG)) {
+            for (ExtensionElement element : node.getExtensionElements().get(FlowConstant.CONFIG)) {
                 List<ExtensionElement> elList = element.getChildElements().get(el);
                 if (elList == null || elList.isEmpty())
                     return "";

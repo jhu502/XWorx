@@ -3,6 +3,7 @@ package xw.flow.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.flowable.engine.repository.ProcessDefinition;
 import org.hibernate.annotations.ColumnTransformer;
 
 import com.flame.annotations.XDefinition;
@@ -80,8 +81,8 @@ public class XFlowDefinition extends IterationControlled<XFlowDefinitionMaster> 
         return processDefId;
     }
 
-    public void setProcessDefId(String processDefId) {
-        this.processDefId = processDefId;
+    public void setProcessDefinition(ProcessDefinition processDefinition) {
+        this.processDefId = processDefinition.getId();
     }
 
     public boolean isEnabled() {

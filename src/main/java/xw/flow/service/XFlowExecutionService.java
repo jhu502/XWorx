@@ -191,7 +191,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 			return new ArrayList<>();
 
 		XUser user = (XUser) SessionHelper.getCurrentUser();
-		return flowRepository.findXWorkItem(user, status);
+		return flowRepository.findXWorkTask(user, status);
 	}
 
 	/**
@@ -417,7 +417,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 		TaskService taskService = this.processEngine.getTaskService();
 
 		XUser xuser = (XUser) SessionHelper.getCurrentUser();
-		List<XWorkTask> workItems = this.flowRepository.findXWorkItem(taskInfo);
+		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(taskInfo);
 		for (XWorkTask workItem : workItems) {
 			if (FlameUtils.isNotBlank(routes)) {
 				workItem.setRoutes(routes);
@@ -453,7 +453,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	@Transactional
 	public XWorkActivity completeXWorkActivity(XWorkActivity workActivity) {
 		Set<String> routeSet = new HashSet<>();
-		List<XWorkTask> workItems = this.flowRepository.findXWorkItem(workActivity, FlowStatus.COMPLETED);
+		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(workActivity, FlowStatus.COMPLETED);
 		for (XWorkTask workItem : workItems) {
 			String routes = workItem.getRoutes();
 			if (FlameUtils.isBlank(routes))
@@ -470,7 +470,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 			}
 		}
 
-		List<XWorkTask> openWorkItems = this.flowRepository.findXWorkItem(workActivity, FlowStatus.OPEN);
+		List<XWorkTask> openWorkItems = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
 		if (!openWorkItems.isEmpty()) {
 			PersistenceHelper.service().remove(openWorkItems);
 		}
@@ -516,7 +516,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 			taskService.claim(task.getId(), xuser.getOid());
 			taskService.complete(workItem.getTaskId());
 		} else if ("ALL".equals(necessity)) {
-			List<XWorkTask> workItems = this.flowRepository.findXWorkItem(workActivity, FlowStatus.OPEN);
+			List<XWorkTask> workItems = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
 			if (workItems.isEmpty()) {
 				TaskService taskService = this.processEngine.getTaskService();
 				Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workItem.getTaskId()).singleResult();
@@ -582,7 +582,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 			if (!FlowStatus.OPEN.equals(activity.getStatus()))
 				continue;
 
-			List<XWorkTask> workItems = this.flowRepository.findXWorkItem(activity, FlowStatus.OPEN);
+			List<XWorkTask> workItems = this.flowRepository.findXWorkTask(activity, FlowStatus.OPEN);
 			for (XWorkTask workItem : workItems) {
 				if (workItem.isOpenStatus()) {
 					PersistenceHelper.service().remove(workItem);
@@ -762,7 +762,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 		ExecutionEntityManager executionManager = this.engineConfiguration.getExecutionEntityManager();
 		executionManager.deleteProcessInstance(workInstance.getProcessInstId(), "Clean flow instance.", true);
 
-		List<XWorkTask> workItems = this.flowRepository.findXWorkItem(workInstance);
+		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(workInstance);
 		PersistenceHelper.service().remove(workItems);
 		List<XWorkActivity> workActivities = this.flowRepository.findXWorkActivity(workInstance);
 		PersistenceHelper.service().remove(workActivities);
@@ -781,7 +781,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	@Transactional
 	public void removeTaskEntity(TaskEntity taskEntity, String reason) {
 		TaskEntityManager entityManager = this.engineConfiguration.getTaskServiceConfiguration().getTaskEntityManager();
-		List<XWorkTask> workItems = this.flowRepository.findXWorkItem(taskEntity);
+		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(taskEntity);
 		PersistenceHelper.service().remove(workItems);
 		entityManager.delete(taskEntity, true);
 	}

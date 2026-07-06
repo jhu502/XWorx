@@ -36,8 +36,7 @@ public class XFlowStartEventBehavior extends NoneStartEventActivityBehavior {
         for (FlowVariable variable : flowVariables) {
             workInstance.getFlowContext().addVariable(variable);
         }
-        workInstance.setProcessDefId(processInstance.getProcessDefinitionId());
-        workInstance.setProcessInstId(processInstance.getProcessInstanceId());
+        workInstance.setProcessInstance(processInstance);
         PersistenceHelper.service().save(workInstance);
         super.leave(executionEntity);
     }
