@@ -32,31 +32,33 @@ import xw.flow.entity.XWorkTask;
 @UIMeshGrid(grids = {
         @UIGrid(provider = XWorkTask.class, rows = { //
                 @UIRow(cells = { //
+                        @UICell(label = "label_routes", widget = { //
+                                @UIWidget(type = WidgetType.RadioBox, id = "taskRoutes", name = "taskRoutes", style = "margin-left:8px")//
+                        }), //
+                        @UICell(widget = { //
+                                @UIWidget(type = WidgetType.Button, id = "completeTask", name = "taskRoutes", text = "Complete Task", style="margin-left:200px;", events = { //
+                                        @UIEvent(name = "onclick", value = "flame.submitForm(this, 'xw.flow.processor.CompleteWorkTaskProcessor', completeCallback, (typeof(taskComplete)==='function')?taskComplete:undefined);") //
+                                })//
+                        }) //
+                }), //
+                @UIRow(cells = { //
+                        @UICell(label = "label_remarks", colspan = 2, widget = { //
+                                @UIWidget(type = WidgetType.TextBox, id = "taskRemarks", name = "taskRemarks", traits = "editable:true,multiline:true", style = "height:50px;width:80%;")//
+                        }), //
+                }), //
+                @UIRow(cells = { //
                         @UICell(label = "label_subject", widget = { //
                                 @UIWidget(type = WidgetType.IconBox, id = "primaryIcon", name = "primaryIcon", style = ""),//
                                 @UIWidget(type = WidgetType.HyperLink, id = "primaryInfo", name = "primaryInfo", style = "height:45px;margin-right:30px;")//
                         }),
-                        @UICell(label = "label_process", colspan = 2, widget = { //
+                        @UICell(label = "label_process", widget = { //
                                 @UIWidget(type = WidgetType.HyperLink, id = "processInfo", name = "processInfo", style = "height:45px")//
                         }),
                 }), //
                 @UIRow(cells = { //
-                        @UICell(label = "label_instructions", colspan = 3, widget = { //
+                        @UICell(label = "label_instructions", colspan = 2, widget = { //
                                 @UIWidget(type = WidgetType.TextDisplay, id = "instructions", name = "instructions", style = "height:45px")//
                         }),
-                }), //
-                @UIRow(cells = { //
-                        @UICell(label = "label_remarks", widget = { //
-                                @UIWidget(type = WidgetType.TextBox, id = "taskRemarks", name = "taskRemarks", traits = "editable:true,multiline:true", style = "width:350px;height:45px")//
-                        }), //
-                        @UICell(label = "label_routes", colspan = 2, widget = { //
-                                @UIWidget(type = WidgetType.RadioBox, id = "taskRoutes", name = "taskRoutes", style = "margin-left:8px")//
-                        }), //
-                        @UICell(widget = { //
-                                @UIWidget(type = WidgetType.Button, id = "completeTask", name = "taskRoutes", text = "Complete Task", style = "margin-left:8px", events = { //
-                                        @UIEvent(name = "onclick", value = "flame.submitForm(this, 'xw.flow.processor.CompleteWorkTaskProcessor', completeCallback, (typeof(taskComplete)==='function')?taskComplete:undefined);") //
-                                })//
-                        }) //
                 }), //
         })
 })
