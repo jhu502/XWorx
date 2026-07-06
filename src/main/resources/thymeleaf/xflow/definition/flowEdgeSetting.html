@@ -9,8 +9,8 @@
     </div>
 </section>
 <script type="text/javascript">
-    let edgeRoutes = [];
-    let flowEdgeId = "[[${commandBean.getTextParameter('nodeId')}]]";
+    var edgeRoutes = [];
+    var flowEdgeId = "[[${commandBean.getTextParameter('nodeId')}]]";
     (($) => {
         const flowEdge = flowEditor.getXFlowEdge(flowEdgeId);
         const sourceId = flowEdge.store.data.source.cell;
