@@ -30,13 +30,13 @@ import xw.flow.entity.XWorkInstance;
 import xw.flow.entity.XWorkTask;
 
 @UIMeshGrid(grids = {
-        @UIGrid(provider = XWorkTask.class, rows = { //
+        @UIGrid(provider = XWorkTask.class, title = "taskInfo", rows = { //
                 @UIRow(cells = { //
                         @UICell(label = "label_routes", widget = { //
                                 @UIWidget(type = WidgetType.RadioBox, id = "taskRoutes", name = "taskRoutes", style = "margin-left:8px")//
                         }), //
                         @UICell(widget = { //
-                                @UIWidget(type = WidgetType.Button, id = "completeTask", name = "taskRoutes", text = "Complete Task", style="margin-left:200px;", events = { //
+                                @UIWidget(type = WidgetType.Button, id = "completeTask", name = "taskRoutes", text = "Complete Task", style = "margin-left:200px;", events = { //
                                         @UIEvent(name = "onclick", value = "flame.submitForm(this, 'xw.flow.processor.CompleteWorkTaskProcessor', completeCallback, (typeof(taskComplete)==='function')?taskComplete:undefined);") //
                                 })//
                         }) //
@@ -65,6 +65,9 @@ import xw.flow.entity.XWorkTask;
 public class XWorkTaskPrimaryForm extends AbstractMeshComponentBuilder {
     public XUIMeshGrid buildComponentConfig(XCommandBean commandBean) {
         XUIMeshGrid formConfig = super.buildComponentConfig(commandBean);
+        XUIMeshGrid.XUIGrid xuiGrid = formConfig.getGrids(0);
+        xuiGrid.setName(LocalizationHelper.get(xuiGrid.getName()));
+
         XWorkTask workTask = (XWorkTask) commandBean.getPrimaryObj();
 
         XWorkInstance instance = workTask.getInstance();
