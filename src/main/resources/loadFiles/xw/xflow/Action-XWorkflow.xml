@@ -7,7 +7,7 @@
         <attr name="display">Processes</attr>
         <attr name="icon">images/flow/instxflow.gif</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/instance/relatedXWorkInstance.html</attr>
+        <attr name="url">thymeleaf/flow/instance/relatedXWorkInstance.html</attr>
         <attr name="processor"></attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Processes</attr>
@@ -19,7 +19,7 @@
         <attr name="type">XWorkTask</attr>
         <attr name="display">Details</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/taskform/flowWorkTaskForm.html</attr>
+        <attr name="url">thymeleaf/flow/taskform/flowWorkTaskForm.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Details</attr>
         <attr name="zh_CN">详细信息</attr>
@@ -29,7 +29,7 @@
         <attr name="type">XWorkTask</attr>
         <attr name="display">History</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/flowReviewHistory.html</attr>
+        <attr name="url">thymeleaf/flow/flowReviewHistory.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">History</attr>
         <attr name="zh_CN">历史</attr>
@@ -61,7 +61,7 @@
         <attr name="type">XWorkInstance</attr>
         <attr name="display">Details</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/instance/instanceDetailsTab.html</attr>
+        <attr name="url">thymeleaf/flow/instance/instanceDetailsTab.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Details</attr>
         <attr name="zh_CN">详细信息</attr>
@@ -71,7 +71,7 @@
         <attr name="type">XWorkInstance</attr>
         <attr name="display">Diagram</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/instance/instanceDiagramTab.html</attr>
+        <attr name="url">thymeleaf/flow/instance/instanceDiagramTab.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Diagram</attr>
         <attr name="zh_CN">流程图</attr>
@@ -103,7 +103,7 @@
         <attr name="type">XFlowDefinition</attr>
         <attr name="display">Detail</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/definition/definitionDetailsTab.html</attr>
+        <attr name="url">thymeleaf/flow/definition/definitionDetailsTab.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Details</attr>
         <attr name="zh_CN">详细信息</attr>
@@ -113,7 +113,7 @@
         <attr name="type">XFlowDefinition</attr>
         <attr name="display">Diagram</attr>
         <attr name="style"></attr>
-        <attr name="url">thymeleaf/xflow/definition/definitionDiagramTab.html</attr>
+        <attr name="url">thymeleaf/flow/definition/definitionDiagramTab.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Diagram</attr>
         <attr name="zh_CN">流程图</attr>

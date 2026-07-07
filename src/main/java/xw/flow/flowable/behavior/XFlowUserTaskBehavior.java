@@ -64,7 +64,7 @@ import java.util.List;
  *
  * <h3>BPMN 扩展元素示例</h3>
  * <pre>{@code
- *  <userTask id="x91292665-490f-4b35-aafa-78a37466fa44" name="提交申请" flowable:formKey="thymeleaf/xflow/taskform/flowWorkTaskReview">
+ *  <userTask id="x91292665-490f-4b35-aafa-78a37466fa44" name="提交申请" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
  *     <extensionElements>
  *         <xflow:x-config>
  *              <xflow:type value="userTask"></xflow:type>

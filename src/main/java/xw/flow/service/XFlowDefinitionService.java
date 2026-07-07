@@ -102,7 +102,7 @@ import xw.flow.repos.XFlowRepository;
  */
 @Service
 public class XFlowDefinitionService extends AbstractXFlowService {
-	private final String DEFAULT_TASKFORM = "thymeleaf/xflow/taskform/flowWorkTaskReview";
+	private final String DEFAULT_TASKFORM = "thymeleaf/flow/taskform/flowWorkTaskReview";
 	private final RepositoryService repositoryService;
 	private final XFlowRepository flowRepository;
 

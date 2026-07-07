@@ -6,7 +6,7 @@
 <form id="flame_taskForm" method="post" th:enctype="${enctype}" th:fragment="default()" style="height:100%;width:100%;">
     <input type="hidden" id="rowId" name="rowId" th:value="${commandBean.rowId}"/>
     <input type="hidden" id="primaryOid" name="primaryOid" th:value="${commandBean.primaryOid}"/>
-    <input type="hidden" id="returnWorkTaskURL" th:value="${T(com.flame.xui.HREFactory).getHREF('#thymeleaf/xflow/instance/listUserTask.html')}"/>
+    <input type="hidden" id="returnWorkTaskURL" th:value="${T(com.flame.xui.HREFactory).getHREF('#thymeleaf/flow/instance/listUserTask.html')}"/>
 
     <div id="XWorkTaskPrimaryForm" style="overflow-y:hidden;"></div>
 

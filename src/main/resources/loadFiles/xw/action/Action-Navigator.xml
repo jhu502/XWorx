@@ -97,7 +97,7 @@
         <attr name="type">XWX-Navigator</attr>
         <attr name="display">Workflow</attr>
         <attr name="icon">images/flow/definition.gif</attr>
-        <attr name="url">thymeleaf/xflow/definition/listFlowDefinitions.html</attr>
+        <attr name="url">thymeleaf/flow/definition/listFlowDefinitions.html</attr>
         <attr name="winType">page</attr>
         <attr name="en_US">Workflow Template</attr>
         <attr name="zh_CN">工作流模板</attr>

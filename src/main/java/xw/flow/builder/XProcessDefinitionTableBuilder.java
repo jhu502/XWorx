@@ -20,7 +20,7 @@ import xw.flow.entity.XFlowDefinition;
 
 @UIDataGrid(idField = "rowId", rowNumber = false, singleSelect = true, fit = true, //
         actions = {
-                @UIAction(name = "createDefinition", processor = "xw.flow.processor.SaveProcessDefinitionProcessor", url = "thymeleaf/xflow/definition/newProcessDefinition.html", icon = "images/newtemplate.gif", winType = WinType.popup, style = "width:92%;height:95%;padding:5px;"), //
+                @UIAction(name = "createDefinition", processor = "xw.flow.processor.SaveProcessDefinitionProcessor", url = "thymeleaf/flow/definition/newProcessDefinition.html", icon = "images/newtemplate.gif", winType = WinType.popup, style = "width:92%;height:95%;padding:5px;"), //
                 @UIAction(name = "delete", processor = "xw.object.processor.DeleteObjectProcessor", icon = "images/delete.png", beforeJS = "return flame.validateSelect(p, true);", winType = WinType.invoke), //
                 @UIAction(name = "deployment", processor = "xw.flow.processor.DeployFlowDefinitionProcessor", icon = "images/flow/deployment.png", beforeJS = "return flame.validateSelect(p, true);", winType = WinType.invoke), //
                 @UIAction(name = "startFlow", processor = "xw.flow.processor.StartFlowProcessor", url = "thymeleaf/thing/queryObject.html", icon = "images/flow/start.gif", display = "启动流程", winType = WinType.popup, beforeJS = "return flame.validateSelect(p, true);", style = "width:680px;height:500px;padding:5px;") //
