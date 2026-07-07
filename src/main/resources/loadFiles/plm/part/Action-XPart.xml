@@ -228,7 +228,7 @@
 		<attr name="icon">images/remove16x16.gif</attr>
 		<attr name="url"></attr>
 		<attr name="winType">invoke</attr>
-		<attr name="processor">plm.part.processor.RemoveUseslinkProcessor</attr>
+		<attr name="processor">plm.part.processor.RemoveUsageLinkProcessor</attr>
 		<attr name="beforeJS">return confirm("Are you sure?");</attr>
 		<attr name="en_US">Remove Row</attr>
 		<attr name="zh_CN">删除行</attr>
