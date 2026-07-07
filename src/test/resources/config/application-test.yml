@@ -69,7 +69,7 @@ flowable:
   database-schema-update: true
   db-history-used: true
   history-level: full
-  process-definition-location-prefix: classpath:/templates/xflow/
+  process-definition-location-prefix: classpath:/templates/flow/
   process-definition-location-suffixes: '**.bpmn'
 logging:
   config: ${xworx.home}/codebase/config/logback/logback-test.xml
