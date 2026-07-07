@@ -359,16 +359,16 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 *
 	 * <p><b>注意：</b>如果 XWorkItem 的 instance 关联为空或 processInstId/taskId 无效，返回值可能为 null。</p>
 	 *
-	 * @param workitem XWork 工作项业务对象
+	 * @param worktask XWork 工作项业务对象
 	 * @return 对应的 TaskInfo（运行中的 Task 或历史 HistoricTaskInstance），若找不到则返回 null
 	 */
-	public TaskInfo getTaskInfo(XWorkTask workitem) {
-		XWorkInstance instance = workitem.getInstance();
+	public TaskInfo getTaskInfo(XWorkTask worktask) {
+		XWorkInstance instance = worktask.getInstance();
 		TaskService taskService = this.processEngine.getTaskService();
-		TaskInfo taskInfo = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workitem.getTaskId()).singleResult();
+		TaskInfo taskInfo = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(worktask.getTaskId()).singleResult();
 		if (taskInfo == null) {
 			HistoryService historyService = this.processEngine.getHistoryService();
-			taskInfo = historyService.createHistoricTaskInstanceQuery().taskId(workitem.getTaskId()).singleResult();
+			taskInfo = historyService.createHistoricTaskInstanceQuery().taskId(worktask.getTaskId()).singleResult();
 		}
 		return taskInfo;
 	}

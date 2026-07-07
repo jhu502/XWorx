@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class FlowConstant {
     public static final String NAMESPACE = "http://www.xworx.cn/xflow";
-    public static final String NS_PREFIX = "xflow";
+    public static final String NS_PREFIX = "flow";
     public static final String CONFIG = "config";
     public static final String ROUTE = "route";
     public static final String EVENT = "event";
