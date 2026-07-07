@@ -31,7 +31,7 @@ public class XFlowUserTask extends XFlowNode implements IFlowRoute, IFlowEvent, 
 	private static final long serialVersionUID = 1L;
 	@Basic
 	@Column(name = "taskForm")
-	private String taskForm = "thymeleaf/xflow/taskform/workitemReviewData.html";
+	private String taskForm = "thymeleaf/xflow/taskform/flowWorkTaskReview.html";
 	@Basic
 	@Column(name = "necessity")
 	private String necessity = "ANY";

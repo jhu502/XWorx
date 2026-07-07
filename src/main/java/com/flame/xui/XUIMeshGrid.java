@@ -86,7 +86,11 @@ public class XUIMeshGrid extends XUIComponent {
 	}
 
 	public XUIGrid getGrids(int i) {
-		return this.getGrids(i);
+		if (this.grids.size() > i) {
+			return this.grids.get(i);
+		} else {
+			return null;
+		}
 	}
 
 	public void addGrid(XUIGrid xuiGrid) {

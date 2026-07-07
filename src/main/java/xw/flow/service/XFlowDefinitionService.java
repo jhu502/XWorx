@@ -102,7 +102,7 @@ import xw.flow.repos.XFlowRepository;
  */
 @Service
 public class XFlowDefinitionService extends AbstractXFlowService {
-	private final String DEFAULT_TASKFORM = "thymeleaf/xflow/taskform/workitemReviewData";
+	private final String DEFAULT_TASKFORM = "thymeleaf/xflow/taskform/flowWorkTaskReview";
 	private final RepositoryService repositoryService;
 	private final XFlowRepository flowRepository;
 
@@ -556,7 +556,7 @@ public class XFlowDefinitionService extends AbstractXFlowService {
 	 * <p>转换过程：</p>
 	 * <ol>
 	 *   <li>创建 UserTask 并设置 ID（nodeId）/ Name</li>
-	 *   <li>设置表单 Key（formKey）：若节点配置了 taskForm 则使用配置值，否则使用默认表单 {@code workitemReviewData}</li>
+	 *   <li>设置表单 Key（formKey）：若节点配置了 taskForm 则使用配置值，否则使用默认表单 {@code flowWorkTaskReview}</li>
 	 *   <li>依次添加扩展元素：X-TYPE → X-VARIABLE → X-ROUTE → X-EVENT → X-ACTOR</li>
 	 * </ol>
 	 *

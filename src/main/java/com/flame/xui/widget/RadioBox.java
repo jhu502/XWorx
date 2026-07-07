@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  * <p>Display 模式下渲染为 {@code <span>}，显示选中选项的 display 文本。</p>
  */
 public class RadioBox extends XUIWidget {
-
+    private boolean isHorizontal = true;
     /** 选项集合：key = value, value = display */
     private Map<String, Object> radioSet = new LinkedHashMap<>();
 
@@ -44,6 +44,10 @@ public class RadioBox extends XUIWidget {
     @Override
     public String getTag() {
         return "span";
+    }
+
+    public void setHorizontal(boolean bool) {
+        this.isHorizontal = bool;
     }
 
     /** @return 选项集合 */
@@ -98,20 +102,25 @@ public class RadioBox extends XUIWidget {
         for (Entry<String, Object> entry : this.radioSet.entrySet()) {
             StringBuilder el_radio = new StringBuilder();
             el_radio.append("<input type=\"radio\" ");
-            if (FlameUtils.isNotBlank(this.getName()))
+            if (FlameUtils.isNotBlank(this.getName())) {
                 el_radio.append("name=\"").append(this.getName()).append("\" ");
+            }
             el_radio.append("value=\"").append(entry.getKey()).append("\" ");
-            if (this.getValue().equals(entry.getKey()))
+            if (this.getValue().equals(entry.getKey())) {
                 el_radio.append("checked=true ");
-            if (FlameUtils.isNotBlank(this.getStyle()))
+            }
+            if (FlameUtils.isNotBlank(this.getStyle())) {
                 el_radio.append("style=\"").append(this.getStyle()).append("\" ");
+            }
             for (Entry<String, String> event : this.getEventMap().entrySet()) {
-                el_radio.append(event.getKey()).append("=\"")
-                        .append(event.getValue().replaceAll("\"", "'")).append("\" ");
+                el_radio.append(event.getKey()).append("=\"").append(event.getValue().replaceAll("\"", "'")).append("\" ");
             }
             el_radio.append(">");
             el_radio.append(entry.getValue());
             el_radio.append("</input>");
+            if (!this.isHorizontal) {
+                el_radio.append("<br/>");
+            }
             this.append(el_radio.toString());
         }
     }
