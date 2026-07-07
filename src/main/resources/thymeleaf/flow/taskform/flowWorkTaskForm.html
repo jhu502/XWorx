@@ -12,7 +12,7 @@
 
     <th:block th:with="taskForm=${T(xw.flow.XFlowExecutionHelper).getTaskForm(commandBean)}">
         <th:block th:if="${taskForm!=null}">
-            <th:block th:replace="${taskForm}::default()"/>
+            <th:block th:replace="~{${taskForm} :: default}"/>
         </th:block>
     </th:block>
 

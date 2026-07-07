@@ -1,7 +1,6 @@
 package com.flame.common.controller;
 
 import com.flame.xui.XCommandBean;
-import com.flame.common.form.FormResult;
 import com.flame.minio.MinioHelper;
 import com.flame.orm.XObject;
 import com.google.common.net.HttpHeaders;
@@ -14,9 +13,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import xw.content.entity.XApplicationData;
 
@@ -56,24 +53,5 @@ public class XFlameServletController extends AppShellController {
                 .contentType(MediaType.parseMediaType(contentType)) //
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachement; filename=\"" + appdata.getFileName() + "\"") //
                 .body(resource);
-    }
-
-    /**
-     * @param processor
-     * @param multiMap  MultiValueMap才能够接收多值的参数，Map只会接收到多值参数的第一个值
-     * @param request
-     * @param response
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/download/{processor}")
-    public void downloadData(@PathVariable String processor, @RequestParam MultiValueMap<String, Object> multiMap, HttpServletRequest request, HttpServletResponse response) {
-        XCommandBean commandBean = XCommandBean.newCommandBean(request, response, multiMap, new String[]{"processor", processor});
-        FormResult formResult = commandBean.executeProcessor();
-        logger.trace(formResult.toString());
-    }
-
-    public void csrf(CsrfToken csrf) {
-        csrf.getToken();
     }
 }

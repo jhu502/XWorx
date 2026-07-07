@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:flow="http://www.xworx.cn/xflow" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/test">
+  <process id="OR-xw.flow.entity.XFlowDefinition-1317" name="OR:xw.flow.entity.XFlowDefinitionMaster:1316" isExecutable="true">
+    <extensionElements>
+      <flow:variable>
+        <flow:variable name="bool" type="java.lang.Boolean" display="bool" value="false"></flow:variable>
+      </flow:variable>
+    </extensionElements>
+    <userTask id="xe001c18d-4536-4075-8e30-0fcae6b897ae" name="资源审核" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable></flow:variable>
+        <flow:route type="Exclusive">
+          <flow:route name="通过" language="juel"></flow:route>
+          <flow:route name="驳回" language="juel"></flow:route>
+        </flow:route>
+        <flow:event>
+          <flow:event name="Created" language="juel"></flow:event>
+          <flow:event name="Initialized" language="juel"></flow:event>
+          <flow:event name="Completed" language="juel"></flow:event>
+          <flow:event name="Deleted" language="juel"></flow:event>
+        </flow:event>
+        <flow:actor necessity="ANY">
+          <flow:user name="Administrator" display="Administrator (Administrator)"></flow:user>
+        </flow:actor>
+      </extensionElements>
+    </userTask>
+    <userTask id="x19a7134f-6117-4686-97f7-aca7f2ac243a" name="SQE审核" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable></flow:variable>
+        <flow:route type="Exclusive">
+          <flow:route name="通过" language="juel"></flow:route>
+          <flow:route name="驳回" language="juel"></flow:route>
+        </flow:route>
+        <flow:event>
+          <flow:event name="Created" language="juel"></flow:event>
+          <flow:event name="Initialized" language="juel"></flow:event>
+          <flow:event name="Completed" language="juel"></flow:event>
+          <flow:event name="Deleted" language="juel"></flow:event>
+        </flow:event>
+        <flow:actor necessity="ANY">
+          <flow:user name="Guest" display="Guest (Guest)"></flow:user>
+        </flow:actor>
+      </extensionElements>
+    </userTask>
+    <userTask id="xbf1ce62b-7f51-4820-86d8-c77b92046996" name="用户" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview.html">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable></flow:variable>
+        <flow:route type="Exclusive">
+          <flow:route name="通过" language="juel"></flow:route>
+          <flow:route name="驳回" language="juel"></flow:route>
+        </flow:route>
+        <flow:event>
+          <flow:event name="Created" language="juel"></flow:event>
+          <flow:event name="Initialized" language="juel"></flow:event>
+          <flow:event name="Completed" language="juel"></flow:event>
+          <flow:event name="Deleted" language="juel"></flow:event>
+        </flow:event>
+        <flow:actor necessity="ANY"></flow:actor>
+      </extensionElements>
+    </userTask>
+    <userTask id="x7df274b1-ed6c-4613-85fb-f85756123783" name="ODM资源审核" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable></flow:variable>
+        <flow:route type="Exclusive"></flow:route>
+        <flow:event></flow:event>
+        <flow:actor necessity="ANY">
+          <flow:user name="Guest" display="Guest (Guest)"></flow:user>
+        </flow:actor>
+      </extensionElements>
+    </userTask>
+    <userTask id="x12ae4674-dbb6-4834-88cc-1320b592a020" name="重新修改" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable></flow:variable>
+        <flow:route type="Exclusive">
+          <flow:route name="提交" language="juel"></flow:route>
+          <flow:route name="取消" language="juel"></flow:route>
+        </flow:route>
+        <flow:event>
+          <flow:event name="Created" language="juel"></flow:event>
+          <flow:event name="Initialized" language="juel"></flow:event>
+          <flow:event name="Completed" language="juel"></flow:event>
+          <flow:event name="Deleted" language="juel"></flow:event>
+        </flow:event>
+        <flow:actor necessity="ANY"></flow:actor>
+      </extensionElements>
+    </userTask>
+    <userTask id="x91292665-490f-4b35-aafa-78a37466fa44" name="提交申请" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable>
+          <flow:variable name="bool" type="java.lang.Boolean" display="bool" value="false"></flow:variable>
+        </flow:variable>
+        <flow:route type="Exclusive">
+          <flow:route name="提交" language="juel"></flow:route>
+          <flow:route name="取消" language="juel"></flow:route>
+        </flow:route>
+        <flow:event>
+          <flow:event name="Created" language="juel"></flow:event>
+          <flow:event name="Initialized" language="juel"></flow:event>
+          <flow:event name="Completed" language="juel"></flow:event>
+          <flow:event name="Deleted" language="juel"></flow:event>
+        </flow:event>
+        <flow:actor necessity="ANY">
+          <flow:user name="Guest" display="Guest (Guest)"></flow:user>
+          <flow:user name="Administrator" display="Administrator (Administrator)"></flow:user>
+        </flow:actor>
+      </extensionElements>
+    </userTask>
+    <userTask id="x1f1ccd27-fb5b-44a0-adbd-a359cfc699d3" name="批准" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="userTask"></flow:type>
+        </flow:config>
+        <flow:variable></flow:variable>
+        <flow:route type="Exclusive">
+          <flow:route name="批准" language="juel"></flow:route>
+          <flow:route name="拒绝" language="juel"></flow:route>
+        </flow:route>
+        <flow:event>
+          <flow:event name="Created" language="juel"></flow:event>
+          <flow:event name="Initialized" language="juel"></flow:event>
+          <flow:event name="Completed" language="juel"></flow:event>
+          <flow:event name="Deleted" language="juel"></flow:event>
+        </flow:event>
+        <flow:actor necessity="ANY"></flow:actor>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="xa008b308-5288-4b03-a3a4-08b3a6c6e161" name="脚本" scriptFormat="groovy" flowable:resultVariable="return" flowable:autoStoreVariables="false">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="scriptTask"></flow:type>
+        </flow:config>
+        <flow:route type="Exclusive">
+          <flow:route name="Y" language="juel"></flow:route>
+          <flow:route name="N" language="juel"></flow:route>
+        </flow:route>
+      </extensionElements>
+      <script><![CDATA[class Color {
+    def colorMap = [red:'#FF0000', green:'#00FF00', blue:'#0000FF'];
+    def String hasColor(String color) {
+        return "Y";
+    }
+}
+System.out.println("============::" + bool);
+bool = true;
+def color = new Color();
+return color.hasColor("red");
+]]></script>
+    </scriptTask>
+    <serviceTask id="x2016f4c9-fcd1-4b36-9641-045cac30ed94" name="服务" flowable:class="com.flow.service.XFlowScriptTaskDelegate">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="serviceTask"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="xa97f9a63-1bd4-4371-a661-e31655b26ba2" name="结束">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="endEvent"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </endEvent>
+    <startEvent id="xd200c079-0e42-443e-96db-075fc2e27764" name="开始">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="startEvent"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </startEvent>
+    <endEvent id="x5d889701-080c-49f7-96e2-1e825aeb3515" name="接地">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="groundEvent"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </endEvent>
+    <exclusiveGateway id="xc6cf4bcf-0ba9-4402-89ba-17e77949a2af" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <exclusiveGateway id="x4db434a3-fd27-47e5-9251-9b02096f8e8d" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <exclusiveGateway id="xc15908b1-0bb0-4a03-bb72-15fa127ab94f" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <exclusiveGateway id="x979aeaa9-b5b4-4e8e-816a-9b672baa8916" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <exclusiveGateway id="xfdaba3f5-25c3-48e2-95ad-e4b002ff9673" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <exclusiveGateway id="xca20e47f-e2fd-41ec-bc7c-e410b69decdb" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <exclusiveGateway id="x1a0f5f73-eabb-43f5-9315-f5021a9a6fbe" name="OR">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="orGateway"></flow:type>
+        </flow:config>
+      </extensionElements>
+    </exclusiveGateway>
+    <receiveTask id="x280d1234-eb21-4c6c-8a2f-7f0549c004d8" name="时间">
+      <extensionElements>
+        <flow:config>
+          <flow:type value="timeRobot"></flow:type>
+        </flow:config>
+        <flow:timer>
+          <flow:timer year="0" month="0" day="0" hour="0" minute="5" second="10"></flow:timer>
+        </flow:timer>
+      </extensionElements>
+    </receiveTask>
+    <sequenceFlow id="x9b18264d-b203-4c9e-87a4-3848daa8012e" sourceRef="xa008b308-5288-4b03-a3a4-08b3a6c6e161" targetRef="xbf1ce62b-7f51-4820-86d8-c77b92046996">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x7ff792f0-bf83-48cc-893e-69a48254f8da" sourceRef="xbf1ce62b-7f51-4820-86d8-c77b92046996" targetRef="x1f1ccd27-fb5b-44a0-adbd-a359cfc699d3">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="通过"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xf1a9d0b9-0031-47f8-a79e-03b8399930ed" sourceRef="xbf1ce62b-7f51-4820-86d8-c77b92046996" targetRef="x19a7134f-6117-4686-97f7-aca7f2ac243a">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="驳回"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x72e685dc-879c-4f2a-815d-e08ac97a3463" sourceRef="x19a7134f-6117-4686-97f7-aca7f2ac243a" targetRef="x1a0f5f73-eabb-43f5-9315-f5021a9a6fbe">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="驳回"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xe1836d38-43cd-43de-b524-08b7bed9bf09" sourceRef="x979aeaa9-b5b4-4e8e-816a-9b672baa8916" targetRef="xe001c18d-4536-4075-8e30-0fcae6b897ae">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x3ee6919f-0d10-41d5-a3c0-f867f1db5025" sourceRef="x91292665-490f-4b35-aafa-78a37466fa44" targetRef="xa008b308-5288-4b03-a3a4-08b3a6c6e161">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="提交"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x2083a712-bdf2-41ac-b49e-30690c257c47" sourceRef="xe001c18d-4536-4075-8e30-0fcae6b897ae" targetRef="x1a0f5f73-eabb-43f5-9315-f5021a9a6fbe">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="驳回"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x71454d66-777a-4ff5-9bdf-b037377b58e5" sourceRef="xca20e47f-e2fd-41ec-bc7c-e410b69decdb" targetRef="xc15908b1-0bb0-4a03-bb72-15fa127ab94f">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xb091478d-8daf-40d1-aeeb-8a913387547d" sourceRef="x2016f4c9-fcd1-4b36-9641-045cac30ed94" targetRef="x5d889701-080c-49f7-96e2-1e825aeb3515">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x52fe95f7-b51a-4a89-9b46-55cbebbaccb3" sourceRef="x7df274b1-ed6c-4613-85fb-f85756123783" targetRef="x2016f4c9-fcd1-4b36-9641-045cac30ed94">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xed565c87-87cd-4439-baf8-dc9d0b8f48f4" sourceRef="xd200c079-0e42-443e-96db-075fc2e27764" targetRef="x91292665-490f-4b35-aafa-78a37466fa44">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x4481909c-833d-49f5-9957-48ba9c0dc11a" sourceRef="x979aeaa9-b5b4-4e8e-816a-9b672baa8916" targetRef="x7df274b1-ed6c-4613-85fb-f85756123783">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x6d06b610-9693-4c61-b735-b1701f10be67" sourceRef="xfdaba3f5-25c3-48e2-95ad-e4b002ff9673" targetRef="x280d1234-eb21-4c6c-8a2f-7f0549c004d8">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xbca0d33d-00c4-4e02-b93f-f866c0964265" sourceRef="xa008b308-5288-4b03-a3a4-08b3a6c6e161" targetRef="x7df274b1-ed6c-4613-85fb-f85756123783">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="N"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x1e3171b4-8361-4cb5-88cd-aa3954e4dec7" sourceRef="x12ae4674-dbb6-4834-88cc-1320b592a020" targetRef="xa008b308-5288-4b03-a3a4-08b3a6c6e161">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="提交"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x1a43b2e2-9ca3-4248-817b-e6f9d4c0b767" sourceRef="x280d1234-eb21-4c6c-8a2f-7f0549c004d8" targetRef="x12ae4674-dbb6-4834-88cc-1320b592a020">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x0df8a4de-ad9c-4a08-8e64-95c99a815e2a" sourceRef="x91292665-490f-4b35-aafa-78a37466fa44" targetRef="xca20e47f-e2fd-41ec-bc7c-e410b69decdb">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="取消"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x6892b982-ba0e-4433-b2c3-cca906cbbbad" sourceRef="xa008b308-5288-4b03-a3a4-08b3a6c6e161" targetRef="x979aeaa9-b5b4-4e8e-816a-9b672baa8916">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="Y"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xaa4230be-077c-45e3-9620-a2d689a8ae91" sourceRef="x4db434a3-fd27-47e5-9251-9b02096f8e8d" targetRef="x1f1ccd27-fb5b-44a0-adbd-a359cfc699d3">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x5f817baf-f561-42bc-a666-a135b764eb51" sourceRef="x1f1ccd27-fb5b-44a0-adbd-a359cfc699d3" targetRef="xfdaba3f5-25c3-48e2-95ad-e4b002ff9673">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="拒绝"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x37f216d3-eabe-448b-a573-49949e1f1a51" sourceRef="xc15908b1-0bb0-4a03-bb72-15fa127ab94f" targetRef="xc6cf4bcf-0ba9-4402-89ba-17e77949a2af">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x770083e4-3456-431b-a558-66306ca5dbcd" sourceRef="x1a0f5f73-eabb-43f5-9315-f5021a9a6fbe" targetRef="x12ae4674-dbb6-4834-88cc-1320b592a020">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x771e879b-d751-4721-aacc-ee60c667c870" sourceRef="x1f1ccd27-fb5b-44a0-adbd-a359cfc699d3" targetRef="xc6cf4bcf-0ba9-4402-89ba-17e77949a2af">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="批准"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x8020aebc-9f63-40a1-b572-b84daa126f6a" sourceRef="xc6cf4bcf-0ba9-4402-89ba-17e77949a2af" targetRef="xa97f9a63-1bd4-4371-a661-e31655b26ba2">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x53372806-5e5d-4ba0-a4bf-86508e2e13fc" sourceRef="x979aeaa9-b5b4-4e8e-816a-9b672baa8916" targetRef="x19a7134f-6117-4686-97f7-aca7f2ac243a">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="?"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="xd211c844-4f63-485a-8298-3a8d10b56cdc" sourceRef="xe001c18d-4536-4075-8e30-0fcae6b897ae" targetRef="x4db434a3-fd27-47e5-9251-9b02096f8e8d">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="通过"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="x0d1d317a-e256-49c4-adf8-c44b5d82a7be" sourceRef="x19a7134f-6117-4686-97f7-aca7f2ac243a" targetRef="x4db434a3-fd27-47e5-9251-9b02096f8e8d">
+      <extensionElements>
+        <flow:route>
+          <flow:route name="通过"></flow:route>
+        </flow:route>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_OR-xw.flow.entity.XFlowDefinition-1317">
+    <bpmndi:BPMNPlane bpmnElement="OR-xw.flow.entity.XFlowDefinition-1317" id="BPMNPlane_OR-xw.flow.entity.XFlowDefinition-1317"></bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

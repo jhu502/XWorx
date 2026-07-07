@@ -32,7 +32,7 @@
 			</script>
 		</div>
 		<div data-options="region:'center',border:false">
-			<x-tab-panel id="dynamicRightTab" x-options="park:'fit'" o-select="onSelectDynamicTab(this);">
+			<x-tab-panel id="dynamicRightTab" x-options="park:'fit'" o-select="onSelectDynamicTab(this, true);">
 				<x-panel th:each="actionItem:${@ActionService.getSubActions('PSB-ConfigTabs','XPart')}" th:name="${actionItem.name}" 
 					th:title="${actionItem.localDisplay}" th:x-options="|header:false,park:'fit',url:'${actionItem.url}'|">
 				</x-panel>
@@ -42,11 +42,11 @@
 	<script type="text/javascript" th:inline="text">
 		function onSelectDynamicTab(el) {
 			const currPanel = el.getSelected();
+			if (!currPanel) return;
 			currPanel.setOption('params', {
 				rowId: $('#configPartOid').val()
 			});
-			currPanel.refresh();
-			}
+		}
 
 		function toolButtonOnClick(winType, key, title, style, script) {
 			switch (winType) {

@@ -3,6 +3,7 @@ package plm.dynamic.processor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.flame.xui.XUIRowId;
 import plm.dynamic.XExpression;
 import com.flame.xui.XCommandBean;
 import com.flame.common.form.DefaultFormProcessor;
@@ -16,12 +17,11 @@ public class RemoveXExpressionProcessor extends DefaultFormProcessor {
 		FormResult formResult = super.doOperation(commandBean);
 
 		List<XExpression> removeList = new ArrayList<>();
-		Object[] objs = (Object[]) commandBean.getParameter("rowIds");
-		for (Object _object : objs) {
-			if (ObjectReference.isOid((String) _object)) {
-				XExpression xexpress = PersistenceHelper.service().refresh(new ObjectReference<XExpression>((String) _object));
-				removeList.add(xexpress);
-			}
+
+		XUIRowId[] xuiRowIds = commandBean.getRowIds();
+		for (XUIRowId xuiRowId : xuiRowIds) {
+			XExpression expression = (XExpression)xuiRowId.getRowObject();
+			removeList.add(expression);
 		}
 		if (!removeList.isEmpty()) {
 			PersistenceHelper.service().remove(removeList);

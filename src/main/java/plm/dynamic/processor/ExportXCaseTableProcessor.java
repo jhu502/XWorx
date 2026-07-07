@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 
+import com.flame.xui.XUIRowId;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -26,12 +27,11 @@ public class ExportXCaseTableProcessor extends DefaultFormProcessor {
 	@Override
 	public FormResult doOperation(XCommandBean commandBean) {
 		FormResult formResult = super.doOperation(commandBean);
-		Object[] objs = (Object[]) commandBean.getParameter("rowIds");
-		if (objs == null || objs.length == 0)
+		XUIRowId xuiRowId = commandBean.getRowId();
+		if (xuiRowId == null)
 			return formResult;
 
-		String oid = (String) objs[0];
-		XCaseTable caseTable = (XCaseTable) PersistenceHelper.getPersistable(oid);
+		XCaseTable caseTable = (XCaseTable) xuiRowId.getRowObject();
 		CaseType caseType = caseTable.getType();
 		String caseTemplate = BasicConfiguration.getXWHome() + SEP + "codebase" + SEP + "templates" + SEP + "plm" + SEP + "dynamic" + SEP;
 		if (CaseType.FLATTABLE.equals(caseType)) {
