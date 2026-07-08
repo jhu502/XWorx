@@ -36,7 +36,7 @@ public class XFlowTaskEntityTableBuilder extends AbstractTableComponentBuilder {
     @Override
     public List<?> getTableRows(XCommandBean commandBean) {
         List<TableComponentRow> result = new ArrayList<>();
-        List<XWorkTask> workItems = XFlowExecutionHelper.execution().listOwnedWorkItem(FlowStatus.OPEN);
+        List<XWorkTask> workItems = XFlowExecutionHelper.execution().listOwnedWorkTask(FlowStatus.OPEN);
         for (XWorkTask workItem : workItems) {
             TableComponentRow tableRow = TableComponentRow.newInstance();
             tableRow.setRowId(workItem.getOid());

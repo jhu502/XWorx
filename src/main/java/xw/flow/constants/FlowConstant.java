@@ -59,6 +59,7 @@ public class FlowConstant {
     public static final String XTYPE = "xtype";
     public static final String TEXT = "text";
     public static final String ANY = "ANY";
+    public static final String ALL = "ALL";
     public static final String ID = "id";
     public static final String X = "x";
     public static final String Y = "y";

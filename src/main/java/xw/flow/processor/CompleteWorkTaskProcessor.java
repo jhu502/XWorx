@@ -37,7 +37,7 @@ public class CompleteWorkTaskProcessor extends DefaultFormProcessor {
             }
         }
 
-        workItem = XFlowExecutionHelper.execution().completeXWorkItem(workItem, taskRoutes, taskRemarks);
+        workItem = XFlowExecutionHelper.execution().completeXWorkTask(workItem, taskRoutes, taskRemarks);
 
         formResult.setStatus(FormStatus.SUCCESS);
         formResult.setData(workItem);

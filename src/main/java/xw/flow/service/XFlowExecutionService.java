@@ -47,6 +47,7 @@ import com.flame.util.XException;
 import xw.auths.entity.XUser;
 import xw.flow.XFlowDefinitionHelper;
 import xw.flow.XFlowRepositoryHelper;
+import xw.flow.constants.FlowConstant;
 import xw.flow.constants.FlowStatus;
 import xw.flow.entity.*;
 import xw.flow.flowable.XFlowAddAssigneeTaskCmd;
@@ -56,12 +57,12 @@ import xw.flow.repos.XFlowRepository;
  * 流程执行服务 —— 流程实例运行时的核心服务，负责流程实例的启停、工作项与工作活动的管理、任务签收/完成、流程节点路由以及执行实体的终止等操作。
  *
  * <p>该服务是 Flowable 引擎与 XFlow 业务模型之间的桥梁，封装了 RuntimeService / TaskService / HistoryService 的调用，
- * 同时维护 XWorkInstance → XWorkActivity → XWorkItem 三级业务对象与底层 ExecutionEntity / TaskEntity 的一致性。</p>
+ * 同时维护 XWorkInstance → XWorkActivity → XWorkTask 三级业务对象与底层 ExecutionEntity / TaskEntity 的一致性。</p>
  *
  * <p>主要职责：</p>
  * <ul>
  *   <li>流程实例的启动、查询、关闭与移除</li>
- *   <li>工作项（XWorkItem）的认领、完成以及路由决策</li>
+ *   <li>工作项（XWorkTask）的认领、完成以及路由决策</li>
  *   <li>工作活动（XWorkActivity）的创建、完成、终止</li>
  *   <li>OrGateway 场景下过期执行实体的清理</li>
  *   <li>Flowable 历史数据的查询</li>
@@ -79,7 +80,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 *
 	 * @param processEngine       Flowable 流程引擎主入口
 	 * @param runtimeService      运行时服务，用于启动、查询、操作流程实例与执行实体
-	 * @param flowRepository      流程自定义 Repository，用于 XWorkItem / XWorkActivity 等业务对象的数据库访问
+	 * @param flowRepository      流程自定义 Repository，用于 XWorkTask / XWorkActivity 等业务对象的数据库访问
 	 * @param engineConfiguration 流程引擎配置实现，提供 CommandExecutor / HistoryManager / TaskEntityManager 等底层组件
 	 */
 	@Autowired
@@ -180,13 +181,13 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	/**
 	 * 根据流程状态列出当前登录用户的所有工作项。
 	 *
-	 * <p>从 Session 中获取当前用户，然后调用 XFlowRepository 查询该用户在指定状态下的所有 XWorkItem。
+	 * <p>从 Session 中获取当前用户，然后调用 XFlowRepository 查询该用户在指定状态下的所有 XWorkTask。
 	 * 若 status 为 null，直接返回空列表，避免无效查询。</p>
 	 *
 	 * @param status 工作项状态（OPEN / COMPLETED / TERMINATED 等），为 null 时返回空列表
-	 * @return 当前用户在指定状态下的 XWorkItem 列表，可能为空列表
+	 * @return 当前用户在指定状态下的 XWorkTask 列表，可能为空列表
 	 */
-	public List<XWorkTask> listOwnedWorkItem(FlowStatus status) {
+	public List<XWorkTask> listOwnedWorkTask(FlowStatus status) {
 		if (status == null)
 			return new ArrayList<>();
 
@@ -352,12 +353,12 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	}
 
 	/**
-	 * 根据 XWorkItem 查询对应的 Flowable TaskInfo。
+	 * 根据 XWorkTask 查询对应的 Flowable TaskInfo。
 	 *
 	 * <p>查询逻辑：先从运行中的 TaskService 查询（流程未结束时），若查不到则回退到 HistoryService 查询（流程已结束或任务已完成）。
 	 * 这样无论任务处于何种状态都能获取到 TaskInfo。</p>
 	 *
-	 * <p><b>注意：</b>如果 XWorkItem 的 instance 关联为空或 processInstId/taskId 无效，返回值可能为 null。</p>
+	 * <p><b>注意：</b>如果 XWorkTask 的 instance 关联为空或 processInstId/taskId 无效，返回值可能为 null。</p>
 	 *
 	 * @param worktask XWork 工作项业务对象
 	 * @return 对应的 TaskInfo（运行中的 Task 或历史 HistoricTaskInstance），若找不到则返回 null
@@ -397,7 +398,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 * <p>执行步骤：</p>
 	 * <ol>
 	 *   <li>若 taskInfo 为 null，直接返回 null（防御性处理）</li>
-	 *   <li>查找该 Task 关联的所有 XWorkItem，逐一更新：设置 routes / 状态为 COMPLETED / 备注 / 完成人与完成时间，并持久化</li>
+	 *   <li>查找该 Task 关联的所有 XWorkTask，逐一更新：设置 routes / 状态为 COMPLETED / 备注 / 完成人与完成时间，并持久化</li>
 	 *   <li>调用 TaskService.claim() 将任务签收给当前用户（确保 claim 权限）</li>
 	 *   <li>调用 TaskService.complete() 完成 Flowable 任务，触发流程流转</li>
 	 *   <li>从 HistoryService 查询刚完成的历史任务实例并返回</li>
@@ -417,16 +418,16 @@ public class XFlowExecutionService extends AbstractXFlowService {
 		TaskService taskService = this.processEngine.getTaskService();
 
 		XUser xuser = (XUser) SessionHelper.getCurrentUser();
-		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(taskInfo);
-		for (XWorkTask workItem : workItems) {
+		List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(taskInfo);
+		for (XWorkTask workTask : workTasks) {
 			if (FlameUtils.isNotBlank(routes)) {
-				workItem.setRoutes(routes);
+				workTask.setRoutes(routes);
 			}
-			workItem.setStatus(FlowStatus.COMPLETED);
-			workItem.setRemarks(remarks);
-			workItem.setCompletedBy(xuser.getNumber());
-			workItem.setCompletedOn(new Timestamp((new Date()).getTime()));
-			workItem = PersistenceHelper.service().save(workItem);
+			workTask.setStatus(FlowStatus.COMPLETED);
+			workTask.setRemarks(remarks);
+			workTask.setCompletedBy(xuser.getNumber());
+			workTask.setCompletedOn(new Timestamp((new Date()).getTime()));
+			workTask = PersistenceHelper.service().save(workTask);
 		}
 		taskService.claim(taskInfo.getId(), xuser.getOid());
 		taskService.complete(taskInfo.getId());
@@ -440,8 +441,8 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 *
 	 * <p>该方法在用户任务节点所有工作项处理完毕后被调用，执行以下逻辑：</p>
 	 * <ol>
-	 *   <li>收集所有 COMPLETED 状态 XWorkItem 的路由（routes），去重后合并为 XWorkActivity 的路由字符串</li>
-	 *   <li>删除该活动下所有 OPEN 状态的 XWorkItem（这些工作项已不需要处理）</li>
+	 *   <li>收集所有 COMPLETED 状态 XWorkTask 的路由（routes），去重后合并为 XWorkActivity 的路由字符串</li>
+	 *   <li>删除该活动下所有 OPEN 状态的 XWorkTask（这些工作项已不需要处理）</li>
 	 *   <li>将 XWorkActivity 状态置为 COMPLETED 并持久化</li>
 	 * </ol>
 	 *
@@ -453,9 +454,9 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	@Transactional
 	public XWorkActivity completeXWorkActivity(XWorkActivity workActivity) {
 		Set<String> routeSet = new HashSet<>();
-		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(workActivity, FlowStatus.COMPLETED);
-		for (XWorkTask workItem : workItems) {
-			String routes = workItem.getRoutes();
+		List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(workActivity, FlowStatus.COMPLETED);
+		for (XWorkTask workTask : workTasks) {
+			String routes = workTask.getRoutes();
 			if (FlameUtils.isBlank(routes))
 				continue;
 			routeSet.addAll(Arrays.asList(routes.split(",")));
@@ -470,9 +471,9 @@ public class XFlowExecutionService extends AbstractXFlowService {
 			}
 		}
 
-		List<XWorkTask> openWorkItems = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
-		if (!openWorkItems.isEmpty()) {
-			PersistenceHelper.service().remove(openWorkItems);
+		List<XWorkTask> openWorkTasks = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
+		if (!openWorkTasks.isEmpty()) {
+			PersistenceHelper.service().remove(openWorkTasks);
 		}
 
 		workActivity.setRoutes(builder.toString());
@@ -481,56 +482,56 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	}
 
 	/**
-	 * 完成单个工作项（XWorkItem），并根据活动的必要性（necessity）决定是否推进 Flowable 任务。
+	 * 完成单个工作项（XWorkTask），并根据活动的必要性（necessity）决定是否推进 Flowable 任务。
 	 *
 	 * <p>该方法处理三种必要性模式：</p>
 	 * <ul>
 	 *   <li><b>ANY：</b>任意一个办理人完成即可推进 —— 立即 sign 并 complete 对应的 Flowable Task</li>
-	 *   <li><b>ALL：</b>所有办理人都完成后才推进 —— 检查该活动下是否还有 OPEN 状态的 XWorkItem，若无剩余则推进</li>
+	 *   <li><b>ALL：</b>所有办理人都完成后才推进 —— 检查该活动下是否还有 OPEN 状态的 XWorkTask，若无剩余则推进</li>
 	 *   <li><b>其他（默认为 ANY 行为）：</b>立即 sign 并 complete 对应的 Flowable Task</li>
 	 * </ul>
 	 *
-	 * <p>无论哪种模式，都会先将当前 XWorkItem 的状态更新为 COMPLETED、设置路由/备注/完成信息并持久化。</p>
+	 * <p>无论哪种模式，都会先将当前 XWorkTask 的状态更新为 COMPLETED、设置路由/备注/完成信息并持久化。</p>
 	 *
-	 * @param workItem 要完成的工作项
+	 * @param workTask 要完成的工作项
 	 * @param routes   路由选择（会被转为 String 存储）
 	 * @param remarks  办理意见/备注
-	 * @return 更新后的 XWorkItem
+	 * @return 更新后的 XWorkTask
 	 */
 	@Transactional
-	public XWorkTask completeXWorkItem(XWorkTask workItem, Object routes, String remarks) {
-		XWorkInstance instance = workItem.getInstance();
+	public XWorkTask completeXWorkTask(XWorkTask workTask, Object routes, String remarks) {
+		XWorkInstance instance = workTask.getInstance();
 		XUser xuser = (XUser) SessionHelper.getCurrentUser();
-		workItem.setRoutes((String) routes);
-		workItem.setStatus(FlowStatus.COMPLETED);
-		workItem.setRemarks(remarks);
-		workItem.setCompletedBy(xuser.getNumber());
-		workItem.setCompletedOn(new Timestamp((new Date()).getTime()));
-		workItem = PersistenceHelper.service().save(workItem);
+		workTask.setRoutes((String) routes);
+		workTask.setStatus(FlowStatus.COMPLETED);
+		workTask.setRemarks(remarks);
+		workTask.setCompletedBy(xuser.getNumber());
+		workTask.setCompletedOn(new Timestamp((new Date()).getTime()));
+		workTask = PersistenceHelper.service().save(workTask);
 
-		XWorkActivity workActivity = workItem.getActivity();
+		XWorkActivity workActivity = workTask.getActivity();
 		String necessity = workActivity.getNecessity();
-		if ("ANY".equals(necessity)) {
+		if (FlowConstant.ANY.equals(necessity)) {
 			TaskService taskService = this.processEngine.getTaskService();
-			Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workItem.getTaskId()).singleResult();
+			Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
 			taskService.claim(task.getId(), xuser.getOid());
-			taskService.complete(workItem.getTaskId());
-		} else if ("ALL".equals(necessity)) {
-			List<XWorkTask> workItems = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
-			if (workItems.isEmpty()) {
+			taskService.complete(workTask.getTaskId());
+		} else if (FlowConstant.ALL.equals(necessity)) {
+			List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
+			if (workTasks.isEmpty()) {
 				TaskService taskService = this.processEngine.getTaskService();
-				Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workItem.getTaskId()).singleResult();
+				Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
 				taskService.claim(task.getId(), xuser.getOid());
-				taskService.complete(workItem.getTaskId());
+				taskService.complete(workTask.getTaskId());
 			}
 		} else {
 			TaskService taskService = this.processEngine.getTaskService();
-			Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workItem.getTaskId()).singleResult();
+			Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
 			taskService.claim(task.getId(), xuser.getOid());
-			taskService.complete(workItem.getTaskId());
+			taskService.complete(workTask.getTaskId());
 		}
 
-		return workItem;
+		return workTask;
 	}
 
 	/**
@@ -563,7 +564,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 *
 	 * <p>终止操作包含三个层面的清理：</p>
 	 * <ol>
-	 *   <li><b>XWorkItem 层：</b>删除该执行下所有 OPEN 状态的 XWorkItem</li>
+	 *   <li><b>XWorkTask 层：</b>删除该执行下所有 OPEN 状态的 XWorkTask</li>
 	 *   <li><b>XWorkActivity 层：</b>将该执行下所有 OPEN 状态的 XWorkActivity 状态更新为 TERMINATED</li>
 	 *   <li><b>Flowable 层：</b>删除该执行下所有未删除的 TaskEntity，最后删除 ExecutionEntity 本身</li>
 	 * </ol>
@@ -582,10 +583,10 @@ public class XFlowExecutionService extends AbstractXFlowService {
 			if (!FlowStatus.OPEN.equals(activity.getStatus()))
 				continue;
 
-			List<XWorkTask> workItems = this.flowRepository.findXWorkTask(activity, FlowStatus.OPEN);
-			for (XWorkTask workItem : workItems) {
-				if (workItem.isOpenStatus()) {
-					PersistenceHelper.service().remove(workItem);
+			List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(activity, FlowStatus.OPEN);
+			for (XWorkTask workTask : workTasks) {
+				if (workTask.isOpenStatus()) {
+					PersistenceHelper.service().remove(workTask);
 				}
 			}
 
@@ -607,7 +608,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 * 流程流经 OrGateway 节点后，终止该网关之前未选中分支上的任务和执行实体。
 	 *
 	 * <p>OrGateway（排他网关/包容网关）根据条件选择部分分支继续执行，未选中的分支上可能仍存在
-	 * OPEN 状态的 ExecutionEntity / TaskEntity / XWorkItem，需要被清理以避免资源泄漏。</p>
+	 * OPEN 状态的 ExecutionEntity / TaskEntity / XWorkTask，需要被清理以避免资源泄漏。</p>
 	 *
 	 * <p>处理逻辑：</p>
 	 * <ol>
@@ -744,7 +745,7 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 * <p>删除顺序（避免外键约束冲突）：</p>
 	 * <ol>
 	 *   <li>调用 ExecutionEntityManager.deleteProcessInstance(cascade=true) 删除 Flowable 层数据（包含历史记录）</li>
-	 *   <li>删除该流程实例下所有 XWorkItem</li>
+	 *   <li>删除该流程实例下所有 XWorkTask</li>
 	 *   <li>删除该流程实例下所有 XWorkActivity</li>
 	 *   <li>最后删除 XWorkInstance 本身</li>
 	 * </ol>
@@ -762,17 +763,17 @@ public class XFlowExecutionService extends AbstractXFlowService {
 		ExecutionEntityManager executionManager = this.engineConfiguration.getExecutionEntityManager();
 		executionManager.deleteProcessInstance(workInstance.getProcessInstId(), "Clean flow instance.", true);
 
-		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(workInstance);
-		PersistenceHelper.service().remove(workItems);
+		List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(workInstance);
+		PersistenceHelper.service().remove(workTasks);
 		List<XWorkActivity> workActivities = this.flowRepository.findXWorkActivity(workInstance);
 		PersistenceHelper.service().remove(workActivities);
 		PersistenceHelper.service().remove(workInstance);
 	}
 
 	/**
-	 * 删除一个 TaskEntity 及其关联的所有 XWorkItem。
+	 * 删除一个 TaskEntity 及其关联的所有 XWorkTask。
 	 *
-	 * <p>通常用于手动清理某个特定任务节点的场景：先删除该 Task 对应的所有 XWorkItem，
+	 * <p>通常用于手动清理某个特定任务节点的场景：先删除该 Task 对应的所有 XWorkTask，
 	 * 再通过 TaskEntityManager.delete() 删除 Flowable 任务实体（cascade=true），并同步删除历史记录。</p>
 	 *
 	 * @param taskEntity 要删除的 Flowable TaskEntity
@@ -781,8 +782,8 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	@Transactional
 	public void removeTaskEntity(TaskEntity taskEntity, String reason) {
 		TaskEntityManager entityManager = this.engineConfiguration.getTaskServiceConfiguration().getTaskEntityManager();
-		List<XWorkTask> workItems = this.flowRepository.findXWorkTask(taskEntity);
-		PersistenceHelper.service().remove(workItems);
+		List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(taskEntity);
+		PersistenceHelper.service().remove(workTasks);
 		entityManager.delete(taskEntity, true);
 	}
 }

@@ -69,10 +69,10 @@ public class XFlowTakeOutgoingOperation extends TakeOutgoingSequenceFlowsOperati
 		/** 流程的流向由outgoingSequenceFlows变量中存放的SequenceFlow决定 */
 		List<SequenceFlow> outgoingSequenceFlows = new ArrayList<SequenceFlow>();
 		for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
-			/** 若SequenceFlow上包含有Route信息, 则需要判断XWorkItem的投票结果中是否包含该路由 */
+			/** 若SequenceFlow上包含有Route信息, 则需要判断XWorkTask的投票结果中是否包含该路由 */
 			List<String> routeList = XFlowDefinitionHelper.getRoutes(sequenceFlow);
 			if (routeList.isEmpty()) {
-				/** 如果XWorkItem的投票结果中不存在路由信息，则执行Flowable自身的规则 */
+				/** 如果XWorkTask的投票结果中不存在路由信息，则执行Flowable自身的规则 */
 				String skipExpression = sequenceFlow.getSkipExpression();
 				if (!SkipExpressionUtil.isSkipExpressionEnabled(skipExpression, sequenceFlow.getId(), execution, this.commandContext)) {
 					if (evaluateConditions) {

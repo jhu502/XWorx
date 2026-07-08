@@ -8,7 +8,7 @@
         <div id="flowInstanceList"></div>
     </div>
     <div data-options="region:'center',border:false" style="padding:2px">
-        <div id="flowWorkItemList"></div>
+        <div id="flowWorkTaskList"></div>
     </div>
 </div>
 <script type="text/javascript">
@@ -17,7 +17,7 @@
             oid: '[[${commandBean.primaryOid}]]'
         },
         onCheck: function (index, row) {
-            flame.reloadGrid('flowWorkItemList', {
+            flame.reloadGrid('flowWorkTaskList', {
                 oid: row.oid
             });
         },
@@ -27,7 +27,7 @@
             }
         }
     });
-    flame.loadGrid("flowWorkItemList", "xw.flow.builder.XProcessWorkTaskTableBuilder", {});
+    flame.loadGrid("flowWorkTaskList", "xw.flow.builder.XProcessWorkTaskTableBuilder", {});
 </script>
 </body>
 
