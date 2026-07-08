@@ -1,0 +1,76 @@
+spring.profiles.include=common,db,jpa,jackson,mvc
+server.port=8081
+spring.application.name=XMethod
+server.servlet.context-path=/XWorx
+#设置SpringBoot运行模式为SERVLET模式：阻塞同步Web模式
+spring.main.web-application-type=servlet
+spring.banner.location=classpath:/banner/banner-xworx.txt
+spring.cloud.discovery.enabled=true
+spring.cloud.zookeeper.config.enabled=true
+spring.cloud.zookeeper.connect-string=flame.xworx.cn:2181
+spring.cloud.zookeeper.discovery.instanceHost=flame.xworx.cn
+spring.cloud.zookeeper.discovery.instancePort=${server.port}
+# 国际化资源文件位置
+spring.messages.basename=i18n.messages,i18n.builders,i18n.enums,i18n.actions,i18n.entities
+# messages 文件的缓存失效时间
+spring.messages.cache-duration=1
+# 属性配置文件中文乱码问题
+spring.messages.encoding=utf-8
+#配置Tomcat编码,默认为UTF-8
+server.tomcat.uri-encoding=UTF-8
+#配置最大线程数
+server.tomcat.threads.max=1000
+#jsp页面自动编译
+server.servlet.jsp.init-parameters.development=true
+#指定默认的slf4j配置文件
+logging.config=${xworx.home}/codebase/config/logback/logback-method.xml
+#Actuator提供的 API 接口的根目录
+management.endpoints.web.base-path=/actuator
+#需要开放的端点
+management.endpoints.web.exposure.include=*
+thingworx.enabled=false
+thingworx.webapp=/Thingworx
+thingworx.apphome=${xworx.home}/thingworx
+#配置arthas.server.ssl=true, arthas.tunnel-server就必须设置wss
+arthas.tunnel-server=ws://${arthas.server.host}:${arthas.server.port}/ws
+#客户端id,应用名@随机值, tunnel server会截取分隔符@前面的字符串作为应用名: MethodServer@8081
+arthas.agent-id=${spring.application.name}@${server.port}
+#主要分为scheduler、threadPool、jobStore、plugin等部分
+spring.quartz.auto-startup=true
+spring.quartz.job-store-type=memory
+spring.quartz.scheduler-name=quartzScheduler00
+spring.quartz.properties.org.quartz.scheduler.rmi.export=false
+spring.quartz.properties.org.quartz.scheduler.rmi.proxy=false
+#ID设置为自动获取, 每个必须不同
+spring.quartz.properties.org.quartz.scheduler.instanceId=AUTO
+#调度标识名: 集群中每一个实例都必须使用相同的名称
+spring.quartz.properties.org.quartz.scheduler.instanceName=ClusterQueue
+spring.quartz.properties.org.quartz.scheduler.wrapJobExecutionInUserTransaction=false
+#实例化ThreadPool时，使用的线程类为SimpleThreadPool
+spring.quartz.properties.org.quartz.threadPool.class=org.quartz.simpl.SimpleThreadPool
+#指定在线程池里面创建的线程是否是守护线程
+#spring.quartz.properties.org.quartz.threadPool.makeThreadsDaemons=true
+#并发个数,一般设置为1~100之间的整数
+spring.quartz.properties.org.quartz.threadPool.threadCount=2
+#设置线程的优先级,最大为java.lang.Thread.MAX_PRIORITY 10,最小为Thread.MIN_PRIORITY 1,默认为5）
+spring.quartz.properties.org.quartz.threadPool.threadPriority=2
+spring.quartz.properties.org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread=true
+#默认存储在内存中
+spring.quartz.properties.org.quartz.jobStore.class=org.quartz.simpl.RAMJobStore
+#是否加入集群
+#spring.quartz.properties.org.quartz.jobStore.isClustered=true
+#检入到数据库中的频率(单位毫秒). clusterChedkinInterval越小,Scheduler节点检查失败的Scheduler实例就越频繁.默认值是15000(即15秒)。
+#spring.quartz.properties.org.quartz.jobStore.clusterCheckinInterval=20000
+#设置调度引擎对触发器超时的忍耐时间 (单位毫秒)
+#spring.quartz.properties.org.quartz.jobStore.misfireThreshold=40000
+#持久化，数据源的链接方式
+#spring.quartz.properties.org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+#spring.quartz.properties.org.quartz.jobStore.tablePrefix = QRTZ_
+#spring.quartz.properties.org.quartz.jobStore.dataSource = qzDS
+#spring.quartz.properties.org.quartz.dataSource.qzDS.driver = com.mysql.jdbc.Driver
+#spring.quartz.properties.org.quartz.dataSource.qzDS.URL =
+#spring.quartz.properties.org.quartz.dataSource.qzDS.user =
+#spring.quartz.properties.org.quartz.dataSource.qzDS.password =
+#spring.quartz.properties.org.quartz.dataSource.qzDS.maxConnections = 10
+#
+com.xworx.queue.xflow-schedule=*/15 * * * * ?

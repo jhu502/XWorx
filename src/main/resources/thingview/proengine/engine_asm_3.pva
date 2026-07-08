@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pva xmlns:grp="http://www.ptc.com/productview/namespace/grp" version="2.0">
+  <set id="CRANKSHAFT">
+    <prop>
+      <visible value="false" recurse="true"/>
+      <prop id="28">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="29">
+        <prop id="20">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="22">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="41">
+        <visible value="true" recurse="true"/>
+      </prop>
+    </prop>
+  </set>
+</pva>

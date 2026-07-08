@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pva xmlns:grp="http://www.ptc.com/productview/namespace/grp" version="2.0">
+  <set id="INTAKE_MANIFOLD">
+    <prop>
+      <visible value="false" recurse="true"/>
+      <prop id="28">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="29">
+        <prop id="20">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="32">
+          <prop id="29">
+            <visible value="true" recurse="true"/>
+          </prop>
+          <prop id="317">
+            <visible value="true" recurse="true"/>
+          </prop>
+          <prop id="321">
+            <visible value="true" recurse="true"/>
+          </prop>
+          <prop id="322">
+            <visible value="true" recurse="true"/>
+          </prop>
+          <prop id="323">
+            <visible value="true" recurse="true"/>
+          </prop>
+          <prop id="349">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+      </prop>
+      <prop id="38">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="253">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="94">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="29">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+    </prop>
+  </set>
+</pva>

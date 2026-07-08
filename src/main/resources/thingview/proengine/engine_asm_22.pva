@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pva xmlns:grp="http://www.ptc.com/productview/namespace/grp" version="2.0">
+  <set id="STAGE_12">
+    <prop>
+      <visible value="false" recurse="true"/>
+      <prop id="28">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="29">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="33">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="38">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="41">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="44">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="46">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="58">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="88">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="92">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="94">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="101">
+        <visible value="true" recurse="true"/>
+      </prop>
+    </prop>
+  </set>
+</pva>

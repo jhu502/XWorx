@@ -1,0 +1,75 @@
+server:
+    port: 8081
+    servlet:
+        context-path: /XWorx
+        jsp:
+            init-parameters:
+                development: true
+    tomcat:
+        uri-encoding: UTF-8
+        threads.max: 1000
+spring:
+    profiles:
+        include: common,db,jpa,jackson,mvc
+    application:
+        name: XMethod
+    main:
+        web-application-type: servlet #设置SpringBoot运行模式为SERVLET模式：阻塞同步Web模式
+    banner:
+        location: classpath:/banner/banner-test.txt
+    resources:
+        static-locations: classpath:/ #修改默认的静态寻址资源目录,多个使用逗号分隔
+    thymeleaf:
+        prefix: classpath:/thymeleaf/
+        check-template-location: true
+        suffix: .html
+        encoding: UTF-8
+        mode: HTML
+        cache: false #设置页面缓存, 开发阶段最好设置为false
+        view-names: thymeleaf/*,XWorx/thymeleaf/*
+    mvc:
+        view:
+            prefix: /jsp/
+            suffix: .jsp
+    cloud:
+        zookeeper:
+            enabled: false
+    datasource:
+        platform: postgres
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/thingworx
+        username: xwadmin
+        password: xwadmin
+        hikari:
+            connectionTimeout: 20000
+            maximumPoolSize: 5
+    jpa:
+        show-sql: true #控制台打印SQL
+        open-in-view: true
+        properties:
+            hibernate:
+                dialect: com.flame.config.basic.XFlamePostgresDialect
+                ddl-auto: create
+                hbm2ddl:
+                    auto: update #none:启动时不做任何操作
+                naming:
+                    physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss #设置RestController返回json的时间格式
+        time-zone: GMT+8
+        serialization:
+            indent-output: true
+        default-property-inclusion: NON_NULL #不对null进行序列化
+flowable:
+    check-process-definitions: false
+    database-schema-update: true
+    db-history-used: true
+    history-level: full
+    process-definition-location-prefix: classpath:/templates/flow/
+    process-definition-location-suffixes: '**.bpmn'
+logging:
+    config: ${xworx.home}/codebase/config/logback/logback-test.xml
+thingworx:
+    enabled: false
+    webapp: /Thingworx
+    apphome: ${xworx.home}/thingworx

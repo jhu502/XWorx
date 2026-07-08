@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pva xmlns:grp="http://www.ptc.com/productview/namespace/grp" version="2.0">
+  <set id="SKELS_ONLY">
+    <prop>
+      <visible value="false" recurse="true"/>
+      <prop id="28">
+        <visible value="true" recurse="true"/>
+      </prop>
+      <prop id="29">
+        <prop id="20">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="22">
+          <prop id="20">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="25">
+          <prop id="21">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="32">
+          <prop id="20">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="38">
+          <prop id="20">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="47">
+          <prop id="36">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="51">
+          <prop id="38">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="53">
+          <prop id="28">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="59">
+          <prop id="28">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="70">
+          <prop id="247">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+      </prop>
+      <prop id="30">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="33">
+        <prop id="106">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="38">
+        <prop id="253">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="44">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="46">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="58">
+        <prop id="35">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="88">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="92">
+        <prop id="36">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="94">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="101">
+        <prop id="35">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="102">
+        <prop id="28">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+    </prop>
+  </set>
+</pva>

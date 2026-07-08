@@ -1,0 +1,88 @@
+server:
+    domain: localhost
+    port: 8080 #服务注册中心端口号
+    tomcat:
+        uri-encoding: UTF-8 #配置Tomcat编码,默认为UTF-8
+        threads:
+            max: 1000 #配置最大线程数
+    servlet:
+        context-path: /XWorx
+        jsp:
+            init-parameters:
+                development: true #jsp页面自动编译
+    undertow:
+        max-http-post-size: 0 # HTTP POST请求最大的大小
+        buffer-size: 1024 # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理，每块buffer的空间大小,越小的空间被利用越充分
+        direct-buffers: true # 是否分配的直接内存
+        threads:
+            worker: 20 # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+            io: 4 # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+        accesslog:
+            dir: logs # Undertow 日志存放目录
+            enabled: true # 是否启动日志
+            pattern: common # 日志格式
+            prefix: access_log # 日志文件名前缀
+            suffix: log # 日志文件名后缀
+eureka:
+    instance:
+        prefer-ip-address: true
+        hostname: localhost #服务注册中心实例的主机名
+        metadata-map:
+            configPath: /Eureka
+    server:
+        enable-self-preservation: false #设为false，关闭自我保护
+        eviction-interval-timer-in-ms: 300000 #清理间隔（单位毫秒，默认是60*1000
+    client:
+        register-with-eureka: false #是否向服务注册中心注册自己
+        fetch-registry: false #是否从eureka上获取注册信息
+        serviceUrl:
+            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/ #服务注册中心的配置内容，指定服务注册中心的位置
+spring:
+    application:
+        name: MethodServer
+    banner:
+        location: classpath:/config/banner-xworx.txt
+    resources:
+        static-locations: classpath:/ #修改默认的静态寻址资源目录,多个使用逗号分隔
+    thymeleaf:
+        prefix: classpath:/thymeleaf/
+        check-template-location: true
+        suffix: .html
+        encoding: UTF-8
+        mode: HTML
+        cache: false # 设置页面缓存, 开发阶段最好设置为false
+        view-names: thymeleaf/*,XWorx/thymeleaf/*
+    mvc:
+        view:
+            prefix: /jsp/
+            suffix: .jsp
+    datasource:
+        platform: postgres
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/thingworx
+        username: xwadmin
+        password: xwadmin
+        hikari:
+            connectionTimeout: 20000
+            maximumPoolSize: 5
+    jpa:
+        show-sql: true #控制台打印SQL
+        open-in-view: true
+        properties:
+            hibernate:
+                dialect: com.flame.config.XWorxPostgresDialect
+                ddl-auto: create
+                hbm2ddl:
+                    auto: update #none:启动时不做任何操作
+                naming:
+                    physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    cache:
+#        jcache:
+#            config: classpath:config/ignite-config.xml #为jcache缓存提供者ignite指定配置文件，ignite根据这个文件去启动
+#            config: classpath:config/ignite-cassandra.xml #为jcache缓存提供者ignite指定配置文件，ignite根据这个文件去启动
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss #设置RestController返回json的时间格式
+        time-zone: GMT+8
+        serialization:
+            indent-output: true
+        default-property-inclusion: NON_NULL #不对null进行序列化

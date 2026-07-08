@@ -1,0 +1,71 @@
+{
+	"PlatformSettingsConfig": {
+		"AdministratorUserSettings": {
+			"InitialPassword": "qqQ.12345!@#$%"
+		},
+		"BasicSettings": {
+			"EnableClusteredMode": true,
+			"EnableSystemLogging": true,
+			"EnableBackup": false,
+			"BackupStorage": "D:/SourceSpace/SpaceFlame/XServer/backup",
+			"Storage": "D:/SourceSpace/SpaceFlame/XServer/storage/thingworx"
+		},
+		"ClusteredModeSettings": {
+			"PlatformId": "XWorxPlatform",
+			"CoordinatorHosts": "localhost:2181",
+			"ModelSyncPollInterval": 100,
+			"ZKNamespace": "/ThingWorx"
+		},
+		"ContentTypeSettings": {
+			"supportedMediaEntityContentTypes": [
+				"image/svg+xml",
+				"image/png",
+				"image/gif",
+				"image/bmp",
+				"image/jpeg",
+				"application/pdf",
+				"image/vnd.microsoft.icon"
+			]
+		},
+		"ExtensionPackageImportPolicy": {
+			"importEnabled": true,
+			"allowJarResources": true,
+			"allowJavascriptResources": true,
+			"allowCSSResources": true,
+			"allowJSONResources": true,
+			"allowWebAppResources": true,
+			"allowEntities": true,
+			"allowExtensibleEntities": true,
+			"haCompatibilityImportLevel": "WARN"
+		}
+	},
+	"PersistenceProviderPackageConfigs": {
+		"PostgresPersistenceProviderPackage": {
+			"ConnectionInformation": {
+				"jdbcUrl": "jdbc:postgresql://localhost:5432/thingworx",
+				"password": "twadmin",
+				"username": "twadmin"
+			}
+		}
+	},
+	"cache": {
+		"provider-type": "com.thingworx.cache.ignite.IgniteCacheProvider",
+		"init-timeout": 500000,
+		"ignite": {
+			"instance-name": "twx-core-server",
+			"client-mode": true,
+			"address-resolver": {
+				"type": "zookeeper",
+				"connection": "localhost:2181"
+			},
+			"caches": {
+				"default": {
+					"cache-mode": "PARTITIONED",
+					"atomicity-mode": "ATOMIC",
+					"backups": 1,
+					"read-from-backup": true
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="loadBalancingPolicy" class="com.datastax.driver.core.policies.TokenAwarePolicy">
+		<constructor-arg type="com.datastax.driver.core.policies.LoadBalancingPolicy">
+			<bean class="com.datastax.driver.core.policies.RoundRobinPolicy" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="cassandra" class="org.apache.ignite.cache.store.cassandra.datasource.DataSource">
+		<property name="port" value="9042" />
+		<property name="contactPoints" value="localhost" />
+		<property name="readConsistency" value="ONE" />
+		<property name="writeConsistency" value="ONE" />
+		<property name="loadBalancingPolicy" ref="loadBalancingPolicy" />
+	</bean>
+</beans>

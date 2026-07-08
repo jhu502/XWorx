@@ -1,0 +1,109 @@
+<%@ page language="java" pageEncoding="utf-8" contentType="text/html; charset=UTF-8" %>
+<nav class="xui-app-nav">
+    <xui-navigator class="list-unstyled"></xui-navigator>
+</nav>
+<main id="xui-app-main" class="xui-app-main" @click="hiddenComposer();">
+    <section id="xui-app-content" class="xui-app-content" v-html="xwxAppContent">
+    </section>
+</main>
+<aside id="xui-app-aside"></aside>
+<footer id="xui-app-footer">
+    <script type="text/javascript">
+        /**
+         * 这是一个闭包, 用来避免方法被多次执行
+         * @type {*|(function(): void)|(function(): void)}
+         */
+        var loadMainUI = loadMainUI || (function () {
+            let noInitial = true;
+
+            return function () {
+                if (noInitial) {
+                    noInitial = false;
+                    /**
+                     * Hash发生变动会触发此时间
+                     */
+                    window.addEventListener('hashchange', function () {
+                        xui.shell.clearFooter('#xui-app-footer');
+                        xui.shell.loadMainContent('#xui-app-content');
+                    });
+                    /**
+                     * 初始化导航菜单栏
+                     */
+                    let xwxNavigator = XWXNavigator.mount('xui-navigator', {
+                        onLoadNavigator: function (navigator) {
+                            if (navigator === undefined)
+                                return;
+
+                            axios.get('XUI$/menu/XWX-Navigator:XWX-Navigator', {}).then(function (response) {
+                                const result = response.data;
+                                if ('SUCCESS' == result.status) {
+                                    if (Array.isArray(result.data)) {
+                                        result.data.forEach((item, index, array) => {
+                                            navigator.items.push(item);
+                                        })
+                                    }
+                                }
+                            }).catch(function (e) { // 请求失败处理
+                                console.error(e);
+                            });
+                        },
+                        onLoadComposer: function (composer, actionKey) {
+                            if (composer === undefined || actionKey === undefined)
+                                return;
+
+                            axios.get('XUI$/menu/' + actionKey, {}).then(function (response) {
+                                const result = response.data;
+                                if ('SUCCESS' == result.status) {
+                                    if (Array.isArray(result.data)) {
+                                        result.data.forEach((item, index, self) => {
+                                            composer.items.push(item);
+                                        });
+                                    }
+                                }
+                            }).catch(function (e) { // 请求失败处理
+                                console.error(e);
+                            });
+                        },
+                        onRemoveFavorite: function(composer, oid) {
+                            if (composer === undefined || oid === undefined)
+                                return;
+
+                            axios.post('XUI$/post/xw.action.processor.RemoveFavoritesProcessor', {
+                                oid: oid
+                            }).then(function (response) {
+                                const result = response.data;
+                                if ('SUCCESS' == result.status) {
+                                    if (composer.items) {
+                                        const bool = removeElement(composer.items, {actionKey: oid});
+                                        if (!bool) {
+                                            composer.items.forEach((item, index, o) => {
+                                                removeElement(item.child, {actionKey: oid});
+                                            });
+                                        }
+                                    }
+                                }
+                            }).catch(function (e) { // 请求失败处理
+                                console.error(e);
+                            });
+                        }
+                    });
+                    xwxNavigator.loadNavigator();
+
+                    /**
+                     * 延迟加载以解决直接通过带hash的easyui页面进入时报异常的问题
+                     */
+                    setTimeout(() => {
+                        /** 首次打开带"#"号的页面时，hashchange是不会被触发的，需要主动去加载 */
+                        let i = window.location.href.indexOf('#');
+                        if (i == -1) {
+                        	xui.shell.loadMainContent('#xui-app-content', 'netmarkets/home/welcome.html');
+                        } else {
+                        	xui.shell.loadMainContent('#xui-app-content', window.location.href.substring(i + 1));
+                        }
+                    }, 100);
+                }
+            }
+        })();
+        loadMainUI();
+    </script>
+</footer>

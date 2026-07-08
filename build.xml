@@ -77,6 +77,14 @@
 		</copy>
 		<echo message="XPLM 源码合并完成"/>
 
+		<!-- XServer - Server 模块 -->
+		<copy todir="${basedir}/src" overwrite="true">
+			<fileset dir="../XServer/src">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<echo message="XServer 源码合并完成"/>
+
 		<echo message="所有模块源码合并完成！"/>
 	</target>
 

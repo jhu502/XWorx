@@ -1,0 +1,161 @@
+<html>
+<head>
+<meta content="text/html;charset=UTF-8" />
+</head>
+<body>
+	<div class="easyui-layout" style="height: 440px; font-family: helvetica, arial, sans-serif, Segoe UI, tahoma;">
+		<form id="winServiceDef_form" method="post" action="FUI$/form/com.thing.processor.EditServiceDefProcessor">
+			<input type="hidden" name="oid" value="${primaryObj.oid}" /> <input type="hidden" id='arguments' name="arguments" value="" />
+			<div data-options="region:'north'" style="padding: 2px 0px 0px 10px; height: 37px; background-color: #f5f5f5">
+				<label style="padding-right: 10px; font-size: 18px; font-weight: bold;">Edit Service Definition</label> <#assign ServiceType=statics['com.flame.types.ServiceType'] />
+				<!-- FreeMarker获取静态类FieldType -->
+				<#assign typeList=ServiceType.values() />
+				<!-- 然后FreeMarker获取静态类ServiceType所有枚举 -->
+				<select class="easyui-combobox" id="serviceType" name="serviceType" style="width: 200px; height: 27px" data-options="editable:false,panelHeight:'auto'"> <#list typeList as stype>
+					<!-- 遍历ServiceType的枚举所有枚举值 --> <#if stype == primaryObj.serviceType>
+					<option value="${stype}" selected="selected">${stype}</option> <#else>
+					<option value="${stype}">${stype}</option> </#if> </#list>
+				</select>
+			</div>
+			<div data-options="region:'center'" style="padding: 2px">
+				<div class="easyui-layout" data-options="fit:true">
+					<div data-options="region:'center'" style="width: 300px; border-radius: 8px">
+						<div class="easyui-panel" title="Service Info" data-options="fit:true" style="width: 100%; padding: 10px 15px 10px 10px">
+							<div style="margin-bottom: 10px">
+								<input class="easyui-textbox" name="name" value="${primaryObj.name}" data-options="label:'Name:',required:true" style="width: 100%; height: 27px;" />
+							</div>
+							<div style="margin-bottom: 10px">
+								<input class="easyui-textbox" name="description" value="${primaryObj.description}" data-options="label:'Description:',multiline:true" style="width: 100%; height: 80px">
+							</div>
+						</div>
+					</div>
+					<div data-options="region:'east',collapsible:false,split:true" style="width: 535px; border-radius: 8px">
+						<div class="easyui-panel" title="Input / Output" data-options="fit:true" style="width: 100%; padding: 10px 10px 10px 10px">
+							<table id="ParamDefinitionBuilder" style="width: 100%; height: 200px"></table>
+							<script type="text/javascript">
+								flame.xui.loadGrid("ParamDefinitionBuilder", "com.thing.builder.ParamDefinitionBuilder", {
+									queryParams: {
+										oid : '${primaryObj.oid}'
+									},
+									onClickCell : function(index, field) {
+										if (editIndex != index) {
+											if (endEditing()) {
+												$('#ParamDefinitionBuilder').datagrid('selectRow', index).datagrid('beginEdit', index);
+												var ed = $('#ParamDefinitionBuilder').datagrid('getEditor', {
+													index : index,
+													field : field
+												});
+												if (ed) {
+													($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+												}
+												editIndex = index;
+											} else {
+												setTimeout(function() {
+													$('#ParamDefinitionBuilder').datagrid('selectRow', editIndex);
+												}, 0);
+											}
+										}
+									}
+								});
+							</script>
+							<div id="inputOutput-tb">
+								<a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()"></a> <a class="easyui-linkbutton" data-options="iconCls:'icon-delete',plain:true" onclick="removeit()"></a>
+							</div>
+							<br>
+							<fieldset>
+								<legend style="font-size: 12px; font-weight: bold;">Output</legend>
+								<table>
+									<tr>
+										<td style="width: 250px">
+											<!-- FreeMarker获取静态类FieldType --> <#assign FieldType=statics['com.flame.types.BaseType'] /> <!-- 然后FreeMarker获取静态类FieldType所有枚举 --> <#assign values=FieldType.values() /> <select class="easyui-combobox" id="resultType" name="resultType"
+											style="width: 200px; height: 27px" data-options="label:'Result Type:',editable:false,panelHeight:'auto'">
+												<!-- 遍历FieldType的枚举所有枚举值 --> <#list values as ftype> <#if ftype == primaryObj.resultType>
+												<option value="${ftype}" selected="selected">${ftype}</option> <#else>
+												<option value="${ftype}">${ftype}</option> </#if> </#list>
+										</select>
+										</td>
+										<td><label class="textbox-label">Name: </label><span>result</span></td>
+									</tr>
+								</table>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div data-options="region:'south'" style="height: 35px; padding-right: 11px; background-color: #f5f5f5">
+				<div style="text-align: right; padding: 4px 0">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="flame.closeWindow(this)" style="width: 80px">Cancel</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitServiceForm('winServiceDef_form')" style="width: 80px">Done</a>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		var editIndex = undefined;
+		function endEditing() {
+			if (editIndex == undefined) {
+				return true
+			}
+			if ($('#ParamDefinitionBuilder').datagrid('validateRow', editIndex)) {
+				$('#ParamDefinitionBuilder').datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function append() {
+			if (endEditing()) {
+				$('#ParamDefinitionBuilder').datagrid('appendRow', {
+					type : 'STRING',
+					display : 'String'
+				});
+				editIndex = $('#ParamDefinitionBuilder').datagrid('getRows').length - 1;
+				$('#ParamDefinitionBuilder').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
+			}
+		}
+		function removeit() {
+			if (editIndex == undefined) {
+				return
+			}
+			$('#ParamDefinitionBuilder').datagrid('cancelEdit', editIndex).datagrid('deleteRow', editIndex);
+			editIndex = undefined;
+		}
+		function submitServiceForm(formid) {
+			endEditing(); // 编辑状态的行无法去获取数据，需要强制结束编辑状态；
+			var rows = $('#ParamDefinitionBuilder').datagrid('getRows');
+		    var entities = '[';
+		    for(i = 0;i<rows.length;i++) {
+		    	if (i==0)
+		       		entities = entities + JSON.stringify(rows[i]);
+		    	else 
+		    		entities = entities + ',' + JSON.stringify(rows[i]);
+		    }
+		    entities = entities + ']';
+		    $('#arguments').val(entities);
+			
+			$('#'+formid).form('submit', {
+				params : {
+					'params' : entities
+				},
+				onSubmit : function() {
+					return $(this).form('validate');
+				},
+				success : function(result) {
+					if (result) {
+						var json = jQuery.parseJSON(result);
+						if (json && json.data && json.data.oid) {
+							$('#serviceDefTree').treegrid('reload');
+							flame.closeWindow("#winServiceDef_form")
+						} else {
+							$.messager.alert('Error', json.msg, 'error');
+						}
+					} else {
+						$.messager.alert('Error', 'Update Failed!', 'error');
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pva xmlns:grp="http://www.ptc.com/productview/namespace/grp" version="2.0">
+  <set id="DEFAULT REP">
+    <prop>
+      <visible value="true" recurse="true"/>
+    </prop>
+  </set>
+</pva>

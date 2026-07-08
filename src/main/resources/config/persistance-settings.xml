@@ -1,0 +1,26 @@
+<persistence keyspace="IgniteTest" table="catalog_category">
+	<keyspaceOptions> <!-- Cassandra keyspace options which should be used to create provided keyspace if it doesn't exist -->
+		replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1} AND durable_writes = true
+	</keyspaceOptions>
+	<tableOptions> <!-- Cassandra table options which should be used to create provided table if it doesn't exist -->
+		read_repair_chance = 0.2 AND comment = 'A most excellent and useful table'
+	</tableOptions>
+	<keyPersistence class="java.lang.Long" strategy="PRIMITIVE" column="id" />
+	<!-- 
+	<keyPersistence class="org.apache.ignite.tests.pojos.PersonId" strategy="POJO">	//Persistent settings for Ignite cache keys
+		<partitionKey>	//Partition key fields if POJO strategy used
+			<field name="companyCode" column="company" />	//Mapping from POJO field to Cassandra table column
+			<field name="departmentCode" column="department" />
+		</partitionKey>
+		<clusterKey> //Cluster key fields if POJO strategy used
+			<field name="number" column="number" sort="desc" /> //Mapping from POJO field to Cassandra table column
+		</clusterKey>
+	</keyPersistence>
+	-->
+	<valuePersistence class="com.flame.test.CatalogCategory" strategy="POJO"> <!-- Persistent settings for Ignite cache values -->
+		<field name="id" column="id" />	<!-- Mapping from POJO field to Cassandra table column -->
+		<field name="parentId" column="parentId" />
+		<field name="name" column="name" />
+		<field name="description" column="description" />
+	</valuePersistence>
+</persistence>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pva xmlns:grp="http://www.ptc.com/productview/namespace/grp" version="2.0">
+  <set id="TIMING_COVER_CONS">
+    <prop>
+      <visible value="false" recurse="true"/>
+      <prop id="29">
+        <prop id="32">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="51">
+          <prop id="18">
+            <visible value="true" recurse="true"/>
+          </prop>
+          <prop id="38">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="53">
+          <visible value="true" recurse="true"/>
+        </prop>
+        <prop id="59">
+          <visible value="true" recurse="true"/>
+          <prop id="28">
+            <visible value="true" recurse="true"/>
+          </prop>
+        </prop>
+        <prop id="70">
+          <visible value="true" recurse="true"/>
+        </prop>
+      </prop>
+      <prop id="44">
+        <visible value="true" recurse="true"/>
+      </prop>
+    </prop>
+  </set>
+</pva>

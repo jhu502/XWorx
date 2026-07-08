@@ -1,0 +1,153 @@
+<%@ page language="java" pageEncoding="utf-8" contentType="text/html; charset=UTF-8"%>
+
+<style>
+#x-app-composer {
+	position: absolute;
+	top: 0px;
+	left: 45px;
+	width: 250px;
+	bottom: 0px;
+	z-index: 999;
+	visibility: hidden;
+}
+</style>
+<aside style="position: absolute; float: left; top: 50px; width: 45px; bottom: 0px; transition: all 300ms ease 0s; background: linear-gradient(180deg, #008bc7, #008bc7, #adfaea);">
+	<x-toolbar id="x-app-navigator" x-options="direction:'column',park:'fit'"></x-toolbar>
+	<x-composer id="x-app-composer" o-lock="takeComposerEvent(this);" o-expand="takeComposerEvent(this);" o-collapse="takeComposerEvent(this);" style="padding:2px;">
+		<img slot="logo" src="images/leaf.png" />
+		<x-menu id="x-app-composer-menu" x-options="mode:'tree'" style="display:block;margin-left:5px;"></x-menu>
+	</x-composer>
+</aside>
+<main id="xui-app-main" style="position: absolute; top: 50px; left: 45px; right: 0px; bottom: 0px;">
+	<section id="xui-app-content" class="xui-app-content" style="position: absolute; inset: 0px; overflow: auto !important;"></section>
+</main>
+<aside id="xui-app-aside"></aside>
+<footer id="xui-app-footer"></footer>
+
+<script type="text/javascript">
+	function clickNavigator(item, title) {
+		const composer = document.querySelector('#x-app-composer');
+        const treeMenu = composer.querySelector('#x-app-composer-menu');
+        
+        /**连续点击nav-menu下的同一个menu-item菜单时，实现隐藏/显示切换*/
+        if (item.name == composer.name) {
+        	if (composer.isVisible()) {
+               	composer.hideComposer();
+        	} else {
+        		composer.showComposer();
+        	}
+        } else {
+            axios.get('XUI$/menu/' + item.key, {}).then(function (response) {
+                const result = response.data;
+                if ('SUCCESS' == result.status) {
+                    if (Array.isArray(result.data)) {
+                    	treeMenu.setItems(result.data, "loadMainContent(this);");
+                    	composer.key = item.key;
+                    	composer.name = item.name;
+                    	composer.showComposer(title);
+                    }
+                }
+            }).catch(function (e) { //请求失败处理
+                console.error(e);
+            });
+        }
+	}
+	
+	function loadMainContent(item) {
+		const composer = document.querySelector('#x-app-composer');
+		if (item && item.data && item.data.url) {
+			const composer = document.querySelector('#x-app-composer');
+			if (!composer.isLocked()) {
+				composer.hideComposer();
+			}
+			xui.shell.changeHashURI(item.data.url);
+		}
+	}
+	
+	function add2Favorites(oid) {
+	    axios.post('XUI$/post/xw.action.processor.AddFavoritesProcessor', {
+	        oid: oid
+	    }).then(function (response) {
+	        console.error(response);
+	    }).catch(function (error) { // 请求失败处理
+	        console.error(error);
+	    });
+	}
+	
+	function takeComposerEvent(composer) {
+		(($)=>{
+			const navigator = document.querySelector('#x-app-navigator');
+			const composer = document.querySelector('#x-app-composer');
+			const appContent = $('#xui-app-main');
+			if (composer.isLocked()) {
+				appContent.css('left', composer.offsetWidth + navigator.offsetWidth + 'px');
+			} else {
+				appContent.css('left', navigator.offsetWidth + 'px');
+			}
+			appContent.trigger('resize');
+		})(jQuery);
+	}
+
+	var XUIAppMain = XUIAppMain || (function() {
+		let noInitial = true;
+
+	    /**
+	     * 这是一个闭包, 用来避免方法被多次执行
+	     * @type {*|(function(): void)|(function(): void)}
+	     */
+        return function () {
+            if (noInitial) {
+                noInitial = false;
+
+                /**
+                 * Hash发生变动会触发此时间
+                 */
+                window.addEventListener('hashchange', function () {
+                	xui.shell.clearFooter('#xui-app-footer');
+                    xui.shell.loadMainContent('#xui-app-content');
+                });
+
+        	    document.addEventListener('click', (e) => {
+        	    	const navigator = document.querySelector('#x-app-navigator');
+        	    	const composer = document.querySelector('#x-app-composer');
+        	      	if (!e.composedPath().includes(composer) && !e.composedPath().includes(navigator) && !composer.isLocked()) {
+            	   		composer.hideComposer();
+        	      	}
+        	    });
+
+        		axios.get('XUI$/menu/XWX-Navigator:XWX-Navigator', {}).then(function (response) {
+        			const result = response.data;
+        			if ('SUCCESS' == result.status) {
+        				if (Array.isArray(result.data)) {
+        					const navigator = document.querySelector('#x-app-navigator');
+        					result.data.forEach((item, index, array) => {
+        						item.onClick = "clickNavigator(this, '" + item.display + "')";
+        					})
+        					for (const item of result.data) {
+        						item.style = "width:100%";
+        					}
+        					navigator.setItems(result.data);
+        				}
+        			}
+        		}).catch(function (e) { //请求失败处理
+        			console.error(e);
+        		});
+        		
+                /**
+                 * 延迟加载以解决直接通过带hash的easyui页面进入时报异常的问题
+                 */
+                setTimeout(() => {
+                    /** 首次打开带"#"号的页面时，hashchange是不会被触发的，需要主动去加载 */
+                    let i = window.location.href.indexOf('#');
+                    if (i == -1) {
+                    	xui.shell.loadMainContent('#xui-app-content', 'netmarkets/home/welcome.html');
+                    } else {
+                    	xui.shell.loadMainContent('#xui-app-content', window.location.href.substring(i + 1));
+                    }
+                }, 100);
+            }
+        }
+	})();
+	
+	XUIAppMain();
+</script>
