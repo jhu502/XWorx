@@ -26,8 +26,8 @@ public class XFlowExecutionHelper {
     public static String getTaskForm(XCommandBean commandBean) {
         XObject primary = commandBean.getPrimaryObj();
         if (primary instanceof XWorkTask) {
-            XWorkTask workItem = (XWorkTask) primary;
-            return workItem.getActivity().getTaskForm();
+            XWorkTask workTask = (XWorkTask) primary;
+            return workTask.getActivity().getTaskForm();
         } else if (primary instanceof XWorkActivity) {
             XWorkActivity workActivity = (XWorkActivity) primary;
             return workActivity.getTaskForm();

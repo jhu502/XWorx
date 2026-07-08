@@ -3,7 +3,7 @@
 <head th:replace="~{thymeleaf/util/begin::easyUI(title='用户任务列表')}">
 </head>
 <body style="padding:3px;">
-<form id="flame_taskForm" method="post" th:enctype="${enctype}" th:fragment="default()" style="height:100%;width:100%;">
+<form id="xuiWorkTaskForm" method="post" th:enctype="${enctype}" th:fragment="default()" style="height:100%;width:100%;">
     <input type="hidden" id="rowId" name="rowId" th:value="${commandBean.rowId}"/>
     <input type="hidden" id="primaryOid" name="primaryOid" th:value="${commandBean.primaryOid}"/>
     <input type="hidden" id="returnWorkTaskURL" th:value="${T(com.flame.xui.HREFactory).getHREF('#thymeleaf/flow/instance/listUserTask.html')}"/>

@@ -61,14 +61,14 @@ public class XWorkTask extends XObject {
 	private XWorkInstance instance;
 
 	public static XWorkTask newInstance(XWorkInstance instance, XWorkActivity activity, Task entity, XUser user) {
-		XWorkTask workItem = new XWorkTask();
-		workItem.setInstance(instance);
-		workItem.setActivity(activity);
-		workItem.setName(entity.getName());
-		workItem.setTaskId(entity.getId());
-		workItem.setAssignee(user);
+		XWorkTask workTask = new XWorkTask();
+		workTask.setInstance(instance);
+		workTask.setActivity(activity);
+		workTask.setName(entity.getName());
+		workTask.setTaskId(entity.getId());
+		workTask.setAssignee(user);
 
-		return workItem;
+		return workTask;
 	}
 
 	public XWorkInstance getInstance() {

@@ -42,26 +42,26 @@ public class XProcessWorkTaskTableBuilder extends AbstractTableComponentBuilder 
         }
         XWorkInstance instance = (XWorkInstance) xobject;
         List<XWorkTask> list = XFlowRepositoryHelper.repository().findXWorkTask(instance);
-        for (XWorkTask workItem : list) {
-            TableComponentRow tableRow = TableComponentRow.newInstance(workItem, workItem.getOid());
-            if (FlowStatus.OPEN.equals(workItem.getStatus())) {
+        for (XWorkTask workTask : list) {
+            TableComponentRow tableRow = TableComponentRow.newInstance(workTask, workTask.getOid());
+            if (FlowStatus.OPEN.equals(workTask.getStatus())) {
                 tableRow.addAttribute("icon", new IconBox("images/flow/usertask.png"));
                 HyperLink nameLink = new HyperLink(true);
-                nameLink.setInnerObject(workItem.getName());
-                nameLink.setUrl(HREFactory.hashInfoPage(workItem));
+                nameLink.setInnerObject(workTask.getName());
+                nameLink.setUrl(HREFactory.hashInfoPage(workTask));
                 tableRow.addAttribute("name", nameLink);
-                tableRow.addAttribute("assignee", workItem.getAssignee().getUsername());
+                tableRow.addAttribute("assignee", workTask.getAssignee().getUsername());
             } else {
                 tableRow.addAttribute("icon", new IconBox("images/flow/usertask-e.png"));
                 HyperLink nameLink = new HyperLink(true);
-                nameLink.setInnerObject(workItem.getName());
-                nameLink.setUrl(HREFactory.hashInfoPage(workItem));
+                nameLink.setInnerObject(workTask.getName());
+                nameLink.setUrl(HREFactory.hashInfoPage(workTask));
                 tableRow.addAttribute("name", nameLink);
-                tableRow.addAttribute("assignee", workItem.getAssignee().getUsername());
-                tableRow.addAttribute("completedBy", workItem.getCompletedBy());
-                tableRow.addAttribute("completedOn", workItem.getCompletedOn());
-                tableRow.addAttribute("routes", workItem.getRoutes());
-                tableRow.addAttribute("remarks", workItem.getRemarks());
+                tableRow.addAttribute("assignee", workTask.getAssignee().getUsername());
+                tableRow.addAttribute("completedBy", workTask.getCompletedBy());
+                tableRow.addAttribute("completedOn", workTask.getCompletedOn());
+                tableRow.addAttribute("routes", workTask.getRoutes());
+                tableRow.addAttribute("remarks", workTask.getRemarks());
             }
 
             result.add(tableRow);

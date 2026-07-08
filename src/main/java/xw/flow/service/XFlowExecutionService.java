@@ -32,6 +32,7 @@ import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
+import org.flowable.task.api.TaskInfoQuery;
 import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 import org.flowable.task.service.impl.persistence.entity.TaskEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -360,16 +361,16 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 *
 	 * <p><b>注意：</b>如果 XWorkTask 的 instance 关联为空或 processInstId/taskId 无效，返回值可能为 null。</p>
 	 *
-	 * @param worktask XWork 工作项业务对象
+	 * @param workTask XWork 工作项业务对象
 	 * @return 对应的 TaskInfo（运行中的 Task 或历史 HistoricTaskInstance），若找不到则返回 null
 	 */
-	public TaskInfo getTaskInfo(XWorkTask worktask) {
-		XWorkInstance instance = worktask.getInstance();
+	public TaskInfo getTaskInfo(XWorkTask workTask) {
+		XWorkInstance instance = workTask.getInstance();
 		TaskService taskService = this.processEngine.getTaskService();
-		TaskInfo taskInfo = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(worktask.getTaskId()).singleResult();
+		TaskInfo taskInfo = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
 		if (taskInfo == null) {
 			HistoryService historyService = this.processEngine.getHistoryService();
-			taskInfo = historyService.createHistoricTaskInstanceQuery().taskId(worktask.getTaskId()).singleResult();
+			taskInfo = historyService.createHistoricTaskInstanceQuery().taskId(workTask.getTaskId()).singleResult();
 		}
 		return taskInfo;
 	}
@@ -499,35 +500,32 @@ public class XFlowExecutionService extends AbstractXFlowService {
 	 * @return 更新后的 XWorkTask
 	 */
 	@Transactional
-	public XWorkTask completeXWorkTask(XWorkTask workTask, Object routes, String remarks) {
+	public XWorkTask completeWorkTask(XWorkTask workTask, Object routes, String remarks) {
 		XWorkInstance instance = workTask.getInstance();
-		XUser xuser = (XUser) SessionHelper.getCurrentUser();
+		XUser user = (XUser) SessionHelper.getCurrentUser();
 		workTask.setRoutes((String) routes);
 		workTask.setStatus(FlowStatus.COMPLETED);
 		workTask.setRemarks(remarks);
-		workTask.setCompletedBy(xuser.getNumber());
+		workTask.setCompletedBy(user.getNumber());
 		workTask.setCompletedOn(new Timestamp((new Date()).getTime()));
 		workTask = PersistenceHelper.service().save(workTask);
+
+		TaskService taskService = this.processEngine.getTaskService();
+		TaskInfo taskInfo = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
 
 		XWorkActivity workActivity = workTask.getActivity();
 		String necessity = workActivity.getNecessity();
 		if (FlowConstant.ANY.equals(necessity)) {
-			TaskService taskService = this.processEngine.getTaskService();
-			Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
-			taskService.claim(task.getId(), xuser.getOid());
+			taskService.claim(taskInfo.getId(), user.getOid());
 			taskService.complete(workTask.getTaskId());
 		} else if (FlowConstant.ALL.equals(necessity)) {
 			List<XWorkTask> workTasks = this.flowRepository.findXWorkTask(workActivity, FlowStatus.OPEN);
 			if (workTasks.isEmpty()) {
-				TaskService taskService = this.processEngine.getTaskService();
-				Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
-				taskService.claim(task.getId(), xuser.getOid());
+				taskService.claim(taskInfo.getId(), user.getOid());
 				taskService.complete(workTask.getTaskId());
 			}
 		} else {
-			TaskService taskService = this.processEngine.getTaskService();
-			Task task = taskService.createTaskQuery().processInstanceId(instance.getProcessInstId()).taskId(workTask.getTaskId()).singleResult();
-			taskService.claim(task.getId(), xuser.getOid());
+			taskService.claim(taskInfo.getId(), user.getOid());
 			taskService.complete(workTask.getTaskId());
 		}
 

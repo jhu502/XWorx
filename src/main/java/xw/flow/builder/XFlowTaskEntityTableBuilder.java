@@ -36,17 +36,17 @@ public class XFlowTaskEntityTableBuilder extends AbstractTableComponentBuilder {
     @Override
     public List<?> getTableRows(XCommandBean commandBean) {
         List<TableComponentRow> result = new ArrayList<>();
-        List<XWorkTask> workItems = XFlowExecutionHelper.execution().listOwnedWorkTask(FlowStatus.OPEN);
-        for (XWorkTask workItem : workItems) {
+        List<XWorkTask> workTasks = XFlowExecutionHelper.execution().listOwnedWorkTask(FlowStatus.OPEN);
+        for (XWorkTask workTask : workTasks) {
             TableComponentRow tableRow = TableComponentRow.newInstance();
-            tableRow.setRowId(workItem.getOid());
+            tableRow.setRowId(workTask.getOid());
             tableRow.addAttribute("icon", new IconBox(""));
             HyperLink nameLink = new HyperLink(true);
-            nameLink.setInnerObject(workItem.getName());
-            nameLink.setUrl(HREFactory.hashInfoPage(workItem));
+            nameLink.setInnerObject(workTask.getName());
+            nameLink.setUrl(HREFactory.hashInfoPage(workTask));
             tableRow.addAttribute("name", nameLink);
-            tableRow.addAttribute("status", workItem.getStatus().name());
-            XWorkInstance instance = workItem.getInstance();
+            tableRow.addAttribute("status", workTask.getStatus().name());
+            XWorkInstance instance = workTask.getInstance();
             ObjectReference<XObject> businessRef = instance.getBusinessRef();
             if (businessRef != null) {
                 XPersistable businessObject = businessRef.getObject();
@@ -56,7 +56,7 @@ public class XFlowTaskEntityTableBuilder extends AbstractTableComponentBuilder {
                 detailLink.setUrl(HREFactory.hashInfoPage(businessObject));
                 tableRow.addAttribute("details", detailLink);
             }
-            tableRow.addAttribute("createdStamp", workItem.getCreatedStamp());
+            tableRow.addAttribute("createdStamp", workTask.getCreatedStamp());
             result.add(tableRow);
         }
 

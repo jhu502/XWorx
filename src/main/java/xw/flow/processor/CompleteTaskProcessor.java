@@ -14,18 +14,18 @@ import org.flowable.task.api.TaskInfo;
 
 import java.util.List;
 
-public class CompleteWorkTaskProcessor extends DefaultFormProcessor {
+public class CompleteTaskProcessor extends DefaultFormProcessor {
     @Override
     public FormResult doOperation(XCommandBean commandBean) {
         FormResult formResult = super.doOperation(commandBean);
-        XWorkTask workItem = (XWorkTask) commandBean.getPrimaryObj();
-        if (workItem == null)
+        XWorkTask workTask = (XWorkTask) commandBean.getPrimaryObj();
+        if (workTask == null)
             throw new XException("Primary Object is null.");
 
         Object taskRoutes = commandBean.getParameter("taskRoutes");
         String taskRemarks = commandBean.getTextParameter("taskRemarks");
 
-        TaskInfo taskInfo = XFlowExecutionHelper.execution().getTaskInfo(workItem);
+        TaskInfo taskInfo = XFlowExecutionHelper.execution().getTaskInfo(workTask);
         FlowElement flowElement = XFlowExecutionHelper.execution().getFlowElement(taskInfo);
         if (flowElement instanceof UserTask) {
             UserTask userTask = (UserTask) flowElement;
@@ -37,10 +37,10 @@ public class CompleteWorkTaskProcessor extends DefaultFormProcessor {
             }
         }
 
-        workItem = XFlowExecutionHelper.execution().completeXWorkTask(workItem, taskRoutes, taskRemarks);
+        workTask = XFlowExecutionHelper.execution().completeWorkTask(workTask, taskRoutes, taskRemarks);
 
         formResult.setStatus(FormStatus.SUCCESS);
-        formResult.setData(workItem);
+        formResult.setData(workTask);
 
         return formResult;
     }

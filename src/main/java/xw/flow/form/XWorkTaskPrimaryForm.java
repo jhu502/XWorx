@@ -40,7 +40,7 @@ import xw.flow.entity.XWorkTask;
                         }), //
                         @UICell(widget = { //
                                 @UIWidget(type = WidgetType.Button, id = "completeTask", name = "taskRoutes", text = "Complete Task", events = { //
-                                        @UIEvent(name = "onclick", value = "flame.submitForm(this, 'xw.flow.processor.CompleteWorkTaskProcessor', completeCallback, (typeof(taskComplete)==='function')?taskComplete:undefined);") //
+                                        @UIEvent(name = "onclick", value = "flame.submitForm(this,'xw.flow.processor.CompleteTaskProcessor',completeCallback,(typeof(taskComplete)==='function')?taskComplete:undefined);") //
                                 }) //
                         }) //
                 }), //
