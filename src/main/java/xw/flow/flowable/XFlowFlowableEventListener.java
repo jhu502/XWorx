@@ -19,7 +19,7 @@ public class XFlowFlowableEventListener extends AbstractFlowableEventListener {
         if (event instanceof FlowableEntityEvent) {
         	FlowableEntityEvent entityEvent = (FlowableEntityEvent) event;
         	FlowableEventType eventType = entityEvent.getType();
-        	LOGGER.info(eventType.toString() + "-------X-------" + entityEvent.getEntity());
+            LOGGER.info("{}-------X-------{}", eventType.toString(), entityEvent.getEntity());
         }
     }
 

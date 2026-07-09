@@ -66,26 +66,26 @@ import java.util.List;
  * <pre>{@code
  *  <userTask id="x91292665-490f-4b35-aafa-78a37466fa44" name="提交申请" flowable:formKey="thymeleaf/flow/taskform/flowWorkTaskReview">
  *     <extensionElements>
- *         <xflow:x-config>
- *              <xflow:type value="userTask"></xflow:type>
- *         </xflow:x-config>
- *         <xflow:x-variable>
- *              <xflow:variable name="bool" type="java.lang.Boolean" display="bool" value="false"></xflow:variable>
- *         </xflow:x-variable>
- *         <xflow:x-route type="Exclusive">
- *              <xflow:route name="提交" language="juel"></xflow:route>
- *              <xflow:route name="取消" language="juel"></xflow:route>
- *         </xflow:x-route>
- *         <xflow:x-event>
- *              <xflow:event name="Created" language="juel"></xflow:event>
- *              <xflow:event name="Initialized" language="juel"></xflow:event>
- *              <xflow:event name="Completed" language="juel"></xflow:event>
- *              <xflow:event name="Deleted" language="juel"></xflow:event>
- *         </xflow:x-event>
- *         <xflow:x-actor necessity="ANY">
- *              <xflow:user name="Guest" display="Guest (Guest)"></xflow:user>
- *              <xflow:user name="Administrator" display="Administrator (Administrator)"></xflow:user>
- *         </xflow:x-actor>
+ *         <flow:config>
+ *              <flow:type value="userTask"></flow:type>
+ *         </flow:config>
+ *         <flow:variable>
+ *              <flow:variable name="bool" type="java.lang.Boolean" display="bool" value="false"></flow:variable>
+ *         </flow:variable>
+ *         <flow:route type="Exclusive">
+ *              <flow:route name="提交" language="juel"></flow:route>
+ *              <flow:route name="取消" language="juel"></flow:route>
+ *         </flow:route>
+ *         <flow:event>
+ *              <flow:event name="Created" language="juel"></flow:event>
+ *              <flow:event name="Initialized" language="juel"></flow:event>
+ *              <flow:event name="Completed" language="juel"></flow:event>
+ *              <flow:event name="Deleted" language="juel"></flow:event>
+ *         </flow:event>
+ *         <flow:actor necessity="ANY">
+ *              <flow:user name="Guest" display="Guest (Guest)"></flow:user>
+ *              <flow:user name="Administrator" display="Administrator (Administrator)"></flow:user>
+ *         </flow:actor>
  *     </extensionElements>
  *  </userTask>
  * }</pre>

@@ -516,6 +516,10 @@ public class XFlowExecutionService extends AbstractXFlowService {
 		XWorkActivity workActivity = workTask.getActivity();
 		String necessity = workActivity.getNecessity();
 		if (FlowConstant.ANY.equals(necessity)) {
+			/**
+			 * 使用user.getOid()的身份认领TaskInfo, 相当于taskInfo.getAssignee()=user.getOid()
+			 * 认领当前TaskInfo后，以避免被其他用户同时使用
+			 */
 			taskService.claim(taskInfo.getId(), user.getOid());
 			taskService.complete(workTask.getTaskId());
 		} else if (FlowConstant.ALL.equals(necessity)) {

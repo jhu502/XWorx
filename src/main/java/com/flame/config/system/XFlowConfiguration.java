@@ -11,7 +11,6 @@ import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.validation.ProcessValidatorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -49,11 +48,14 @@ import xw.flow.flowable.resolver.XFlowScriptResolverFactory;
 @AutoConfigureAfter(name = {"org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration", "org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration"})
 public class XFlowConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(XFlowConfiguration.class);
-    @Autowired
-    private SpringProcessEngineConfiguration processEngineConfiguration;
+    private final SpringProcessEngineConfiguration processEngineConfiguration;
+
+    public XFlowConfiguration(SpringProcessEngineConfiguration processEngineConfiguration) {
+        this.processEngineConfiguration = processEngineConfiguration;
+    }
 
     @PostConstruct
-    public void init() {
+    public void initialize() {
         LOGGER.info("XFlow configuration initializing via @PostConstruct");
 
         // ① 替换 ActivityBehavior 工厂
