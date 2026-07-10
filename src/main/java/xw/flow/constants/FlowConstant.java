@@ -33,7 +33,7 @@ public class FlowConstant {
     public static final String PROCESS = "process";
     public static final String PARTICIPANTS = "participants";
     public static final String ROUTES = "routes";
-    public static final String ROUTE_EVENTS = "routevents";
+    public static final String ROUTE_EVENTS = "routeEvents";
     public static final String START_EVENT = "startEvent";
     public static final String TARGET = "target";
     public static final String VARIABLES = "variables";

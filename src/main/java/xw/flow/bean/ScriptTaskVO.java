@@ -10,7 +10,7 @@ import java.util.Map;
 public class ScriptTaskVO extends FlowNodeVO {
     private String language = "";
     private String expression = "";
-    private List<Map<String, Object>> routevents = new ArrayList<>();
+    private List<Map<String, Object>> routeEvents = new ArrayList<>();
 
     public static ScriptTaskVO newInstance(XFlowScriptTask flowTask, boolean movable) {
         ScriptTaskVO taskBean = new ScriptTaskVO(flowTask);
@@ -44,8 +44,8 @@ public class ScriptTaskVO extends FlowNodeVO {
         this.expression = expression;
     }
 
-    public List<Map<String, Object>> getRoutevents() {
-        return routevents;
+    public List<Map<String, Object>> getRouteEvents() {
+        return routeEvents;
     }
 
     public void addRoute(FlowRoute route) {
@@ -53,6 +53,6 @@ public class ScriptTaskVO extends FlowNodeVO {
         routeMap.put("type", "route");
         routeMap.put("value", route.getName());
         routeMap.put("expression", route.getExpression());
-        this.routevents.add(routeMap);
+        this.routeEvents.add(routeMap);
     }
 }

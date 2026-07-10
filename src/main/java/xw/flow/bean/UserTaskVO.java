@@ -12,7 +12,7 @@ public class UserTaskVO extends FlowNodeVO {
     private String necessity;
     private List<Map<String, Object>> variables = new ArrayList<>();
     private List<Map<String, Object>> participants = new ArrayList<>();
-    private List<Map<String, Object>> routevents = new ArrayList<>();
+    private List<Map<String, Object>> routeEvents = new ArrayList<>();
 
     public static UserTaskVO newInstance(XFlowUserTask flowTask, boolean movable) {
         UserTaskVO taskBean = new UserTaskVO(flowTask);
@@ -103,8 +103,8 @@ public class UserTaskVO extends FlowNodeVO {
         this.participants.add(groupMap);
     }
 
-    public List<Map<String, Object>> getRoutevents() {
-        return routevents;
+    public List<Map<String, Object>> getRouteEvents() {
+        return routeEvents;
     }
 
     public void addRoute(FlowRoute route) {
@@ -112,7 +112,7 @@ public class UserTaskVO extends FlowNodeVO {
         routeMap.put("type", "route");
         routeMap.put("value", route.getName());
         routeMap.put("expression", route.getExpression());
-        this.routevents.add(routeMap);
+        this.routeEvents.add(routeMap);
     }
 
     public void addEvent(FlowEvent event) {
@@ -120,6 +120,6 @@ public class UserTaskVO extends FlowNodeVO {
         eventMap.put("type", "event");
         eventMap.put("value", event.getName());
         eventMap.put("expression", event.getExpression());
-        this.routevents.add(eventMap);
+        this.routeEvents.add(eventMap);
     }
 }

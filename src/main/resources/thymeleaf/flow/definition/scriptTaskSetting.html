@@ -79,9 +79,9 @@
         $('#expression').val(flowData.expression);
         $('#instructions').val(flowData.instructions);
 
-        if (flowData.routevents) {
-            for (let i = 0; i < flowData.routevents.length; i++) {
-                const routeEvent = flowData.routevents[i];
+        if (flowData.routeEvents) {
+            for (let i = 0; i < flowData.routeEvents.length; i++) {
+                const routeEvent = flowData.routeEvents[i];
                 if (routeEvent) {
                     girdRouteEvents.push({
                         type: routeEvent.type,
@@ -122,8 +122,8 @@
                 });
             }
 
-            if (!flowData.routevents) {
-                flowData.routevents = [];
+            if (!flowData.routeEvents) {
+                flowData.routeEvents = [];
             }
             $('#routeEventsGrid').datalist('loadData', girdRouteEvents);
         }
@@ -170,7 +170,7 @@
             }
             flowData.label = nodeLabel;
             flowData.instructions = instructions;
-            flowData.routevents = girdRouteEvents;
+            flowData.routeEvents = girdRouteEvents;
             if (editor)
                 flowData.expression = editor.getValue();
             flowEditor.modifyNodeLabel(nodeId, nodeLabel);

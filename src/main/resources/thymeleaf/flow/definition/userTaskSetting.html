@@ -230,9 +230,9 @@
                 }
             }
         }
-        if (flowData.routevents) {
-            for (let i = 0; i < flowData.routevents.length; i++) {
-                const routevent = flowData.routevents[i];
+        if (flowData.routeEvents) {
+            for (let i = 0; i < flowData.routeEvents.length; i++) {
+                const routevent = flowData.routeEvents[i];
                 if (routevent) {
                     girdRouteEvents.push({
                         type: routevent.type,
@@ -276,7 +276,7 @@
             const necessity = $('#necessity').combobox("getValue");
             flowData.variables = gridVariables;
             flowData.participants = gridParticipants;
-            flowData.routevents = girdRouteEvents;
+            flowData.routeEvents = girdRouteEvents;
             flowData.label = nodeLabel;
             flowData.taskForm = taskForm;
             flowData.necessity = necessity;
