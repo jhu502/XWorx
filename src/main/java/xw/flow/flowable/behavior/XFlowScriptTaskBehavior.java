@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.flame.orm.PersistenceHelper;
 
 import xw.flow.XFlowExecutionHelper;
+import xw.flow.constants.FlowConstant;
 import xw.flow.constants.FlowStatus;
 import xw.flow.entity.XWorkActivity;
 
@@ -39,7 +40,7 @@ public class XFlowScriptTaskBehavior extends ScriptTaskActivityBehavior {
          */
         XWorkActivity workActivity = XFlowExecutionHelper.execution().getCurrentXWorkActivity((ExecutionEntity) execution);
         if (null != result) {
-            if ("juel".equalsIgnoreCase(language) && (result instanceof String) && script.equals(result.toString())) {
+            if (FlowConstant.JUEL.equalsIgnoreCase(language) && (result instanceof String) && script.equals(result.toString())) {
                 throw new FlowableException("Error evaluating juel script: \"" + script + "\" for " + execution);
             }
             workActivity.setRoutes(result.toString());

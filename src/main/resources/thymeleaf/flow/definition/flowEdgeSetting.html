@@ -29,7 +29,6 @@
     })(jQuery);
 
     function saveEdgeRoute() {
-        const flowEdge = flowEditor.getXFlowEdge(flowEdgeId);
         const checked = $('#edgeRouteList').datalist('getChecked');
         let routes = '?';
         for (let item of checked) {
@@ -39,14 +38,9 @@
                 routes = routes + ',' + item.value;
             }
         }
-        flowEdge.store.data.routes = routes;
-        modifyEdgeName(flowEdgeId, routes);
+        flowEditor.modifyEdgeLabel(flowEdgeId, routes);
 
         return true;
-    }
-
-    function modifyEdgeName(edgeId, routes) {
-        $("g[data-cell-id='" + edgeId + "']").children('g').children('g').children('text').children('tspan').html(routes);
     }
 </script>
 </body>
