@@ -1,11 +1,13 @@
 package xw.flow;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.flame.logs.XPrintStream;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
@@ -28,6 +30,16 @@ import xw.flow.entity.XWorkInstance;
 @ActiveProfiles("Test")
 class XWorxFlowApplicationTest {
 	protected Logger logger = LoggerFactory.getLogger(XWorxFlowApplicationTest.class);
+	public static final String XWORX_HOME = "xworx.home";
+	public static final String XWORX_JVM_ID = "xworx.jvm.id";
+
+	static {
+		if (!(System.out instanceof XPrintStream))
+			System.setOut(new XPrintStream(System.out));
+
+		System.setProperty(XWORX_HOME, "D:/SourceSpace/SpaceFlame/XServer");
+		System.setProperty(XWORX_JVM_ID, ManagementFactory.getRuntimeMXBean().getName());
+	}
 
 	@Test
 	void deployXFlowDefinition() {

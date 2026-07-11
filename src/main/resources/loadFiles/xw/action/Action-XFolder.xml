@@ -9,7 +9,7 @@
 		<attr name="icon">images/newdoc.gif</attr>
 		<attr name="style">width:680px;height:380px;padding:5px;</attr>
 		<attr name="url">thymeleaf/doc/newDocument</attr>
-		<attr name="processor">plm.doc.CreateXDocumentProcessor</attr>
+		<attr name="processor">xw.doc.processor.CreateDocumentProcessor</attr>
 		<attr name="winType">popup</attr>
 		<attr name="en_US">New Document</attr>
 		<attr name="zh_CN">新建文档</attr>

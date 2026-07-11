@@ -19,7 +19,7 @@ public class CreateXPartProcessor extends DefaultFormProcessor {
 		String name = commandBean.getTextParameter("name");
 		XObject context = commandBean.getPrimaryObj();
 		
-		XPart xpart = XPart.newXPart(number, name);
+		XPart xpart = XPart.newInstance(number, name);
 		
 		if (context instanceof XFolder) {
 			XFolder folder = (XFolder) context;

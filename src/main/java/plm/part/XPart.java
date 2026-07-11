@@ -31,7 +31,7 @@ public class XPart extends VersionControlled<XPartMaster> implements ICharacted 
 	@JoinColumn(name = "masterId", foreignKey = @ForeignKey(name = "MASTER_ID_FK"))
 	protected XPartMaster master;
 
-	public static XPart newXPart(String number, String name) {
+	public static XPart newInstance(String number, String name) {
 		XPartMaster master = new XPartMaster();
 		master.setGenericType(GenericType.Dynamic);
 		XPart xpart = new XPart(master);
