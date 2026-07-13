@@ -12,21 +12,23 @@ import com.flame.xui.WidgetType;
  * 子组件会被递归渲染为 HTML。</p>
  */
 public class HTMLElement extends XUIWidget {
+    private String tag = "span";
 
     /**
      * 通过名称构造。
      * @param name 组件名称，用作 DOM 属性
      */
-    public HTMLElement(String name) {
+    public HTMLElement(String name, String tag) {
         super(WidgetType.Element);
         this.setEasyUI(false);
         this.setName(name);
+        this.tag = tag;
     }
 
     /** {@inheritDoc} */
     @Override
     public String getTag() {
-        return "img";
+        return this.tag;
     }
 
     /** 设置 {@code type}、{@code style}、{@code value} DOM 属性。 */

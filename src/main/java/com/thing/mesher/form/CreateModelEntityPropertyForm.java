@@ -23,6 +23,10 @@ public class CreateModelEntityPropertyForm extends AbstractMeshComponentBuilder 
 		xuiMeshGrid.addHidden(new Hidden("widgetMode", "widgetMode", WidgetMode.Create.name()));
 
 		String entityType = commandBean.getEntityType();
+		if (FlameUtils.isBlank(entityType)) {
+			return xuiMeshGrid;
+		}
+
 		xuiMeshGrid.addHidden(new Hidden("entityType", "entityType", entityType));
 
 		if (FlameUtils.isNotBlank(entityType)) {

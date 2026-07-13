@@ -34,7 +34,7 @@ class y extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"
                         <label style="font-size:13px;color:#555;display:block;margin-top:10px;">CSS 样式（应用到单元格）：</label>
                         <input id="xui-style-input" value="${l.style||""}" placeholder="color:red;font-weight:bold;" style="width:100%;height:28px;margin-top:4px;padding:4px 8px;border:1px solid #ccc;border-radius:3px;box-sizing:border-box;"/>
                         <label style="font-size:13px;color:#555;display:block;margin-top:10px;">行数设置（1: 单行input，>1: 多行textarea）：</label>
-                        <input id="xui-rows-input" type="number" min="1" value="${l.rowCount||1}" ${l.uiType!=="Table"?"disabled":""} style="width:100%;height:28px;margin-top:4px;padding:4px 8px;border:1px solid #ccc;border-radius:3px;box-sizing:border-box;"/>
+                        <input id="xui-rows-input" type="number" min="1" value="${l.rowCount||1}" ${l.uiType=="Tablet"?"disabled":""} style="width:100%;height:28px;margin-top:4px;padding:4px 8px;border:1px solid #ccc;border-radius:3px;box-sizing:border-box;"/>
                         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;">
                             <button style="padding:6px 18px;border:1px solid #ccc;border-radius:3px;background:#f5f5f5;cursor:pointer;" onclick="this.closest('x-window')?.close()">取消</button>
                             <button style="padding:6px 18px;border:1px solid #03638d;border-radius:3px;background:#03638d;color:#fff;cursor:pointer;" onclick="

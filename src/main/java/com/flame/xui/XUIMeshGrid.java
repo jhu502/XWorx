@@ -211,15 +211,15 @@ public class XUIMeshGrid extends XUIComponent {
 
 					for (UIWidget uiWidget : uicell.widget()) {
 						XUIWidget xuiWidget = XUIWidget.getWidget(uiWidget);
-						WidgetMode componentModel = this.getWidgetMode();
+						WidgetMode widgetMode = this.getWidgetMode();
 						if (FlameUtils.isNotBlank(uiWidget.style())) {
 							xuiWidget.setStyle(uiWidget.style());
 						}
 						if (xuiWidget instanceof TextBox textBox && uicell.rowCount() > 0) {
 							textBox.setRowCount(uicell.rowCount());
 						}
-						if (componentModel != null) {
-							xuiWidget.setWidgetMode(componentModel);
+						if (widgetMode != null) {
+							xuiWidget.setWidgetMode(widgetMode);
 						}
 						if (FlameUtils.isBlank(uiWidget.id())) {
 							if (FlameUtils.isBlank(xuiWidget.getName())) {

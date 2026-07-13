@@ -3,6 +3,9 @@ package com.flame.orm;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import com.flame.xui.WidgetMode;
+import com.flame.xui.XUIWidget;
+import com.flame.xui.widget.TextDisplay;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +18,8 @@ import jakarta.persistence.SequenceGenerator;
 public abstract class XObject implements XPersistable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flame_xid_seq")
-	@SequenceGenerator(name = "flame_xid_seq", sequenceName = "flame_xid_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FLAME_XID_SEQ")
+	@SequenceGenerator(name = "flame_xid_seq", sequenceName = "FLAME_XID_SEQ", allocationSize = 1)
 	@Column(name = "xid", unique = true, nullable = false, updatable = false)
 	private long xid;  //设置初始值会导致detached entity passed to persist异常
 	
@@ -59,5 +62,13 @@ public abstract class XObject implements XPersistable {
 
 	public void updatePersistInfo() {
 		this.modifiedStamp = new Timestamp((new Date()).getTime());
+	}
+
+	public XUIWidget getXUIWidget(WidgetMode model) {
+		if (WidgetMode.Display.equals(model)) {
+			return new TextDisplay(this.getOid());
+		} else {
+			return null;
+		}
 	}
 }

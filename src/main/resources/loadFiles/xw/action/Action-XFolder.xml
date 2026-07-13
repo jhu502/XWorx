@@ -8,7 +8,7 @@
 		<attr name="display">New Docuemnt</attr>
 		<attr name="icon">images/newdoc.gif</attr>
 		<attr name="style">width:680px;height:380px;padding:5px;</attr>
-		<attr name="url">thymeleaf/doc/newDocument</attr>
+		<attr name="url">thymeleaf/doc/newDocument?entityType=xw.doc.XDocument</attr>
 		<attr name="processor">xw.doc.processor.CreateDocumentProcessor</attr>
 		<attr name="winType">popup</attr>
 		<attr name="en_US">New Document</attr>
@@ -21,7 +21,7 @@
 		<attr name="display">New Part</attr>
 		<attr name="icon">images/newpart.gif</attr>
 		<attr name="style">width:680px;height:580px;padding:5px;</attr>
-		<attr name="url">thymeleaf/part/newPart</attr>
+		<attr name="url">thymeleaf/part/newPart?entityType=plm.part.XPart</attr>
 		<attr name="processor">plm.part.processor.CreateXPartProcessor</attr>
 		<attr name="winType">popup</attr>
 		<attr name="en_US">New Part</attr>

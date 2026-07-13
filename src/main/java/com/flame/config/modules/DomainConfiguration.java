@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ComponentScan({"xw.domain.service"})
-@EntityScan({"xw.domain"})
+@EntityScan({"xw.domain", "xw.doc"})
 @EnableJpaRepositories({"xw.domain.repos"})
 public class DomainConfiguration {
 }

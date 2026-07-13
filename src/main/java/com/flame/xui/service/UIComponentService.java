@@ -1,5 +1,8 @@
 package com.flame.xui.service;
 
+import com.flame.orm.XObject;
+import com.flame.util.XException;
+import com.flame.xui.widget.*;
 import org.springframework.stereotype.Component;
 
 import com.flame.localize.LocalizationHelper;
@@ -7,10 +10,6 @@ import com.flame.thing.IPropertyDefinition;
 import com.flame.type.XBaseType;
 import com.flame.xui.IWidget;
 import com.flame.xui.WidgetMode;
-import com.flame.xui.widget.ComboBox;
-import com.flame.xui.widget.HTMLElement;
-import com.flame.xui.widget.TextBox;
-import com.flame.xui.widget.TextDisplay;
 
 @Component
 public class UIComponentService {
@@ -46,7 +45,7 @@ public class UIComponentService {
             case OBJECT:
             case QUERY:
             case SCHEDULE:
-                return createEnumAwareWidget(model, definition);
+                return createObjectWidget(model, definition);
             case NOTHING:
                 return null;
             default:
@@ -152,28 +151,43 @@ public class UIComponentService {
      * 枚举感知模式：根据 propertyClass 是否枚举类型，选择 ComboBox 或标准文本。
      * 适用于 OBJECT, QUERY, SCHEDULE。
      */
-    private static IWidget createEnumAwareWidget(WidgetMode model, IPropertyDefinition definition) {
+    private static IWidget createObjectWidget(WidgetMode model, IPropertyDefinition definition) {
         String property = definition != null ? definition.getName() : "";
         String defaultValue = definition != null ? definition.getDefaultValue() : null;
         Class<?> propertyClass = definition != null ? definition.getPropertyClass() : null;
         boolean isEnum = propertyClass != null && propertyClass.isEnum();
+        boolean isXObject = propertyClass != null && XObject.class.isAssignableFrom(propertyClass);
 
-        switch (model) {
-            case Display:
-                return createTextDisplay(property, defaultValue, model);
-            case Edit: {
-                if (isEnum) {
-                    return createEnumComboBox(property, definition, defaultValue, model, true);
+        try {
+            switch (model) {
+                case Display:
+                    if (isXObject) {
+                        XObject xObject = (XObject) propertyClass.newInstance();
+                        return xObject.getXUIWidget(model);
+                    }
+                    return createTextDisplay(property, defaultValue, model);
+                case Edit: {
+                    if (isEnum) {
+                        return createEnumComboBox(property, definition, defaultValue, model, true);
+                    } else if (isXObject) {
+                        XObject xObject = (XObject) propertyClass.newInstance();
+                        return xObject.getXUIWidget(model);
+                    }
+                    return createTextBox(property, definition, defaultValue, model, true, 1);
                 }
-                return createTextBox(property, definition, defaultValue, model, true, 1);
-            }
-            case Create:
-            default: {
-                if (isEnum) {
-                    return createEnumComboBox(property, definition, null, model, false);
+                case Create:
+                default: {
+                    if (isEnum) {
+                        return createEnumComboBox(property, definition, null, model, false);
+                    } else if (isXObject) {
+                        XObject xObject = (XObject) propertyClass.newInstance();
+                        return xObject.getXUIWidget(model);
+                    }
+                    return createTextBox(property, definition, null, model, false, 1);
                 }
-                return createTextBox(property, definition, null, model, false, 1);
             }
+        } catch (Exception e) {
+            throw new XException(e);
         }
     }
 
@@ -188,14 +202,14 @@ public class UIComponentService {
 
         switch (model) {
             case Display: {
-                HTMLElement img = new HTMLElement(property);
-                img.setId(property);
-                img.setStyle("max-width:200px;max-height:200px;");
+                IconBox iconBox = new IconBox(property);
+                iconBox.setId(property);
+                iconBox.setStyle("max-width:200px;max-height:200px;");
                 if (defaultValue != null) {
-                    img.setValue(defaultValue);
+                    iconBox.setValue(defaultValue);
                 }
-                img.setWidgetMode(model);
-                return img;
+                iconBox.setWidgetMode(model);
+                return iconBox;
             }
             case Edit:
                 return createTextBox(property, definition, defaultValue, model, true, 1);
