@@ -18,8 +18,8 @@ import jakarta.persistence.SequenceGenerator;
 public abstract class XObject implements XPersistable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FLAME_XID_SEQ")
-	@SequenceGenerator(name = "flame_xid_seq", sequenceName = "FLAME_XID_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flame_xid_seq")
+	@SequenceGenerator(name = "flame_xid_seq", sequenceName = "flame_xid_seq", allocationSize = 1)
 	@Column(name = "xid", unique = true, nullable = false, updatable = false)
 	private long xid;  //设置初始值会导致detached entity passed to persist异常
 	
