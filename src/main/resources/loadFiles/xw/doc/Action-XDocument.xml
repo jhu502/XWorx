@@ -67,11 +67,10 @@
 		</link>
 	</LoadObject>
 
-	<LoadObject type="xw.action.entity.XActionModel" where="type,name"><!-- XPart Info Page Operation Menu -->
-		<attr name="name">TypeMenu</attr>
-		<attr name="type">XPart</attr>
-		<attr name="display">Type Menu</attr>
-		<attr name="icon">images/part.gif</attr>
+	<LoadObject type="xw.action.entity.XActionModel" where="type,name">
+		<attr name="name">XWX-ActionMenu</attr>
+		<attr name="type">XDocument</attr>
+		<attr name="display">Action Menu</attr>
 		<attr name="style">dropdown-toggle</attr>
 		<link type="xw.action.entity.XActionItemLink" refer="left">
 			<attr name="sort">10</attr>
@@ -83,7 +82,7 @@
 		<link type="xw.action.entity.XActionItemLink" refer="left">
 			<attr name="sort">20</attr>
 			<where type="xw.action.entity.XActionItem" refer="right">
-				<attr name="name">paste</attr>
+				<attr name="name">delete</attr>
 				<attr name="type">XObject</attr>
 			</where>
 		</link>

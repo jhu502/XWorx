@@ -11,20 +11,47 @@
 		<x-panel th:each="tabItem:${infoTabs}" th:name="${tabItem.name}" th:title="${tabItem.localDisplay}" th:x-options="|header:false,park:'fit',url:'${tabItem.url}?oid=${commandBean.primaryOid}'|"></x-panel>
 		<x-toolbar th:if="${commandBean.primaryObj}" slot="tools" title="tab-info" x-options="park:'right', direction:'row'" style="height:100%;width:150px;z-index:999;">
 			<x-button-menu id="btnOperations" th:x-options="|border:'fillet',url:'XUI$/menu/actionMenu?oid=${commandBean.primaryOid}',parked:'right'|" style="font-size:12px;height:20px;order:1;"><span style="font-size:12px;">操作</span></x-button-menu>
-			<i class="fa fa-star-o" style="color:dodgerblue;order:2;margin-left:2px;" title="收藏(Favourites)" th:onclick="add2Favorites('[(${commandBean.primaryOid})]')"/>
+			<i class="fa fa-star-o favorite-star" style="order:2;margin-left:2px;" title="收藏(Favourites)" th:onclick="add2Favorites('[(${commandBean.primaryOid})]')"/>
 		</x-toolbar>
 		<div th:unless="${commandBean.primaryObj}" style="width:400px;color:red;"><strong>警告：主对象（[[${commandBean.primaryOid}]]）不存在</strong></div>
 	</x-tab-panel>
+	<style>
+		.favorite-star {
+			color: dodgerblue;
+			cursor: pointer;
+			transition: color 0.25s ease, transform 0.25s ease, text-shadow 0.25s ease;
+		}
+		.favorite-star:hover {
+			color: gold;
+			transform: scale(1.25);
+			text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+		}
+		.favorite-star:active {
+			transform: scale(0.9);
+			transition: transform 0.1s ease;
+		}
+		.favorite-star.favorited {
+			color: gold;
+		}
+	</style>
 	<script type="text/javascript" th:inline="text">
 		(($) => {
 			/** 用户点击某个Tab后，再次点击其他ThingModel，自动进入对应的Tab；*/
 		})(jQuery);
 
 		function add2Favorites(oid) {
+			var star = event.target;
+			var isFavorited = star.classList.contains('favorited');
 			axios.post('XUI$/post/xw.action.processor.AddFavoritesProcessor', {
 				oid: oid
 			}).then(function (response) {
-				console.error(response);
+				if (!isFavorited) {
+					star.classList.remove('fa-star-o');
+					star.classList.add('fa-star', 'favorited');
+				} else {
+					star.classList.remove('fa-star', 'favorited');
+					star.classList.add('fa-star-o');
+				}
 			}).catch(function (error) { // 请求失败处理
 				console.error(error);
 			});

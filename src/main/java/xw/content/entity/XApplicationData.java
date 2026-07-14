@@ -31,8 +31,8 @@ public class XApplicationData extends ContentItem {
 	private Long fileSize;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "role_type", nullable = false)
-	private ContentType roleType;
+	@Column(name = "content_type", nullable = false)
+	private ContentType contentType;
 
 	@Basic
 	@Column(name = "checksum")
@@ -74,12 +74,12 @@ public class XApplicationData extends ContentItem {
 		this.fileSize = fileSize;
 	}
 
-	public ContentType getRoleType() {
-		return roleType;
+	public ContentType getContentType() {
+		return contentType;
 	}
 
-	public void setRoleType(ContentType roleType) {
-		this.roleType = roleType;
+	public void setContentType(ContentType contentType) {
+		this.contentType = contentType;
 	}
 
 	public Long getCheckSum() {

@@ -21,21 +21,21 @@ public class XWorxContentService {
 
 	@SuppressWarnings("unchecked")
 	public List<XApplicationData> getRelatedContentItem(IContentHolder contentHolder, ContentType contentType) {
-		String hql = "select a from XApplicationData a, XHolderToContent b where b.left.id = :id and b.right.id = a.id and a.roleType = :role";
-		return (List<XApplicationData>) PersistenceHelper.service().query(hql, new Object[][] { { "id", contentHolder.getXid() }, { "role", contentType } });
+		String hql = "select a from XApplicationData a, XHolderToContent b where b.left.id = :id and b.right.id = a.id and a.contentType = :type";
+		return (List<XApplicationData>) PersistenceHelper.service().query(hql, new Object[][] { { "id", contentHolder.getXid() }, { "type", contentType } });
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<XHolderToContent> getRelatedHolder2Content(IContentHolder contentHolder, ContentType contentType) {
-		String hql = "select b from XApplicationData a, XHolderToContent b where b.left.id = :id and b.right.id = a.id and a.roleType = :role";
-		return (List<XHolderToContent>) PersistenceHelper.service().query(hql, new Object[][] { { "id", contentHolder.getXid() }, { "role", contentType } });
+		String hql = "select b from XApplicationData a, XHolderToContent b where b.left.id = :id and b.right.id = a.id and a.contentType = :type";
+		return (List<XHolderToContent>) PersistenceHelper.service().query(hql, new Object[][] { { "id", contentHolder.getXid() }, { "type", contentType } });
 	}
 
 	public XApplicationData uploadContent(String fileName, long size, InputStream inputStream, ContentType contentType) {
 		XApplicationData appData = new XApplicationData();
 		appData.setFileName(fileName);
 		appData.setFileSize(size);
-		appData.setRoleType(contentType);
+		appData.setContentType(contentType);
 		appData.setReferPath(MinioHelper.XWORX_VAULT);
 		try {
 			FileItem fileItem = MinioHelper.getFileItem(inputStream, fileName);
@@ -53,7 +53,7 @@ public class XWorxContentService {
 		XApplicationData appData = new XApplicationData();
 		appData.setFileName(fileName);
 		appData.setFileSize(size);
-		appData.setRoleType(contentType);
+		appData.setContentType(contentType);
 		appData.setReferPath(MinioHelper.XWORX_VAULT);
 		try {
 			FileItem fileItem = MinioHelper.getFileItem(inputStream, fileName);
