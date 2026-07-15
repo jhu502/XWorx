@@ -2,6 +2,7 @@ package xw.content.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
@@ -29,6 +30,17 @@ public class XWorxContentService {
 	public List<XHolderToContent> getRelatedHolder2Content(IContentHolder contentHolder, ContentType contentType) {
 		String hql = "select b from XApplicationData a, XHolderToContent b where b.left.id = :id and b.right.id = a.id and a.contentType = :type";
 		return (List<XHolderToContent>) PersistenceHelper.service().query(hql, new Object[][] { { "id", contentHolder.getXid() }, { "type", contentType } });
+	}
+
+	public List<XApplicationData> getAllContentItems(IContentHolder contentHolder) {
+		List<XApplicationData> result = new ArrayList<>();
+		for (ContentType ct : ContentType.values()) {
+			List<XApplicationData> list = this.getRelatedContentItem(contentHolder, ct);
+			if (list != null) {
+				result.addAll(list);
+			}
+		}
+		return result;
 	}
 
 	public XApplicationData uploadContent(String fileName, long size, InputStream inputStream, ContentType contentType) {

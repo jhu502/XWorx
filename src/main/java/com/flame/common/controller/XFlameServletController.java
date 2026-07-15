@@ -33,7 +33,7 @@ public class XFlameServletController extends AppShellController {
      * @return
      */
     @GetMapping(value = "/downloadContent")
-    public ResponseEntity<Resource> downloadContent(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Resource> downloadContent(HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "false") boolean inline) {
         XCommandBean commandBean = XCommandBean.newCommandBean(request, response);
         XObject primaryObj = commandBean.getPrimaryObj();
         if (!(primaryObj instanceof XApplicationData)) {
@@ -51,7 +51,7 @@ public class XFlameServletController extends AppShellController {
         InputStreamResource resource = new InputStreamResource(inputStream);
         return ResponseEntity.ok() //
                 .contentType(MediaType.parseMediaType(contentType)) //
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachement; filename=\"" + appdata.getFileName() + "\"") //
+                .header(HttpHeaders.CONTENT_DISPOSITION, (inline ? "inline" : "attachement") + "; filename=\"" + appdata.getFileName() + "\"") //
                 .body(resource);
     }
 }

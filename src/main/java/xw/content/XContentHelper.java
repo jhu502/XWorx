@@ -1,5 +1,6 @@
 package xw.content;
 
+import java.util.Collections;
 import java.util.List;
 
 import xw.content.entity.XApplicationData;
@@ -31,5 +32,11 @@ public class XContentHelper {
 		}
 
 		return null;
+	}
+
+	public static List<XApplicationData> getAllContentItems(Object object) {
+		if (!(object instanceof IContentHolder contentHolder))
+			return Collections.emptyList();
+		return service().getAllContentItems(contentHolder);
 	}
 }

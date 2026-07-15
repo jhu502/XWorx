@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<style>
+	.content-wrap { display: flex; height: 100%; }
+	.content-left { width: 280px; min-width: 200px; border-right: 1px solid #ddd; display: flex; flex-direction: column; background: #fafafa; }
+	.content-left-header { padding: 8px 10px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #ddd; background: #f0f0f0; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
+	.content-left-header .upload-btn { cursor: pointer; color: #666; font-size: 15px; padding: 2px 4px; border-radius: 3px; transition: color 0.2s, background 0.2s; }
+	.content-left-header .upload-btn:hover { color: #1a73e8; background: #dce8fa; }
+	.content-left-list { overflow-y: auto; flex: 1; }
+	.content-list-item { display: flex; align-items: center; padding: 7px 10px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 12px; transition: background 0.15s; }
+	.content-list-item:hover { background: #e3f0ff; }
+	.content-list-item.active { background: #cce4ff; }
+	.content-list-item .ct-icon { margin-right: 6px; font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+	.content-list-item .ct-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	.content-list-item .ct-type { font-size: 10px; color: #999; margin-left: 4px; flex-shrink: 0; }
+	.content-right { flex: 1; position: relative; overflow: hidden; }
+	.content-right .viewer-pane { position: absolute; inset: 0; display: none; }
+	.content-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: #aaa; font-size: 14px; }
+	.content-empty i { margin-right: 6px; }
+	#genericViewer { padding: 24px; overflow-y: auto; }
+	#genericViewer table td { padding: 4px 8px; font-size: 13px; }
+	#genericViewer table td:first-child { color: #888; text-align: right; }
+	.upload-dialog { padding: 20px; }
+	.upload-dialog .field { margin-bottom: 14px; }
+	.upload-dialog .field label { display: block; margin-bottom: 4px; font-size: 13px; color: #555; }
+	.upload-dialog .field input[type=file] { width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
+	.upload-dialog .field select { width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
+	.upload-dialog .actions { text-align: right; margin-top: 18px; }
+	.upload-dialog .actions button { padding: 6px 18px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; font-size: 13px; margin-left: 8px; }
+	.upload-dialog .actions .btn-upload { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+	.upload-dialog .actions .btn-upload:hover { background: #1557b0; }
+	.upload-dialog .actions .btn-cancel { background: #f5f5f5; }
+	.upload-dialog .actions .btn-cancel:hover { background: #e5e5e5; }
+	.upload-dialog .msg { margin-top: 10px; font-size: 12px; }
+	.upload-dialog .msg.error { color: #d32f2f; }
+	.upload-dialog .msg.success { color: #2e7d32; }
+</style>
+<body>
+	<div class="content-wrap" th:with="allContentItems=${T(xw.content.XContentHelper).getAllContentItems(commandBean.primaryObj)}">
+		<!-- Left Panel: Content List -->
+		<div class="content-left">
+			<div class="content-left-header">
+				<span>Content (<span th:text="${allContentItems==null?0:allContentItems.size()}">0</span>)</span>
+				<i class="fa fa-cloud-upload upload-btn" title="Upload file" onclick="openUploadDialog()"></i>
+			</div>
+			<div class="content-left-list">
+				<div th:if="${allContentItems==null || allContentItems.isEmpty()}" class="content-empty" style="font-size:12px;">
+					<i class="fa fa-inbox"></i> No content items
+				</div>
+				<div th:each="item,iterStat : ${allContentItems}"
+					 class="content-list-item"
+					 th:data-oid="${item.oid}"
+					 th:data-filename="${item.fileName}"
+					 th:data-contenttype="${item.contentType}"
+					 th:data-filesize="${item.fileSize}"
+					 th:onclick="selectContentItem(this)"
+					 th:classappend="${iterStat.first} ? 'active'">
+					<i class="fa ct-icon" th:classappend="${#strings.endsWith(#strings.toLowerCase(item.fileName),'.md')} ? 'fa-file-text-o' : (${#strings.endsWith(#strings.toLowerCase(item.fileName),'.pdf')} ? 'fa-file-pdf-o' : 'fa-file-o')"></i>
+					<span class="ct-name" th:text="${item.fileName}" th:title="${item.fileName}"></span>
+					<span class="ct-type" th:text="${item.contentType.display}"></span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Right Panel: Content Viewer -->
+		<div class="content-right">
+			<!-- Empty state -->
+			<div id="emptyState" class="viewer-pane content-empty" style="display:flex;">
+				<i class="fa fa-arrow-left"></i> Select a content item from the list
+			</div>
+			<!-- Markdown viewer -->
+			<div id="markdownViewer" class="viewer-pane">
+				<x-markdown id="xMarkdown" x-options="mode:'preview',autoLoad:false,readOnly:false,lineNumbers:true"></x-markdown>
+			</div>
+			<!-- PDF viewer -->
+			<div id="pdfViewer" class="viewer-pane">
+				<iframe id="pdfFrame" style="width:100%;height:100%;border:none;"></iframe>
+			</div>
+			<!-- Generic viewer (other file types) -->
+			<div id="genericViewer" class="viewer-pane">
+				<table>
+					<tr><td>File Name:</td><td><strong id="genFileName"></strong></td></tr>
+					<tr><td>File Size:</td><td id="genFileSize"></td></tr>
+					<tr><td>Content Type:</td><td id="genContentType"></td></tr>
+				</table>
+				<a id="genDownloadLink" href="#" target="_blank" class="easyui-linkbutton" style="margin-top:12px;">
+					<i class="fa fa-download"></i> Download
+				</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" th:inline="text">
+		function selectContentItem(el) {
+			var items = el.parentElement.querySelectorAll('.content-list-item');
+			for (var i = 0; i < items.length; i++) {
+				items[i].classList.remove('active');
+			}
+			el.classList.add('active');
+
+			var oid = el.getAttribute('data-oid');
+			var fileName = el.getAttribute('data-filename') || '';
+			var fileSize = el.getAttribute('data-filesize');
+			var contentType = el.getAttribute('data-contenttype');
+
+			if (!oid) return;
+
+			var downloadUrl = 'Servlet/downloadContent?oid=' + encodeURIComponent(oid);
+			var ext = (fileName.toLowerCase().split('.').pop() || '');
+
+			hideAllViewers();
+
+			if (ext === 'md') {
+				document.getElementById('markdownViewer').style.display = 'block';
+				var xMarkdown = document.getElementById('xMarkdown');
+				if (xMarkdown && xMarkdown.loadFromUrl) {
+					xMarkdown.loadFromUrl(downloadUrl);
+				}
+			} else if (ext === 'pdf') {
+				document.getElementById('pdfViewer').style.display = 'block';
+				document.getElementById('pdfFrame').src = downloadUrl + '&inline=true';
+			} else {
+				document.getElementById('genericViewer').style.display = 'block';
+				document.getElementById('genFileName').textContent = fileName;
+				document.getElementById('genFileSize').textContent = formatFileSize(parseInt(fileSize) || 0);
+				document.getElementById('genContentType').textContent = contentType;
+				document.getElementById('genDownloadLink').href = downloadUrl;
+			}
+		}
+
+		function hideAllViewers() {
+			var panes = document.querySelectorAll('.viewer-pane');
+			for (var i = 0; i < panes.length; i++) {
+				panes[i].style.display = 'none';
+			}
+		}
+
+		function formatFileSize(bytes) {
+			if (!bytes || bytes === 0) return '0 B';
+			var units = ['B', 'KB', 'MB', 'GB'];
+			var i = Math.floor(Math.log(bytes) / Math.log(1024));
+			if (i >= units.length) i = units.length - 1;
+			return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + units[i];
+		}
+
+		function openUploadDialog() {
+			const existing = document.getElementById('uploadContentWindow');
+			if (existing) {
+				existing.close();
+				existing.remove();
+			}
+
+			const uploadWin = document.createElement('x-window');
+			uploadWin.id = 'uploadContentWindow';
+			uploadWin.title = 'Upload Content';
+			uploadWin.setAttribute('x-options', "park:'center',minimize:false,maximize:false,resize:false,destroy:true");
+			uploadWin.style.cssText = 'width:460px;height:260px';
+
+			const holderOid = '[[${commandBean.primaryOid}]]';
+
+			uploadWin.content(
+				`<div class="upload-dialog">
+					<div class="field">
+						<label>Select File:</label>
+						<input type="file" id="uploadFileInput" style="width:100%;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:13px;"/>
+					</div>
+					<div class="field">
+						<label>Content Type:</label>
+						<select id="uploadContentType" style="width:100%;height:25px;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:13px;">
+							<option value="SECONDARY">Secondary</option>
+							<option value="PRIMARY">Primary</option>
+							<option value="THUMBNAIL3D">Thumbnail 3D</option>
+						</select>
+					</div>
+					<div class="actions">
+						<button class="btn-cancel" onclick="this.closest('x-window').close()">Cancel</button>
+						<button class="btn-upload" onclick="this.closest('x-window').getContext().upload(this.closest('x-window'))">Upload</button>
+					</div>
+					<div class="msg" id="uploadMsg"></div>
+				</div>`, {
+					holderOid: holderOid,
+					upload: function (win) {
+						const fileInput = win.querySelector('#uploadFileInput');
+						const contentType = win.querySelector('#uploadContentType').value;
+						const msgEl = win.querySelector('#uploadMsg');
+						const file = fileInput.files[0];
+
+						if (!file) {
+							msgEl.textContent = 'Please select a file.';
+							msgEl.className = 'msg error';
+							return;
+						}
+
+						const formData = new FormData();
+						formData.append('file', file);
+						formData.append('oid', this.holderOid);
+						formData.append('contentType', contentType);
+
+						msgEl.textContent = 'Uploading...';
+						msgEl.className = 'msg';
+
+						const self = this;
+						axios.post('XUI$/post/xw.content.processor.UploadContentProcessor', formData, {
+							headers: { 'Content-Type': 'multipart/form-data' }
+						}).then(function (response) {
+							msgEl.textContent = 'Uploaded successfully.';
+							msgEl.className = 'msg success';
+							setTimeout(function () {
+								win.close();
+								location.reload();
+							}, 800);
+						}).catch(function (error) {
+							msgEl.textContent = 'Upload failed: ' + (error.message || 'Unknown error');
+							msgEl.className = 'msg error';
+							console.error(error);
+						});
+					}
+				}
+			);
+
+			uploadWin.open();
+		}
+
+		// Auto-select first item on load
+		(function() {
+			var firstItem = document.querySelector('.content-list-item.active');
+			if (firstItem) {
+				selectContentItem(firstItem);
+			}
+		})();
+	</script>
+</body>
+</html>
