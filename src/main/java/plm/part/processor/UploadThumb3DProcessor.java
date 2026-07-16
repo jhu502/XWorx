@@ -28,14 +28,10 @@ public class UploadThumb3DProcessor extends DefaultFormProcessor {
 		}
 
 		HttpServletRequest request = commandBean.getRequest();
-		if (request instanceof MultipartHttpServletRequest multipartRequest) {
-			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-			if (fileMap.isEmpty()) {
-				formResult.setStatus(FormStatus.FAILURE);
-				formResult.setMessage("No file selected.");
-				return formResult;
-			}
+		if (request instanceof MultipartHttpServletRequest) {
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 			//获取上传上来的文件
+			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 			for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
 				MultipartFile partFile = entry.getValue();
 				try (InputStream instream = partFile.getInputStream();) {
@@ -49,7 +45,6 @@ public class UploadThumb3DProcessor extends DefaultFormProcessor {
 				}
 
 			}
-			PersistenceHelper.service().query("select a from XHolderToContent a", new Object[][] {});
 		}
 
 		return formResult;

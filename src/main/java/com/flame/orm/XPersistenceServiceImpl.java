@@ -262,7 +262,6 @@ public class XPersistenceServiceImpl implements XPersistenceService {
 	 * 重新修改这个Detached Object就是绑定到当前的Sesssion，etEntityManager()提供merge方法实现
 	 */
 	@Transactional
-
 	public void remove(XPersistable persist) {
 		getEntityManager().remove(getEntityManager().merge(persist));
 	}

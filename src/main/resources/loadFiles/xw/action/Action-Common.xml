@@ -36,4 +36,14 @@
 		<attr name="en_US">Paste</attr>
 		<attr name="zh_CN">粘贴</attr>
 	</LoadObject>
+	<LoadObject type="xw.action.entity.XActionItem" where="type,name">
+		<attr name="name">content</attr>
+		<attr name="type">XObject</attr>
+		<attr name="display">Content</attr>
+		<attr name="style"></attr>
+		<attr name="url">thymeleaf/content/objectContentTab.html</attr>
+		<attr name="winType">page</attr>
+		<attr name="en_US">Content</attr>
+		<attr name="zh_CN">内容</attr>
+	</LoadObject>
 </FlameDataLoad>

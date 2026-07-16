@@ -201,21 +201,6 @@ public class XFlameShellController extends AppShellController {
                 .body(resource);
     }
 
-    /**
-     * @param processor
-     * @param multiMap  MultiValueMap才能够接收多值的参数，Map只会接收到多值参数的第一个值
-     * @param request   若enctype='multipart/form-data'上传文件，则MultipartHttpServletRequest
-     * @param response
-     * @return
-     */
-    @Transactional //Form Processor需要添加事务，以控制当前处理的完整性
-    @ResponseBody
-    @PostMapping(value = "/form/{processor}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object submitForm(@PathVariable String processor, @RequestParam MultiValueMap<String, Object> multiMap, HttpServletRequest request, HttpServletResponse response) {
-        XCommandBean commandBean = XCommandBean.newCommandBean(request, response, multiMap, new String[]{"processor", processor});
-        return commandBean.executeProcessor();
-    }
-
     @ResponseBody
     @GetMapping(value = "/get/{processor}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object getProcessor(@PathVariable String processor, @RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
@@ -228,6 +213,21 @@ public class XFlameShellController extends AppShellController {
     @PostMapping(value = "/post/{processor}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Object postProcessor(@PathVariable String processor, @RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
         XCommandBean commandBean = XCommandBean.newCommandBean(request, response, params, new String[]{"processor", processor});
+        return commandBean.executeProcessor();
+    }
+
+    /**
+     * @param processor
+     * @param multiMap  MultiValueMap才能够接收多值的参数，Map只会接收到多值参数的第一个值
+     * @param request   若enctype='multipart/form-data'上传文件，则MultipartHttpServletRequest
+     * @param response
+     * @return
+     */
+    @Transactional //Form Processor需要添加事务，以控制当前处理的完整性
+    @ResponseBody
+    @PostMapping(value = "/form/{processor}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object formProcessor(@PathVariable String processor, @RequestParam MultiValueMap<String, Object> multiMap, HttpServletRequest request, HttpServletResponse response) {
+        XCommandBean commandBean = XCommandBean.newCommandBean(request, response, multiMap, new String[]{"processor", processor});
         return commandBean.executeProcessor();
     }
 

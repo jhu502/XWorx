@@ -31,6 +31,12 @@ import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
 import jakarta.annotation.Resource;
 
+/**
+ * MinIO 对象存储服务实现。
+ *
+ * <p>封装 {@link MinioClient} 的常用操作，包括 Bucket 管理、对象上传/下载、
+ * 列表查询及批量删除。所有方法在遇到 MinIO 异常时统一包装为 {@link XException} 抛出。</p>
+ */
 @Service
 public class MinioServiceImpl {
 	@Resource
@@ -40,9 +46,9 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * description: 判断bucket是否存在，不存在则创建
+	 * 确保指定 Bucket 存在，不存在则自动创建。
 	 *
-	 * @return: void
+	 * @param name Bucket 名称
 	 */
 	public void existBucket(String name) {
 		try {
@@ -56,9 +62,10 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * 创建存储bucket
-	 * @param bucketName 存储bucket名称
-	 * @return Boolean
+	 * 创建 Bucket。
+	 *
+	 * @param bucketName Bucket 名称
+	 * @return 创建成功返回 {@code true}
 	 */
 	public Boolean makeBucket(String bucketName) {
 		try {
@@ -70,9 +77,10 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * 删除存储bucket
-	 * @param bucketName 存储bucket名称
-	 * @return Boolean
+	 * 删除 Bucket。
+	 *
+	 * @param bucketName Bucket 名称
+	 * @return 删除成功返回 {@code true}
 	 */
 	public Boolean removeBucket(String bucketName) {
 		try {
@@ -84,11 +92,14 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * description: 上传文件
+	 * 上传文件到指定 Bucket。
 	 *
-	 * @param multipartFile
-	 * @return: java.lang.String
-	
+	 * <p>文件名会自动拼接时间戳以避免重名冲突：
+	 * {@code 原始名_时间戳.扩展名}。</p>
+	 *
+	 * @param fileItem   上传的文件项，包含文件名、流和内容类型
+	 * @param bucketName 目标 Bucket 名称
+	 * @return 生成后的存储文件名（含时间戳）
 	 */
 	public String upload(FileItem fileItem, String bucketName) {
 		String fileName = fileItem.getName();
@@ -110,15 +121,17 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * description: 下载文件
+	 * 下载文件，返回字节数组响应实体。
 	 *
-	 * @param fileName
-	 * @return: org.springframework.http.ResponseEntity<byte [ ]>
+	 * <p>将对象内容读入内存，适合小文件下载。大文件请使用 {@link #downloadContent} 获取流自行处理。</p>
+	 *
+	 * @param fileName   对象名称
+	 * @param bucketName Bucket 名称
+	 * @return 包含文件字节数组和下载头的响应实体
 	 */
 	public ResponseEntity<byte[]> download(String fileName, String bucketName) {
 		try (InputStream in = this.downloadContent(fileName, bucketName); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
 			IOUtils.copy(in, out);
-			//封装返回值
 			byte[] bytes = out.toByteArray();
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
@@ -130,6 +143,13 @@ public class MinioServiceImpl {
 		}
 	}
 
+	/**
+	 * 获取对象输入流，调用方负责关闭。
+	 *
+	 * @param fileName   对象名称
+	 * @param bucketName Bucket 名称
+	 * @return 对象的 {@link InputStream}，可用于流式下载
+	 */
 	public InputStream downloadContent(String fileName, String bucketName) {
 		GetObjectArgs objectArgs = GetObjectArgs.builder().bucket(bucketName).object(fileName).build();
 		try {
@@ -140,9 +160,10 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * 查看文件对象
-	 * @param bucketName 存储bucket名称
-	 * @return 存储bucket内文件对象信息
+	 * 列出 Bucket 中的所有对象。
+	 *
+	 * @param bucketName Bucket 名称
+	 * @return 对象信息列表
 	 */
 	public List<MinioItem> listObjects(String bucketName) {
 		Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
@@ -165,9 +186,11 @@ public class MinioServiceImpl {
 	}
 
 	/**
-	 * 批量删除文件对象
-	 * @param bucketName 存储bucket名称
-	 * @param objects 对象名称集合
+	 * 批量删除 Bucket 中的多个对象。
+	 *
+	 * @param bucketName Bucket 名称
+	 * @param objects    要删除的对象名称列表
+	 * @return 删除结果迭代器，包含每个对象的删除状态
 	 */
 	public Iterable<Result<DeleteError>> removeObjects(String bucketName, List<String> objects) {
 		List<DeleteObject> dos = objects.stream().map(DeleteObject::new).collect(Collectors.toList());

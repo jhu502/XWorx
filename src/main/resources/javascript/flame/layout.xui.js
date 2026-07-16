@@ -44,7 +44,7 @@ class y extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"
                                     const vi=w.querySelector('#xui-value-input');
                                     const si=w.querySelector('#xui-style-input');
                                     const ri=w.querySelector('#xui-rows-input');
-                                    const val=vi.value.trim(), d=w.incoming;
+                                    const val=vi.value.trim(), d=w.data;
                                     d.cell.value=val||'';
                                     if(us.value === 'Tablet'){
                                         d.cell.display=val.substring(val.lastIndexOf('.')+1)||val;
@@ -70,7 +70,7 @@ class y extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"
                             <button style="padding:6px 18px;border:1px solid #ccc;border-radius:3px;background:#f5f5f5;cursor:pointer;" onclick="this.closest('x-window')?.close()">取消</button>
                             <button style="padding:6px 18px;border:1px solid #03638d;border-radius:3px;background:#03638d;color:#fff;cursor:pointer;" onclick="
                                 (function(el){
-                                    const w=el.closest('x-window'),d=w.incoming;
+                                    const w=el.closest('x-window'),d=w.data;
                                     const clone=d.clone;
                                     for(const h of clone.head){
                                         const input=w.querySelector('#xui-grid-'+h.name);

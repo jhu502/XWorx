@@ -59,6 +59,13 @@
 			</where>
 		</link>
 		<link type="xw.action.entity.XActionItemLink" refer="left">
+			<attr name="sort">30</attr>
+			<where type="xw.action.entity.XActionItem" refer="right">
+				<attr name="name">content</attr>
+				<attr name="type">XObject</attr>
+			</where>
+		</link>
+		<link type="xw.action.entity.XActionItemLink" refer="left">
 			<attr name="sort">40</attr>
 			<where type="xw.action.entity.XActionItem" refer="right">
 				<attr name="name">process</attr>

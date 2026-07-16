@@ -25,7 +25,8 @@
 	.upload-dialog .field label { display: block; margin-bottom: 4px; font-size: 13px; color: #555; }
 	.upload-dialog .field input[type=file] { width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
 	.upload-dialog .field select { width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
-	.upload-dialog .actions { text-align: right; margin-top: 18px; }
+	.upload-dialog .actions { display: flex; align-items: center; margin-top: 18px; }
+	.upload-dialog .actions .msg { flex: 1; margin-top: 0; }
 	.upload-dialog .actions button { padding: 6px 18px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; font-size: 13px; margin-left: 8px; }
 	.upload-dialog .actions .btn-upload { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 	.upload-dialog .actions .btn-upload:hover { background: #1557b0; }
@@ -41,7 +42,7 @@
 		<div class="content-left">
 			<div class="content-left-header">
 				<span>Content (<span th:text="${allContentItems==null?0:allContentItems.size()}">0</span>)</span>
-				<i class="fa fa-cloud-upload upload-btn" title="Upload file" onclick="openUploadDialog()"></i>
+				<i class="fa fa-cloud-upload upload-btn" title="Upload file" onclick="openUploadDialog(event)"></i>
 			</div>
 			<div class="content-left-list">
 				<div th:if="${allContentItems==null || allContentItems.isEmpty()}" class="content-empty" style="font-size:12px;">
@@ -142,7 +143,7 @@
 			return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + units[i];
 		}
 
-		function openUploadDialog() {
+		function openUploadDialog(event) {
 			const existing = document.getElementById('uploadContentWindow');
 			if (existing) {
 				existing.close();
@@ -152,8 +153,8 @@
 			const uploadWin = document.createElement('x-window');
 			uploadWin.id = 'uploadContentWindow';
 			uploadWin.title = 'Upload Content';
-			uploadWin.setAttribute('x-options', "park:'center',minimize:false,maximize:false,resize:false,destroy:true");
-			uploadWin.style.cssText = 'width:460px;height:260px';
+			uploadWin.setAttribute('x-options', "minimize:false,maximize:false,resize:false,destroy:true");
+			uploadWin.style.cssText = 'width:460px;height:250px';
 
 			const holderOid = '[[${commandBean.primaryOid}]]';
 
@@ -165,17 +166,17 @@
 					</div>
 					<div class="field">
 						<label>Content Type:</label>
-						<select id="uploadContentType" style="width:100%;height:25px;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:13px;">
+						<select id="uploadContentType" style="width:100%;height:32px;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:13px;">
 							<option value="SECONDARY">Secondary</option>
 							<option value="PRIMARY">Primary</option>
 							<option value="THUMBNAIL3D">Thumbnail 3D</option>
 						</select>
 					</div>
 					<div class="actions">
+						<div class="msg" id="uploadMsg"></div>
 						<button class="btn-cancel" onclick="this.closest('x-window').close()">Cancel</button>
-						<button class="btn-upload" onclick="this.closest('x-window').getContext().upload(this.closest('x-window'))">Upload</button>
+						<button class="btn-upload" onclick="this.closest('x-window').getData().upload(this.closest('x-window'))">Upload</button>
 					</div>
-					<div class="msg" id="uploadMsg"></div>
 				</div>`, {
 					holderOid: holderOid,
 					upload: function (win) {
@@ -199,7 +200,7 @@
 						msgEl.className = 'msg';
 
 						const self = this;
-						axios.post('XUI$/post/xw.content.processor.UploadContentProcessor', formData, {
+						axios.post('XUI$/form/xw.content.processor.UploadContentProcessor', formData, {
 							headers: { 'Content-Type': 'multipart/form-data' }
 						}).then(function (response) {
 							msgEl.textContent = 'Uploaded successfully.';
@@ -217,7 +218,7 @@
 				}
 			);
 
-			uploadWin.open();
+			uploadWin.open(null, null, { x: event.clientX + 10, y: event.clientY });
 		}
 
 		// Auto-select first item on load

@@ -1,5 +1,6 @@
 package xw.content.processor;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -53,13 +54,11 @@ public class UploadContentProcessor extends DefaultFormProcessor {
 					String filename = partFile.getOriginalFilename();
 					long size = partFile.getSize();
 					XContentHelper.service().uploadContent((IContentHolder) primary, filename, size, instream, contentType);
-				} catch (Exception e) {
+				} catch (IOException e) {
 					throw new XException(e);
 				}
 			}
 
-			// Flush persistence context so new items appear immediately
-			PersistenceHelper.service().query("select a from XHolderToContent a", new Object[][] {});
 		} else {
 			formResult.setStatus(FormStatus.FAILURE);
 			formResult.setMessage("Request is not multipart.");
