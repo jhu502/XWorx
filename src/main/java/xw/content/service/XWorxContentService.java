@@ -12,6 +12,7 @@ import com.flame.minio.MinioHelper;
 import com.flame.orm.PersistenceHelper;
 import com.flame.util.XException;
 
+import xw.content.ContentItem;
 import xw.content.ContentType;
 import xw.content.IContentHolder;
 import xw.content.entity.XApplicationData;
@@ -19,7 +20,6 @@ import xw.content.entity.XHolderToContent;
 
 @Service
 public class XWorxContentService {
-
 	@SuppressWarnings("unchecked")
 	public List<XApplicationData> getRelatedContentItem(IContentHolder contentHolder, ContentType contentType) {
 		String hql = "select a from XApplicationData a, XHolderToContent b where b.left.id = :id and b.right.id = a.id and a.contentType = :type";
@@ -43,68 +43,68 @@ public class XWorxContentService {
 		return result;
 	}
 
-	public XApplicationData uploadContent(String fileName, long size, InputStream inputStream, ContentType contentType) {
-		XApplicationData appData = new XApplicationData();
-		appData.setFileName(fileName);
-		appData.setFileSize(size);
-		appData.setContentType(contentType);
-		appData.setReferPath(MinioHelper.XWORX_VAULT);
+	public ContentItem uploadContent(String fileName, long size, InputStream inputStream, ContentType contentType) {
+		ContentItem contentItem = contentType.newContentItem();
+		
+		contentItem.setFileName(fileName);
+		contentItem.setFileSize(size);
+		contentItem.setContentType(contentType);
+		contentItem.setReferPath(MinioHelper.XWORX_VAULT);
 		try {
 			FileItem fileItem = MinioHelper.getFileItem(inputStream, fileName);
 			String innerName = MinioHelper.service().upload(fileItem, MinioHelper.XWORX_VAULT);
-			appData.setInnerName(innerName);
+			contentItem.setInnerName(innerName);
 		} catch (IOException e) {
 			throw new XException(e);
 		}
-		appData = PersistenceHelper.service().save(appData);
 
-		return appData;
+		return PersistenceHelper.service().save(contentItem);
 	}
 
 	public void uploadContent(IContentHolder contentHolder, String fileName, long size, InputStream inputStream, ContentType contentType) {
-		XApplicationData appData = new XApplicationData();
-		appData.setFileName(fileName);
-		appData.setFileSize(size);
-		appData.setContentType(contentType);
-		appData.setReferPath(MinioHelper.XWORX_VAULT);
+		ContentItem contentItem = contentType.newContentItem();
+		contentItem.setFileName(fileName);
+		contentItem.setFileSize(size);
 		try {
 			FileItem fileItem = MinioHelper.getFileItem(inputStream, fileName);
 			String innerName = MinioHelper.service().upload(fileItem, MinioHelper.XWORX_VAULT);
-			appData.setInnerName(innerName);
+			contentItem.setInnerName(innerName);
 		} catch (IOException e) {
 			throw new XException(e);
 		}
-		appData = PersistenceHelper.service().save(appData);
-		XHolderToContent holde2Content = XHolderToContent.newXHolderToContent(contentHolder, appData);
-		PersistenceHelper.service().save(holde2Content);
-		//org.hibernate.cfg.PropertyContainer xx;
+		contentItem.setReferPath(MinioHelper.XWORX_VAULT);
+		contentItem = PersistenceHelper.service().save(contentItem);
+		XHolderToContent holdeContent = XHolderToContent.newInstance(contentHolder, contentItem);
+		PersistenceHelper.service().save(holdeContent);
 	}
 
 	public void uploadPrimaryContent(IContentHolder contentHolder, String fileName, long size, InputStream inputStream) {
-		List<XHolderToContent> list = this.getRelatedHolder2Content(contentHolder, ContentType.PRIMARY);
-		if (list == null || list.isEmpty()) {
-			XApplicationData appData = this.uploadContent(fileName, size, inputStream, ContentType.PRIMARY);
-			XHolderToContent holde2Content = XHolderToContent.newXHolderToContent(contentHolder, appData);
-			PersistenceHelper.service().save(holde2Content);
+		List<XHolderToContent> contentList = this.getRelatedHolder2Content(contentHolder, ContentType.PRIMARY);
+		
+		if (contentList == null || contentList.isEmpty()) {
+			ContentItem appData = this.uploadContent(fileName, size, inputStream, ContentType.PRIMARY);
+			XHolderToContent holdeContent = XHolderToContent.newInstance(contentHolder, appData);
+			PersistenceHelper.service().save(holdeContent);
 		} else {
-			XApplicationData appData = this.uploadContent(fileName, size, inputStream, ContentType.PRIMARY);
-			XHolderToContent holder2Content = list.get(0);
-			holder2Content.setApplicationData(appData);
+			ContentItem contentItem = this.uploadContent(fileName, size, inputStream, ContentType.PRIMARY);
+			XHolderToContent holder2Content = contentList.get(0);
+			holder2Content.setContentItem(contentItem);
 			PersistenceHelper.service().save(holder2Content);
 		}
 	}
 
 	public void uploadThumb3DContent(IContentHolder contentHolder, String fileName, long size, InputStream inputStream) {
-		List<XHolderToContent> list = this.getRelatedHolder2Content(contentHolder, ContentType.THUMBNAIL3D);
-		if (list == null || list.isEmpty()) {
-			XApplicationData appData = this.uploadContent(fileName, size, inputStream, ContentType.THUMBNAIL3D);
-			XHolderToContent holde2Content = XHolderToContent.newXHolderToContent(contentHolder, appData);
-			PersistenceHelper.service().save(holde2Content);
+		List<XHolderToContent> contentList = this.getRelatedHolder2Content(contentHolder, ContentType.THUMBNAIL3D);
+		
+		if (contentList == null || contentList.isEmpty()) {
+			ContentItem contentItem = this.uploadContent(fileName, size, inputStream, ContentType.THUMBNAIL3D);
+			XHolderToContent holdeContent = XHolderToContent.newInstance(contentHolder, contentItem);
+			PersistenceHelper.service().save(holdeContent);
 		} else {
-			XApplicationData appData = this.uploadContent(fileName, size, inputStream, ContentType.THUMBNAIL3D);
-			XHolderToContent holder2Content = list.get(0);
-			holder2Content.setApplicationData(appData);
-			PersistenceHelper.service().save(holder2Content);
+			ContentItem contentItem = this.uploadContent(fileName, size, inputStream, ContentType.THUMBNAIL3D);
+			XHolderToContent holderContent = contentList.get(0);
+			holderContent.setContentItem(contentItem);
+			PersistenceHelper.service().save(holderContent);
 		}
 	}
 }

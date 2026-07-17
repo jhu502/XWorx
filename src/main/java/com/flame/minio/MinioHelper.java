@@ -22,6 +22,7 @@ public class MinioHelper {
 
 	/** 默认存储 Bucket 名称 */
 	public static final String XWORX_VAULT = "xworxvault";
+	public static final String FLAME_VAULT = "flamevault";
 
 	private static MinioServiceImpl service;
 

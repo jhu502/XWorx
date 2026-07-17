@@ -71,7 +71,7 @@
 			</div>
 			<!-- Markdown viewer -->
 			<div id="markdownViewer" class="viewer-pane">
-				<x-markdown id="xMarkdown" x-options="mode:'preview',autoLoad:false,readOnly:false,lineNumbers:true"></x-markdown>
+				<x-markdown id="xMarkdown" x-options="mode:'preview',autoLoad:false,readOnly:false,lineNumbers:true,uriPrefix:'XUI$/downloadResource/'"></x-markdown>
 			</div>
 			<!-- PDF viewer -->
 			<div id="pdfViewer" class="viewer-pane">
@@ -105,7 +105,7 @@
 
 			if (!oid) return;
 
-			var downloadUrl = 'Servlet/downloadContent?oid=' + encodeURIComponent(oid);
+			var downloadUrl = 'XUI$/downloadContent?oid=' + encodeURIComponent(oid);
 			var ext = (fileName.toLowerCase().split('.').pop() || '');
 
 			hideAllViewers();

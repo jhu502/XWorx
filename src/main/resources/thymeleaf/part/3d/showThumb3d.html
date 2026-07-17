@@ -20,7 +20,7 @@
             const xworxview = new flame.view.Thingview('javascript/thingview', "Thumb3dWebGLDiv");
             xworxview.initializeThingView().then(() => {
                 xworxview.unloadAll3dModel();
-                xworxview.load3dModelNode("http://flame.xworx.cn/XWorx/Servlet/downloadContent?oid=" + contentOid);
+                xworxview.load3dModelNode("http://flame.xworx.cn/XWorx/XUI$/downloadContent?oid=" + contentOid);
             }, () => {
                 reject();
             });

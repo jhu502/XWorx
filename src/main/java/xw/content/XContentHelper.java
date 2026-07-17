@@ -4,11 +4,13 @@ import java.util.Collections;
 import java.util.List;
 
 import xw.content.entity.XApplicationData;
+import xw.content.repos.ContentRepository;
 import xw.content.service.XWorxContentService;
 import com.flame.config.basic.BasicConfiguration;
 
 public class XContentHelper {
 	private static XWorxContentService service;
+	private static ContentRepository repository;
 
 	public static XWorxContentService service() {
 		if (service == null) {
@@ -16,6 +18,14 @@ public class XContentHelper {
 		}
 
 		return service;
+	}
+
+	public static ContentRepository repository() {
+		if (repository == null) {
+			repository = BasicConfiguration.getBean(ContentRepository.class);
+		}
+
+		return repository;
 	}
 
 	public static ContentItem getThumb3DContentItem(Object object) {

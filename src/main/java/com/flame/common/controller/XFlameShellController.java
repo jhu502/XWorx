@@ -50,7 +50,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import xw.action.processor.DefaultActionMenuProcessor;
 import xw.action.processor.XWXActionMenuProcessor;
 import xw.action.service.XActionServiceHelper;
+import xw.content.ContentItem;
+import xw.content.IContentHolder;
+import xw.content.XContentHelper;
 import xw.content.entity.XApplicationData;
+import xw.content.entity.XResourceData;
 
 @Tag(name = "Common Interface")
 @Controller
@@ -170,35 +174,6 @@ public class XFlameShellController extends AppShellController {
         XCommandBean commandBean = XCommandBean.newCommandBean(request, response, multiMap, new String[]{"processor", processor});
         FormResult formResult = commandBean.executeProcessor();
         logger.trace(formResult.toString());
-    }
-
-    /**
-     * http://flame.xworx.cn/XWorx/Servlet/downloadContent?oid=OR:xw.content.XApplicationData:683
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-    @GetMapping(value = "/downloadContent")
-    public ResponseEntity<org.springframework.core.io.Resource> downloadContent(HttpServletRequest request, HttpServletResponse response) {
-        XCommandBean commandBean = XCommandBean.newCommandBean(request, response);
-        XObject primaryObj = commandBean.getPrimaryObj();
-        if (!(primaryObj instanceof XApplicationData)) {
-            logger.error("参数Oid：{}的对象不存在.", commandBean.getPrimaryOid());
-            return ResponseEntity.noContent().build();
-        }
-
-        XApplicationData appdata = (XApplicationData) primaryObj;
-        String contentType = request.getServletContext().getMimeType(appdata.getFileName());
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        InputStream inputStream = MinioHelper.service().downloadContent(appdata.getInnerName(), MinioHelper.XWORX_VAULT);
-        InputStreamResource resource = new InputStreamResource(inputStream);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)) //
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + appdata.getFileName() + "\"") //
-                .body(resource);
     }
 
     @ResponseBody
@@ -336,5 +311,61 @@ public class XFlameShellController extends AppShellController {
             }
         } finally {
         }
+    }
+
+    /**
+     * http://flame.xworx.cn/XWorx/XUI$/downloadContent?oid=OR:xw.content.XApplicationData:683
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping(value = "/downloadContent")
+    public ResponseEntity<org.springframework.core.io.Resource> downloadContent(HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "false") boolean inline) {
+        XCommandBean commandBean = XCommandBean.newCommandBean(request, response);
+        XObject primaryObj = commandBean.getPrimaryObj();
+        if (!(primaryObj instanceof XApplicationData)) {
+            logger.error("参数Oid：" + commandBean.getPrimaryOid() + "的对象不存在.");
+            return ResponseEntity.noContent().build();
+        }
+
+        ContentItem contentItem = (ContentItem) primaryObj;
+        String contentType = request.getServletContext().getMimeType(contentItem.getFileName());
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        InputStream inputStream = MinioHelper.service().downloadContent(contentItem.getInnerName(), MinioHelper.XWORX_VAULT);
+        InputStreamResource resource = new InputStreamResource(inputStream);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)) //
+                .header(HttpHeaders.CONTENT_DISPOSITION, (inline ? "inline" : "attachement") + "; filename=\"" + contentItem.getFileName() + "\"") //
+                .body(resource);
+    }
+
+    @GetMapping(value = "/downloadResource/{resourcePath}")
+    public ResponseEntity<org.springframework.core.io.Resource> downloadResource(@PathVariable String resourcePath, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "false") boolean inline) {
+        XCommandBean commandBean = XCommandBean.newCommandBean(request, response);
+        XObject primaryObj = commandBean.getPrimaryObj();
+
+        XResourceData resourceData = null;
+        if (primaryObj instanceof XResourceData) {
+            resourceData = (XResourceData) primaryObj;
+        } else if (primaryObj instanceof IContentHolder contentHolder) {
+            resourceData = XContentHelper.repository().getXResourceData(contentHolder, resourcePath);
+        }
+
+        if (resourceData == null) {
+            return ResponseEntity.noContent().build();
+        }
+        String contentType = request.getServletContext().getMimeType(resourceData.getFileName());
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        InputStream inputStream = MinioHelper.service().downloadContent(resourceData.getInnerName(), MinioHelper.XWORX_VAULT);
+        InputStreamResource resource = new InputStreamResource(inputStream);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)) //
+                .header(HttpHeaders.CONTENT_DISPOSITION, (inline ? "inline" : "attachement") + "; filename=\"" + resourceData.getFileName() + "\"") //
+                .body(resource);
     }
 }

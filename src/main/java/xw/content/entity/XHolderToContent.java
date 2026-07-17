@@ -5,12 +5,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import xw.content.ContentItem;
 import xw.content.IContentHolder;
 import com.flame.orm.ObjectToObjectLink;
 
 @Entity
 @Table(name = "XHolderToContent", uniqueConstraints = {})
-public class XHolderToContent extends ObjectToObjectLink<IContentHolder, XApplicationData> {
+public class XHolderToContent extends ObjectToObjectLink<IContentHolder, ContentItem> {
 	private static final long serialVersionUID = 1L;
 	@Basic
 	@Column(name = "number", length = 100)
@@ -20,8 +21,8 @@ public class XHolderToContent extends ObjectToObjectLink<IContentHolder, XApplic
 	@Column(name = "description", length = 1000)
 	private String description = "";
 
-	public static XHolderToContent newXHolderToContent(IContentHolder holder, XApplicationData appdata) {
-		XHolderToContent holderContent = new XHolderToContent(holder, appdata);
+	public static XHolderToContent newInstance(IContentHolder holder, ContentItem item) {
+		XHolderToContent holderContent = new XHolderToContent(holder, item);
 
 		return holderContent;
 	}
@@ -29,9 +30,9 @@ public class XHolderToContent extends ObjectToObjectLink<IContentHolder, XApplic
 	public XHolderToContent() {
 	}
 
-	public XHolderToContent(IContentHolder holder, XApplicationData appdata) {
+	public XHolderToContent(IContentHolder holder, ContentItem item) {
 		this.setLeftObject(holder);
-		this.setRightObject(appdata);
+		this.setRightObject(item);
 	}
 
 	public String getNumber() {
@@ -50,7 +51,7 @@ public class XHolderToContent extends ObjectToObjectLink<IContentHolder, XApplic
 		this.description = description;
 	}
 
-	public void setApplicationData(XApplicationData appdata) {
-		this.setRightObject(appdata);
+	public void setContentItem(ContentItem item) {
+		this.setRightObject(item);
 	}
 }

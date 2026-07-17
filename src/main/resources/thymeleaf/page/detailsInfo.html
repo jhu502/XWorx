@@ -20,7 +20,7 @@
                     const thumbnail = new flame.view.Thingview('javascript/thingview', "Thumbnail3DDiv");
                     thumbnail.initializeThingView().then(() => {
                         thumbnail.unloadAll3dModel();
-                        thumbnail.load3dModelNode("Servlet/downloadContent?oid=" + contentOid);
+                        thumbnail.load3dModelNode("XUI$/downloadContent?oid=" + contentOid);
                     }, () => {
                         reject();
                     });
