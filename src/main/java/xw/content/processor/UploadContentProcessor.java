@@ -44,6 +44,7 @@ public class UploadContentProcessor extends DefaultFormProcessor {
 				try {
 					contentType = ContentType.valueOf(ctParam);
 				} catch (IllegalArgumentException ignored) {
+					logger.error(ignored.getMessage());
 				}
 			}
 
