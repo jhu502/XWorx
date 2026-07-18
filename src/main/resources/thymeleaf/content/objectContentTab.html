@@ -4,6 +4,7 @@
 	.content-wrap { display: flex; height: 100%; }
 	.content-left { width: 280px; min-width: 200px; border-right: 1px solid #ddd; display: flex; flex-direction: column; background: #fafafa; }
 	.content-left-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+	.content-left-section:last-child { flex: 2; }
 	.content-left-section + .content-left-section { border-top: 2px solid #bbb; }
 	.section-header { padding: 6px 10px; font-weight: bold; font-size: 12px; border-bottom: 1px solid #ddd; background: #f0f0f0; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
 	.content-left-header { padding: 8px 10px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #ddd; background: #f0f0f0; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
@@ -45,45 +46,37 @@
 		<div class="content-left">
 			<!-- Upper: Application Data -->
 			<div class="content-left-section">
-			<div class="content-left-header">
-				<span>Content (<span th:text="${allContentItems==null?0:allContentItems.size()}">0</span>)</span>
-									<svg class="upload-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="15" height="15" fill="currentColor" onclick="openUploadDialog(event)"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
-			</div>
-			<div class="content-left-list">
-				<div th:if="${allContentItems==null || allContentItems.isEmpty()}" class="content-empty" style="font-size:12px;">
-					No content items
+				<div class="content-left-header">
+					<span>Content (<span th:text="${allContentItems==null?0:allContentItems.size()}">0</span>)</span>
+					<svg class="upload-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="15" height="15" fill="currentColor" onclick="openUploadDialog(event)"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
 				</div>
-				<div th:each="item,iterStat : ${allContentItems}"
-					 class="content-list-item"
-					 th:data-oid="${item.oid}"
-					 th:data-filename="${item.fileName}"
-					 th:data-contenttype="${item.contentType}"
-					 th:data-filesize="${item.fileSize}"
-					 th:onclick="selectContentItem(this)"
-					 th:classappend="${iterStat.first} ? 'active'">
-					<svg class="ct-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="#999"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.414a1.5 1.5 0 0 0-.44-1.06l-2.413-2.414A1.5 1.5 0 0 0 10.086.5L10 .5H4zM4 1h5.5v3a1 1 0 0 0 1 1H14v9H4V1z"/></svg>
-					<span class="ct-name" th:text="${item.fileName}" th:title="${item.fileName}"></span>
-					<span class="ct-type" th:text="${item.contentType.display}"></span>
+				<div class="content-left-list">
+					<div th:if="${allContentItems==null || allContentItems.isEmpty()}" class="content-empty" style="font-size:12px;">No content items</div>
+					<div th:each="item,iterStat : ${allContentItems}" class="content-list-item"
+						 th:data-oid="${item.oid}"
+						 th:data-filename="${item.fileName}"
+						 th:data-contenttype="${item.contentType}"
+						 th:data-filesize="${item.fileSize}"
+						 th:onclick="selectContentItem(this)">
+						<svg class="ct-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="#999"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.414a1.5 1.5 0 0 0-.44-1.06l-2.413-2.414A1.5 1.5 0 0 0 10.086.5L10 .5H4zM4 1h5.5v3a1 1 0 0 0 1 1H14v9H4V1z"/></svg>
+						<span class="ct-name" th:text="${item.fileName}" th:title="${item.fileName}"></span>
+						<span class="ct-type" th:text="${item.contentType.display}"></span>
+					</div>
 				</div>
-			</div>
 			</div>
 			<!-- Lower: Resource Data -->
-			<div class="content-left-section"
-				 th:with="resourceItems=${T(xw.content.XContentHelper).getAllResourceItems(commandBean.primaryObj)}">
+			<div class="content-left-section" th:with="resourceItems=${T(xw.content.XContentHelper).getAllResourceItems(commandBean.primaryObj)}">
 				<div class="section-header">
 					<span>Resources (<span th:text="${resourceItems==null?0:resourceItems.size()}">0</span>)</span>
 				</div>
 				<div class="content-left-list">
-					<div th:if="${resourceItems==null || resourceItems.isEmpty()}" class="content-empty" style="font-size:12px;">
-						No resource items
-					</div>
-					<div th:each="item : ${resourceItems}"
-						 class="content-list-item"
+					<div th:if="${resourceItems==null || resourceItems.isEmpty()}" class="content-empty" style="font-size:12px;">No resource items</div>
+					<div th:each="item : ${resourceItems}" class="content-list-item"
 						 th:data-filename="${item.fileName}"
 						 th:data-uploadedpath="${item.uploadedPath}"
 						 th:onclick="selectResourceItem(this)">
 						<svg class="ct-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="#999"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.414a1.5 1.5 0 0 0-.44-1.06l-2.413-2.414A1.5 1.5 0 0 0 10.086.5L10 .5H4zM4 1h5.5v3a1 1 0 0 0 1 1H14v9H4V1z"/></svg>
-						<span class="ct-name" th:text="${item.fileName}" th:title="${item.fileName}"></span>
+						<span class="ct-name" th:text="${item.uploadedPath}" th:title="${item.uploadedPath}"></span>
 						<span class="ct-type" style="font-size:10px;color:#999;">res</span>
 					</div>
 				</div>
@@ -99,6 +92,10 @@
 			<!-- Markdown viewer -->
 			<div id="markdownViewer" class="viewer-pane">
 				<x-markdown id="xMarkdown" x-options="mode:'preview',autoLoad:false,readOnly:false,lineNumbers:true,resPrefix:'XUI$/downloadResource/',saveUrl:'XUI$/form/xw.content.processor.SaveMarkdownProcessor'"></x-markdown>
+			</div>
+			<!-- Image viewer -->
+			<div id="imageViewer" class="viewer-pane" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;overflow:auto;">
+				<img id="imageView" alt="" style="max-width:100%;max-height:100%;object-fit:contain;" />
 			</div>
 			<!-- PDF viewer -->
 			<div id="pdfViewer" class="viewer-pane">
@@ -119,27 +116,28 @@
 	</div>
 	<script type="text/javascript" th:inline="text">
 		function selectContentItem(el) {
-			var items = el.parentElement.querySelectorAll('.content-list-item');
-			for (var i = 0; i < items.length; i++) {
+			const items = el.parentElement.querySelectorAll('.content-list-item');
+			for (let i = 0; i < items.length; i++) {
 				items[i].classList.remove('active');
 			}
 			el.classList.add('active');
 
-			var oid = el.getAttribute('data-oid');
-			var fileName = el.getAttribute('data-filename') || '';
-			var fileSize = el.getAttribute('data-filesize');
-			var contentType = el.getAttribute('data-contenttype');
+			const oid = el.getAttribute('data-oid');
+			const fileName = el.getAttribute('data-filename') || '';
+			const fileSize = el.getAttribute('data-filesize');
+			const contentType = el.getAttribute('data-contenttype');
 
-			if (!oid) return;
+			if (!oid)
+				return;
 
-			var downloadUrl = 'XUI$/downloadContent?oid=' + encodeURIComponent(oid);
-			var ext = (fileName.toLowerCase().split('.').pop() || '');
+			const downloadUrl = 'XUI$/downloadContent?oid=' + encodeURIComponent(oid);
+			const ext = (fileName.toLowerCase().split('.').pop() || '');
 
 			hideAllViewers();
 
 			if (ext === 'md') {
 				document.getElementById('markdownViewer').style.display = 'block';
-				var xMarkdown = document.getElementById('xMarkdown');
+				const xMarkdown = document.getElementById('xMarkdown');
 				if (xMarkdown && xMarkdown.loadFromUrl) {
 					xMarkdown.loadFromUrl(downloadUrl);
 				}
@@ -156,35 +154,47 @@
 		}
 
 		function selectResourceItem(el) {
-				var items = el.parentElement.querySelectorAll('.content-list-item');
-				for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
-				el.classList.add('active');
+			const items = el.parentElement.querySelectorAll('.content-list-item');
+			for (let i = 0; i < items.length; i++) {
+				items[i].classList.remove('active');
+			}
+			el.classList.add('active');
 
-				var fileName = el.getAttribute('data-filename') || '';
-				var uploadedPath = el.getAttribute('data-uploadedpath') || '';
-				var holderOid = '[[${commandBean.primaryOid}]]';
+			const fileName = el.getAttribute('data-filename') || '';
+			const uploadedPath = el.getAttribute('data-uploadedpath') || '';
+			const holderOid = '[[${commandBean.primaryOid}]]';
+			const downloadUrl = 'XUI$/downloadResource/' + uploadedPath + '?oid=' + encodeURIComponent(holderOid);
+			const ext = (fileName.toLowerCase().split('.').pop() || '');
 
-				hideAllViewers();
+			hideAllViewers();
+
+			if (['png','jpg','jpeg','gif','svg','bmp','webp','ico'].includes(ext)) {
+				document.getElementById('imageViewer').style.display = 'flex';
+				document.getElementById('imageView').src = downloadUrl;
+				document.getElementById('imageView').alt = fileName;
+			} else {
 				document.getElementById('genericViewer').style.display = 'block';
 				document.getElementById('genFileName').textContent = fileName;
 				document.getElementById('genContentType').textContent = 'Resource';
-
-				var downloadUrl = 'XUI$/downloadResource/' + uploadedPath + '?oid=' + encodeURIComponent(holderOid);
 				document.getElementById('genDownloadLink').href = downloadUrl;
 			}
+		}
 
-			function hideAllViewers() {
-			var panes = document.querySelectorAll('.viewer-pane');
-			for (var i = 0; i < panes.length; i++) {
+		function hideAllViewers() {
+			const panes = document.querySelectorAll('.viewer-pane');
+			for (let i = 0; i < panes.length; i++) {
 				panes[i].style.display = 'none';
 			}
 		}
 
 		function formatFileSize(bytes) {
-			if (!bytes || bytes === 0) return '0 B';
-			var units = ['B', 'KB', 'MB', 'GB'];
-			var i = Math.floor(Math.log(bytes) / Math.log(1024));
-			if (i >= units.length) i = units.length - 1;
+			if (!bytes || bytes === 0)
+				return '0 B';
+			const units = ['B', 'KB', 'MB', 'GB'];
+			let i = Math.floor(Math.log(bytes) / Math.log(1024));
+			if (i >= units.length) {
+				i = units.length - 1;
+			}
 			return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + units[i];
 		}
 
@@ -195,14 +205,12 @@
 				existing.remove();
 			}
 
+			const holderOid = '[[${commandBean.primaryOid}]]';
 			const uploadWin = document.createElement('x-window');
 			uploadWin.id = 'uploadContentWindow';
 			uploadWin.title = 'Upload Content';
 			uploadWin.setAttribute('x-options', "minimize:false,maximize:false,resize:false,destroy:true");
 			uploadWin.style.cssText = 'width:460px;height:250px';
-
-			const holderOid = '[[${commandBean.primaryOid}]]';
-
 			uploadWin.content(
 				`<div class="upload-dialog">
 					<div class="field">
@@ -267,13 +275,6 @@
 			uploadWin.open(null, null, { x: event.clientX + 10, y: event.clientY });
 		}
 
-		// Auto-select first item on load
-		(function() {
-			var firstItem = document.querySelector('.content-list-item.active');
-			if (firstItem) {
-				selectContentItem(firstItem);
-			}
-		})();
 	</script>
 </body>
 </html>
