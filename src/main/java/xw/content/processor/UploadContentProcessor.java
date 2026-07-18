@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import com.flame.xui.XCommandBean;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.flame.common.form.DefaultFormProcessor;
 import com.flame.common.form.FormResult;
 import com.flame.common.form.FormStatus;
-import com.flame.orm.PersistenceHelper;
-import com.flame.xui.XCommandBean;
 import com.flame.util.XException;
 import jakarta.servlet.http.HttpServletRequest;
 import xw.content.ContentType;
@@ -50,10 +49,15 @@ public class UploadContentProcessor extends DefaultFormProcessor {
 
 			for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
 				MultipartFile partFile = entry.getValue();
+				String filename = partFile.getOriginalFilename();
+				long size = partFile.getSize();
 				try (InputStream instream = partFile.getInputStream()) {
-					String filename = partFile.getOriginalFilename();
-					long size = partFile.getSize();
-					XContentHelper.service().uploadContent((IContentHolder) primary, filename, size, instream, contentType);
+					if (contentType == ContentType.RESOURCE && filename != null && filename.toLowerCase().endsWith(".zip")) {
+						// ZIP 资源文件：解压后逐个上传，记录相对路径
+						XContentHelper.service().uploadResourceZipContent((IContentHolder) primary, instream);
+					} else {
+						XContentHelper.service().uploadContent((IContentHolder) primary, filename, size, instream, contentType);
+					}
 				} catch (IOException e) {
 					throw new XException(e);
 				}

@@ -1,9 +1,14 @@
 package xw.content.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.springframework.stereotype.Service;
@@ -45,7 +50,7 @@ public class XWorxContentService {
 
 	public ContentItem uploadContent(String fileName, long size, InputStream inputStream, ContentType contentType) {
 		ContentItem contentItem = contentType.newContentItem();
-		
+
 		contentItem.setFileName(fileName);
 		contentItem.setFileSize(size);
 		contentItem.setContentType(contentType);
@@ -80,7 +85,7 @@ public class XWorxContentService {
 
 	public void uploadPrimaryContent(IContentHolder contentHolder, String fileName, long size, InputStream inputStream) {
 		List<XHolderToContent> contentList = this.getRelatedHolder2Content(contentHolder, ContentType.PRIMARY);
-		
+
 		if (contentList == null || contentList.isEmpty()) {
 			ContentItem appData = this.uploadContent(fileName, size, inputStream, ContentType.PRIMARY);
 			XHolderToContent holdeContent = XHolderToContent.newInstance(contentHolder, appData);
@@ -95,7 +100,7 @@ public class XWorxContentService {
 
 	public void uploadThumb3DContent(IContentHolder contentHolder, String fileName, long size, InputStream inputStream) {
 		List<XHolderToContent> contentList = this.getRelatedHolder2Content(contentHolder, ContentType.THUMBNAIL3D);
-		
+
 		if (contentList == null || contentList.isEmpty()) {
 			ContentItem contentItem = this.uploadContent(fileName, size, inputStream, ContentType.THUMBNAIL3D);
 			XHolderToContent holdeContent = XHolderToContent.newInstance(contentHolder, contentItem);
@@ -105,6 +110,54 @@ public class XWorxContentService {
 			XHolderToContent holderContent = contentList.get(0);
 			holderContent.setContentItem(contentItem);
 			PersistenceHelper.service().save(holderContent);
+		}
+	}
+
+	/**
+	 * 上传 ZIP 压缩包中的资源文件，逐文件解压并以 XResourceData 方式上传。
+	 * 每个 ZIP 条目的相对路径写入 XResourceData.uploadedPath。
+	 *
+	 * @param contentHolder 内容持有者
+	 * @param zipInputStream ZIP 文件输入流
+	 * @throws IOException 读取 ZIP 流失败时抛出
+	 */
+	public void uploadResourceZipContent(IContentHolder contentHolder, InputStream zipInputStream) throws IOException {
+		try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
+			byte[] buffer = new byte[8192];
+			ZipEntry entry;
+			while ((entry = zis.getNextEntry()) != null) {
+				if (entry.isDirectory()) {
+					continue;
+				}
+				// 将当前条目读入字节数组
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				int len;
+				while ((len = zis.read(buffer)) != -1) {
+					baos.write(buffer, 0, len);
+				}
+				byte[] entryBytes = baos.toByteArray();
+				String entryPath = entry.getName();
+				String entryFileName = new File(entryPath).getName();
+
+				// 创建 XResourceData，设置 uploadedPath 为 ZIP 中的相对路径
+				ContentItem contentItem = ContentType.RESOURCE.newContentItem();
+				contentItem.setFileName(entryFileName);
+				contentItem.setFileSize((long) entryBytes.length);
+				contentItem.setUploadedPath(entryPath);
+				contentItem.setReferPath(MinioHelper.XWORX_VAULT);
+
+				// 上传到 MinIO
+				try (ByteArrayInputStream bais = new ByteArrayInputStream(entryBytes)) {
+					FileItem fileItem = MinioHelper.getFileItem(bais, entryFileName);
+					String innerName = MinioHelper.service().upload(fileItem, MinioHelper.XWORX_VAULT);
+					contentItem.setInnerName(innerName);
+				}
+
+				// 持久化并建立与持有者的关联
+				contentItem = PersistenceHelper.service().save(contentItem);
+				XHolderToContent holderContent = XHolderToContent.newInstance(contentHolder, contentItem);
+				PersistenceHelper.service().save(holderContent);
+			}
 		}
 	}
 }
