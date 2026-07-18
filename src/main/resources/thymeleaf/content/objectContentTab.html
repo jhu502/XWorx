@@ -3,6 +3,9 @@
 <style>
 	.content-wrap { display: flex; height: 100%; }
 	.content-left { width: 280px; min-width: 200px; border-right: 1px solid #ddd; display: flex; flex-direction: column; background: #fafafa; }
+	.content-left-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+	.content-left-section + .content-left-section { border-top: 2px solid #bbb; }
+	.section-header { padding: 6px 10px; font-weight: bold; font-size: 12px; border-bottom: 1px solid #ddd; background: #f0f0f0; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
 	.content-left-header { padding: 8px 10px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #ddd; background: #f0f0f0; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
 	.content-left-header .upload-btn { cursor: pointer; color: #666; font-size: 15px; padding: 2px 4px; border-radius: 3px; transition: color 0.2s, background 0.2s; }
 	.content-left-header .upload-btn:hover { color: #1a73e8; background: #dce8fa; }
@@ -40,13 +43,15 @@
 	<div class="content-wrap" th:with="allContentItems=${T(xw.content.XContentHelper).getAllContentItems(commandBean.primaryObj)}">
 		<!-- Left Panel: Content List -->
 		<div class="content-left">
+			<!-- Upper: Application Data -->
+			<div class="content-left-section">
 			<div class="content-left-header">
 				<span>Content (<span th:text="${allContentItems==null?0:allContentItems.size()}">0</span>)</span>
-				<i class="fa fa-cloud-upload upload-btn" title="Upload file" onclick="openUploadDialog(event)"></i>
+									<svg class="upload-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="15" height="15" fill="currentColor" onclick="openUploadDialog(event)"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/></svg>
 			</div>
 			<div class="content-left-list">
 				<div th:if="${allContentItems==null || allContentItems.isEmpty()}" class="content-empty" style="font-size:12px;">
-					<i class="fa fa-inbox"></i> No content items
+					No content items
 				</div>
 				<div th:each="item,iterStat : ${allContentItems}"
 					 class="content-list-item"
@@ -56,9 +61,31 @@
 					 th:data-filesize="${item.fileSize}"
 					 th:onclick="selectContentItem(this)"
 					 th:classappend="${iterStat.first} ? 'active'">
-					<i class="fa ct-icon" th:classappend="${#strings.endsWith(#strings.toLowerCase(item.fileName),'.md')} ? 'fa-file-text-o' : (${#strings.endsWith(#strings.toLowerCase(item.fileName),'.pdf')} ? 'fa-file-pdf-o' : 'fa-file-o')"></i>
+					<svg class="ct-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="#999"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.414a1.5 1.5 0 0 0-.44-1.06l-2.413-2.414A1.5 1.5 0 0 0 10.086.5L10 .5H4zM4 1h5.5v3a1 1 0 0 0 1 1H14v9H4V1z"/></svg>
 					<span class="ct-name" th:text="${item.fileName}" th:title="${item.fileName}"></span>
 					<span class="ct-type" th:text="${item.contentType.display}"></span>
+				</div>
+			</div>
+			</div>
+			<!-- Lower: Resource Data -->
+			<div class="content-left-section"
+				 th:with="resourceItems=${T(xw.content.XContentHelper).getAllResourceItems(commandBean.primaryObj)}">
+				<div class="section-header">
+					<span>Resources (<span th:text="${resourceItems==null?0:resourceItems.size()}">0</span>)</span>
+				</div>
+				<div class="content-left-list">
+					<div th:if="${resourceItems==null || resourceItems.isEmpty()}" class="content-empty" style="font-size:12px;">
+						No resource items
+					</div>
+					<div th:each="item : ${resourceItems}"
+						 class="content-list-item"
+						 th:data-filename="${item.fileName}"
+						 th:data-uploadedpath="${item.uploadedPath}"
+						 th:onclick="selectResourceItem(this)">
+						<svg class="ct-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="#999"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.414a1.5 1.5 0 0 0-.44-1.06l-2.413-2.414A1.5 1.5 0 0 0 10.086.5L10 .5H4zM4 1h5.5v3a1 1 0 0 0 1 1H14v9H4V1z"/></svg>
+						<span class="ct-name" th:text="${item.fileName}" th:title="${item.fileName}"></span>
+						<span class="ct-type" style="font-size:10px;color:#999;">res</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -128,7 +155,25 @@
 			}
 		}
 
-		function hideAllViewers() {
+		function selectResourceItem(el) {
+				var items = el.parentElement.querySelectorAll('.content-list-item');
+				for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
+				el.classList.add('active');
+
+				var fileName = el.getAttribute('data-filename') || '';
+				var uploadedPath = el.getAttribute('data-uploadedpath') || '';
+				var holderOid = '[[${commandBean.primaryOid}]]';
+
+				hideAllViewers();
+				document.getElementById('genericViewer').style.display = 'block';
+				document.getElementById('genFileName').textContent = fileName;
+				document.getElementById('genContentType').textContent = 'Resource';
+
+				var downloadUrl = 'XUI$/downloadResource/' + uploadedPath + '?oid=' + encodeURIComponent(holderOid);
+				document.getElementById('genDownloadLink').href = downloadUrl;
+			}
+
+			function hideAllViewers() {
 			var panes = document.querySelectorAll('.viewer-pane');
 			for (var i = 0; i < panes.length; i++) {
 				panes[i].style.display = 'none';

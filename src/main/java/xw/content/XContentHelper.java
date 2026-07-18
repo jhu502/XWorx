@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import xw.content.entity.XApplicationData;
+import xw.content.entity.XResourceData;
 import xw.content.repos.ContentRepository;
 import xw.content.service.XWorxContentService;
 import com.flame.config.basic.BasicConfiguration;
@@ -48,5 +49,11 @@ public class XContentHelper {
 		if (!(object instanceof IContentHolder contentHolder))
 			return Collections.emptyList();
 		return service().getAllContentItems(contentHolder);
+	}
+
+	public static List<XResourceData> getAllResourceItems(Object object) {
+		if (!(object instanceof IContentHolder holder))
+			return List.of();
+		return repository().queryXResourceData(holder);
 	}
 }
