@@ -10,8 +10,11 @@ import com.flame.minio.MinioHelper;
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
+import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
@@ -337,15 +340,22 @@ public class XFlameShellController extends AppShellController {
 
         InputStream inputStream = MinioHelper.service().downloadContent(contentItem.getInnerName(), MinioHelper.XWORX_VAULT);
         InputStreamResource resource = new InputStreamResource(inputStream);
+        ContentDisposition contentDisposition = ContentDisposition.builder(inline ? "inline" : "attachment")
+                .filename(contentItem.getFileName(), StandardCharsets.UTF_8)
+                .build();
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)) //
-                .header(HttpHeaders.CONTENT_DISPOSITION, (inline ? "inline" : "attachement") + "; filename=\"" + contentItem.getFileName() + "\"") //
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString()) //
                 .body(resource);
     }
 
-    @GetMapping(value = "/downloadResource/{resourcePath}")
+    @GetMapping(value = "/downloadResource/{*resourcePath}")
     public ResponseEntity<org.springframework.core.io.Resource> downloadResource(@PathVariable String resourcePath, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "false") boolean inline) {
         XCommandBean commandBean = XCommandBean.newCommandBean(request, response);
         XObject primaryObj = commandBean.getPrimaryObj();
+
+        if (resourcePath != null && resourcePath.startsWith("/")) {
+            resourcePath = resourcePath.substring(1);
+        }
 
         XResourceData resourceData = null;
         if (primaryObj instanceof XResourceData) {
@@ -364,8 +374,10 @@ public class XFlameShellController extends AppShellController {
 
         InputStream inputStream = MinioHelper.service().downloadContent(resourceData.getInnerName(), MinioHelper.XWORX_VAULT);
         InputStreamResource resource = new InputStreamResource(inputStream);
+        ContentDisposition contentDisposition = ContentDisposition.builder(inline ? "inline" : "attachment")
+                .filename(resourceData.getFileName(), StandardCharsets.UTF_8).build();
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)) //
-                .header(HttpHeaders.CONTENT_DISPOSITION, (inline ? "inline" : "attachement") + "; filename=\"" + resourceData.getFileName() + "\"") //
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString()) //
                 .body(resource);
     }
 }

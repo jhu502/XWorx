@@ -11,7 +11,7 @@ public enum ContentType {
 	PRIMARY(XApplicationData.class, "Primary"), //
 	SECONDARY(XApplicationData.class, "Secondary"), //
 	THUMBNAIL3D(XApplicationData.class, "Thumbnail3D"), //
-	RESOURCE(XResourceData.class, "resource"); //
+	RESOURCE(XResourceData.class, "Resource"); //
 	
 	private Class<? extends ContentItem> entityClass;
 	private String display;
