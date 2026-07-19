@@ -139,6 +139,7 @@
 				document.getElementById('markdownViewer').style.display = 'block';
 				const xMarkdown = document.getElementById('xMarkdown');
 				if (xMarkdown && xMarkdown.loadFromUrl) {
+					xMarkdown.options.saveUrl = 'XUI$/form/xw.content.processor.SaveMarkdownProcessor?oid=' + encodeURIComponent(oid);
 					xMarkdown.loadFromUrl(downloadUrl);
 				}
 			} else if (ext === 'pdf') {
