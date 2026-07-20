@@ -14,7 +14,6 @@
     <script src="javascript/easyui/jquery.min.js" type="text/javascript"></script>
     <script src="javascript/easyui/jquery.easyui.min.js" type="text/javascript"></script>
     <script src="javascript/flame/flame.thing.js" type="text/javascript"></script>
-    <script src="javascript/flame/common.xui.js" type="module"></script>
     <script src="javascript/flame/flame.xui.js" type="text/javascript"></script>
 </head>
 <body>
