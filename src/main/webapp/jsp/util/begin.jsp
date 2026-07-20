@@ -12,7 +12,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 	<base id="basehref" href="<%=HREFactory.getBaseHREF()%>">
 
-	<script src="javascript/flame/common.xui.js" type="module"></script>
 	<script src="javascript/flame/flame.xui.js" type="module"></script>
 	<script src="javascript/easyui/jquery.min.js" type="text/javascript"></script>
 	<script src="javascript/axios/axios.min.js" type="text/javascript"></script>
