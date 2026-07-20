@@ -114,7 +114,8 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" th:inline="text">
+	<script type="text/javascript" th:src="@{/javascript/flame/marked.xui.js}"></script>
+	<script type="text/javascript">
 		function selectContentItem(el) {
 			const items = el.parentElement.querySelectorAll('.content-list-item');
 			for (let i = 0; i < items.length; i++) {
