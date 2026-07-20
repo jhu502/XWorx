@@ -3,7 +3,9 @@ package xw.content.processor;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
+import com.flame.util.FlameUtils;
 import org.apache.commons.fileupload.FileItem;
 
 import com.flame.common.form.DefaultFormProcessor;
@@ -40,9 +42,13 @@ public class SaveMarkdownProcessor extends DefaultFormProcessor {
 		try (InputStream inputStream = new ByteArrayInputStream(bytes)) {
 			FileItem fileItem = MinioHelper.getFileItem(inputStream, contentData.getFileName());
 			String innerName = MinioHelper.service().upload(fileItem, MinioHelper.XWORX_VAULT);
+			String oldInnerName = contentData.getInnerName();
 			contentData.setInnerName(innerName);
 			contentData.setFileSize((long) bytes.length);
 			PersistenceHelper.service().save(contentData);
+			if (FlameUtils.isNotBlank(oldInnerName)) {
+				MinioHelper.service().removeObjects(MinioHelper.XWORX_VAULT, Arrays.asList(oldInnerName));
+			}
 		} catch (Exception e) {
 			throw new XException(e);
 		}

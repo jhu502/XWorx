@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +41,8 @@ import jakarta.annotation.Resource;
  */
 @Service
 public class MinioServiceImpl {
+	private static final Logger logger = LoggerFactory.getLogger(MinioServiceImpl.class);
+
 	@Resource
 	private MinioClient minioClient;
 
@@ -194,7 +198,19 @@ public class MinioServiceImpl {
 	 */
 	public Iterable<Result<DeleteError>> removeObjects(String bucketName, List<String> objects) {
 		List<DeleteObject> dos = objects.stream().map(DeleteObject::new).collect(Collectors.toList());
-		return minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(bucketName).objects(dos).build());
+		Iterable<Result<DeleteError>> results = minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(bucketName).objects(dos).build());
+		// MinIO SDK 惰性 Iterable：必须遍历消费才会发起 HTTP Delete 请求
+		for (Result<DeleteError> result : results) {
+			try {
+				DeleteError error = result.get();
+				if (error != null) {
+					logger.warn("Failed to delete MinIO object in bucket [{}]: {}", bucketName, error.message());
+				}
+			} catch (Exception e) {
+				logger.warn("Error consuming MinIO delete result in bucket [{}]: {}", bucketName, e.getMessage());
+			}
+		}
+		return results;
 	}
 
 }

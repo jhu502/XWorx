@@ -516,7 +516,9 @@
       <div class="preview-pane markdown-body" @dblclick="${this._onPreviewDbClick}">
         ${this.content?lO(e):ge`<span style="color:#999">暂无内容</span>`}
       </div>
-    `}_onPreviewDbClick(e){const i=e.target.closest("[data-mdtype]");if(!i||i.classList.contains("is-editing"))return;const n=i.getAttribute("data-mdtype")||"",r=Ce._resolveEditor(n);if(!r)return;const s=i.getAttribute("data-marked")||"";new r(i,{onCommit:a=>{this.content=this.content.replace(s,a),requestAnimationFrame(()=>this._mountCodeMirror())},onClose:()=>{}}).open()}static _resolveEditor(e){if(Ce._editors[e])return Ce._editors[e];for(const[i,n]of Object.entries(Ce._editors))if(e.startsWith(i))return n}lineNumbersTemplate(){const e=(this.content||"").split(`
+    `}_onPreviewDbClick(e){const i=e.target.closest("[data-mdtype]");if(!i||i.classList.contains("is-editing"))return;const n=i.getAttribute("data-mdtype")||"",r=Ce._resolveEditor(n);if(!r)return;new r(i,{onCommit:o=>{this._syncContentFromBlocks()},onClose:()=>{}}).open()}_syncContentFromBlocks(){const e=this.renderRoot.querySelector(".preview-pane, .split-preview");if(!e)return;const i=[];e.querySelectorAll("[data-marked]").forEach(n=>{i.push(n.getAttribute("data-marked")||"")}),this.content=i.join(`
+
+`)}static _resolveEditor(e){if(Ce._editors[e])return Ce._editors[e];for(const[i,n]of Object.entries(Ce._editors))if(e.startsWith(i))return n}lineNumbersTemplate(){const e=(this.content||"").split(`
 `).length;let i="";for(let n=1;n<=Math.max(e,1);n++)i+=`<span>${n}</span>`;return i}renderEditor(){const e=this.options.readOnly;return ge`
       <div class="edit-pane">
         <div class="editor-wrapper">
