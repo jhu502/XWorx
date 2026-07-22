@@ -86,15 +86,15 @@
 		<!-- Right Panel: Content Viewer -->
 		<div class="content-right">
 			<!-- Empty state -->
-			<div id="emptyState" class="viewer-pane content-empty" style="display:flex;">
-				<i class="fa fa-arrow-left"></i> Select a content item from the list
+			<div id="emptyState" class="content-empty" style="position:absolute;inset:0;display:flex;">
+				<img th:src="@{/images/thing/markdown.png}" alt="Markdown" style="max-width:100%;max-height:100%;object-fit:contain;" />
 			</div>
 			<!-- Markdown viewer -->
 			<div id="markdownViewer" class="viewer-pane">
 				<x-markdown id="xMarkdown" x-options="mode:'preview',autoLoad:false,readOnly:false,lineNumbers:true,resPrefix:'XUI$/downloadResource/',saveUrl:'XUI$/form/xw.content.processor.SaveMarkdownProcessor'"></x-markdown>
 			</div>
 			<!-- Image viewer -->
-			<div id="imageViewer" class="viewer-pane" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;overflow:auto;">
+			<div id="imageViewer" class="viewer-pane" style="display:none;align-items:center;justify-content:center;background:#f0f0f0;overflow:auto;">
 				<img id="imageView" alt="" style="max-width:100%;max-height:100%;object-fit:contain;" />
 			</div>
 			<!-- PDF viewer -->
