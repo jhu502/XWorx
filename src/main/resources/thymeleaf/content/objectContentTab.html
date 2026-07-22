@@ -139,9 +139,9 @@
 			if (ext === 'md') {
 				document.getElementById('markdownViewer').style.display = 'block';
 				const xMarkdown = document.getElementById('xMarkdown');
-				if (xMarkdown && xMarkdown.loadFromUrl) {
+				if (xMarkdown && xMarkdown.loadFromURL) {
 					xMarkdown.options.saveUrl = 'XUI$/form/xw.content.processor.SaveMarkdownProcessor?oid=' + encodeURIComponent(oid);
-					xMarkdown.loadFromUrl(downloadUrl);
+					xMarkdown.loadFromURL(downloadUrl);
 				}
 			} else if (ext === 'pdf') {
 				document.getElementById('pdfViewer').style.display = 'block';
