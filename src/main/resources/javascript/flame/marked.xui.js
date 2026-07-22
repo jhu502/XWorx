@@ -157,7 +157,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 2px 6px;
-    background: #f8f8f8;
+    background: #abfbfb;
     border-bottom: 1px solid #e0e0e0;
     flex-shrink: 0;
     min-height: 28px;
@@ -169,7 +169,7 @@
     justify-content: center;
     padding: 2px;
     border: 1px solid #d0d0d0;
-    background: #fff;
+    background: #ebfdff;
     border-radius: 3px;
     cursor: pointer;
     font-size: 13px;
